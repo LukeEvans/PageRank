@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import cs555.crawler.node.Worker;
 import cs555.crawler.url.Page;
+import cs555.crawler.url.WordList;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.wireformats.FetchRequest;
 
@@ -72,6 +73,9 @@ public class FetchTask implements Task {
 			for (Element link : links) {
 				urls.add(link.attr("abs:href"));
 			}
+			
+			WordList words = new WordList();
+			words.addPageWords(text);
 			
 			ArrayList<String> freshLinks = removeBadDomains(urls);
 			node.linkComplete(page, freshLinks, getFileMap(urls));

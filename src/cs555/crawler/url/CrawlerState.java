@@ -152,6 +152,16 @@ public class CrawlerState {
 		return null;
 	}
 	
+	public Page findCompleteUrl(Page u) {
+		for (Page url : doneList) {
+			if (url.equals(u)) {
+				return url;
+			}
+		}
+		
+		return null;
+	}
+	
 	// Mark complete
 	public void markUrlComplete(Page u){
 		Page url = findPendingUrl(u);
@@ -205,6 +215,20 @@ public class CrawlerState {
 	public boolean pendingLinksRemaining(){
 		return !pendingList.isEmpty();
 	}
+	
+	public void completeGraph() {
+		// For every link we crawled, mark it's endpoints with the proper starting point
+		for (Page page : doneList) {
+			for (String link : page.getOutgoingLinks()) {
+				Page dest = findCompleteUrl(new Page(link));
+				
+				if (dest != null) {
+					dest.addIncomingLink(page.urlString);
+				}
+			}
+		}
+	}
+	
 	//================================================================================
 	// House Keeping
 	//================================================================================
@@ -295,6 +319,18 @@ public class CrawlerState {
 			s += format + " = " + count + "\n";
 		}
 		
+		
+		return s;
+	}
+	
+	public String graphDiagnostics() {
+		String s = "";
+		
+		s += "Crawled links: " + doneList.size() + "\n";
+		
+		for (Page p : doneList) {
+			s += p.toString();
+		}
 		
 		return s;
 	}

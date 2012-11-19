@@ -47,6 +47,19 @@ public class Page {
 		metaData.parseFiles(fileMap);
 	}
 	
+	public void accumulate(ArrayList<String> outgoingLinks, WordList words) {
+		metaData.addOutgoingLinks(outgoingLinks);
+		metaData.addWords(words);
+	}
+	
+	public ArrayList<String> getOutgoingLinks() {
+		return metaData.edges.outgoing;
+	}
+	
+	public void addIncomingLink(String in) {
+		metaData.addIncomingLink(in);
+	}
+	
 	//================================================================================
 	// House Keeping
 	//================================================================================
@@ -62,7 +75,8 @@ public class Page {
 	public String toString(){
 		String s = "";
 		
-		s += urlString + " " + status;
+		s += urlString + ": \n";
+		s += metaData.toString();
 		
 		return s;
 	}

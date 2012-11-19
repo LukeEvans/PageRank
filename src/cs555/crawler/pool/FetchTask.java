@@ -32,7 +32,10 @@ public class FetchTask implements Task {
 	// Request 
 	FetchRequest request;
 
+	// Node
 	Worker node;
+	
+	// Page
 	Page page;
 
 
@@ -45,6 +48,7 @@ public class FetchTask implements Task {
 
 		node = w;
 		page = p;
+		
 	}
 
 	//================================================================================
@@ -78,7 +82,8 @@ public class FetchTask implements Task {
 			words.addPageWords(text);
 			
 			ArrayList<String> freshLinks = removeBadDomains(urls);
-			node.linkComplete(page, freshLinks, getFileMap(urls));
+			
+			node.linkComplete(page, freshLinks, getFileMap(urls), words);
 
 			//SaveTask saver = new SaveTask(urlString, text);
 			//saver.save();

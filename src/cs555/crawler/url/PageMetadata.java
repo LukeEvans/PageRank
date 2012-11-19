@@ -9,6 +9,8 @@ public class PageMetadata {
 
 	ArrayList<String> links;
 	public HashMap<String, Integer> fileMap;
+	public Edges edges;
+	public WordList words;
 
 	//================================================================================
 	// Constructor
@@ -56,21 +58,27 @@ public class PageMetadata {
 			}
 		}
 	}
+	
+	public void addIncomingLink(String in) {
+		edges.addIncoming(in);
+	}
+	
+	public void addOutgoingLinks(ArrayList<String> outs) {
+		edges.addOutgoingSet(outs);
+	}
 
+	public void addWords(WordList wl) {
+		words.addSet(wl);
+	}
+	
 	//================================================================================
 	// House Keeping
 	//================================================================================
 	public String toString() {
 		String s = "";
 
-		//s += "Unique links: " + links.size() + "\n";
-
-		for (Map.Entry<String,Integer> entry : fileMap.entrySet()) {
-			String format = entry.getKey();
-			int count = entry.getValue();
-
-			s += format + " = " + count + "\n";
-		}
+		s += edges.toString();
+		s += words.toString();
 
 		return s;
 	}

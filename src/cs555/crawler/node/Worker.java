@@ -6,6 +6,7 @@ import java.util.HashMap;
 import cs555.crawler.communications.Link;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
+import cs555.crawler.url.WordList;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
 import cs555.crawler.wireformats.ElectionMessage;
@@ -78,7 +79,8 @@ public class Worker extends Node{
 			break;
 
 		case Constants.Node_Complete:
-			printDomainInfo();
+			state.completeGraph();
+			printNodeInfo();
 			System.exit(0);
 			
 			break;
@@ -98,7 +100,6 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-			//System.out.println("Depth is at : " + request.depth);
 			return;
 		}
 
@@ -118,7 +119,6 @@ public class Worker extends Node{
 		
 		//System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
-		//FetchParseTask fetcher = new FetchParseTask(page, request, this);
 		poolManager.execute(fetcher);
 	}
 
@@ -126,11 +126,11 @@ public class Worker extends Node{
 	//================================================================================
 	// Fetch Completion
 	//================================================================================
-	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap) {
+	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
 		//System.out.println("Link complete : " + page.urlString);
 		
 		synchronized (state) {
-			state.findPendingUrl(page).accumulate(links, fileMap);
+			state.findPendingUrl(page).accumulate(links, wordList);
 			state.markUrlComplete(page);
 		}
 
@@ -176,6 +176,9 @@ public class Worker extends Node{
 		}
 	}
 
+	public void addIncomingPageForAll(ArrayList<String> links, String from) {
+		
+	}
 	//================================================================================
 	// Printing
 	//================================================================================
@@ -184,6 +187,15 @@ public class Worker extends Node{
 			System.out.println("\n================================================================================");
 			System.out.println("Diagnostics for domain : " + domain);
 			System.out.println(state.diagnostics());
+			System.out.println("================================================================================\n");	
+		}
+	}
+	
+	public void printNodeInfo() {
+		synchronized (state) {
+			System.out.println("\n================================================================================");
+			System.out.println("Diagnostics for domain : " + domain);
+			System.out.println(state.graphDiagnostics());
 			System.out.println("================================================================================\n");	
 		}
 	}

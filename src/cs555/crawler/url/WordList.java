@@ -609,4 +609,19 @@ public class WordList {
 			addWord(s);
 		}
 	}
+	
+	//================================================================================
+	// House Keeping
+	//================================================================================
+	public String toString() {
+		String s = "";
+		
+		s += "Words: \n";
+		
+		for (String word : words) {
+			s += word + "\n";
+		}
+		
+		return s;
+	}
 }

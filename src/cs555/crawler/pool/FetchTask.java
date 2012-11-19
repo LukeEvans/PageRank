@@ -58,8 +58,7 @@ public class FetchTask implements Task {
 			Document doc = Jsoup.connect(urlString).ignoreHttpErrors(true).timeout(6000).get();
 			Elements links = doc.select("a[href]");
 			
-			
-			// Test
+
 			String text = "";
 			
 			if (doc.head() != null) {

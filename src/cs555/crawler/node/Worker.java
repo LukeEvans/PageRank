@@ -78,6 +78,7 @@ public class Worker extends Node{
 			break;
 
 		case Constants.Node_Complete:
+			System.out.println("Got complete message");
 			state.completeGraph();
 			printNodeInfo();
 			System.exit(0);
@@ -166,6 +167,7 @@ public class Worker extends Node{
 
 		// If we're done, print
 		if (!state.shouldContinue()) {
+			System.out.println("Sending complete message");
 			NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 			sendBytes(nodeManager, complete.marshall());
 		}	

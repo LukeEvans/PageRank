@@ -142,6 +142,7 @@ public class Worker extends Node{
 		synchronized (state) {
 			System.out.println("Accumulate");
 			state.findPendingUrl(page).accumulate(links, wordList);
+			System.out.println("marking complete");
 			state.markUrlComplete(page);
 		}
 

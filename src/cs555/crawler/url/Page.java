@@ -53,6 +53,8 @@ public class Page {
 		
 		metaData.addOutgoingLinks(outgoingLinks);
 		metaData.addWords(words);
+		
+		System.out.println("Done accumulating");
 	}
 	
 	public ArrayList<String> getOutgoingLinks() {

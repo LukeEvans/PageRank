@@ -82,7 +82,7 @@ public class PageMetadata {
 		String s = "";
 
 		s += edges.toString();
-		s += words.toString();
+		//s += words.toString();
 
 		return s;
 	}

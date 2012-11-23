@@ -127,7 +127,7 @@ public class Worker extends Node{
 
 	public void fetchURL(Page page, FetchRequest request) {
 		
-		//System.out.println("Fetching : " + request.url);
+		System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
 	}
@@ -137,7 +137,7 @@ public class Worker extends Node{
 	// Fetch Completion
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
-		//System.out.println("Link complete : " + page.urlString);
+		System.out.println("Link complete : " + page.urlString);
 		
 		synchronized (state) {
 			state.findPendingUrl(page).accumulate(links, wordList);

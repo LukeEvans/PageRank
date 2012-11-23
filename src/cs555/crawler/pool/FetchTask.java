@@ -211,6 +211,7 @@ public class FetchTask implements Task {
 					if (!linkIsFile(s)) { 
 
 						if (!s.equalsIgnoreCase(urlString)) {
+							System.out.println("Adding : " + s + " == " + urlString);
 							newList.add(trim(s));
 							continue;
 						}

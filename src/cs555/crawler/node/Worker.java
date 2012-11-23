@@ -138,7 +138,6 @@ public class Worker extends Node{
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
 		System.out.println("Link complete : " + page.urlString);
-		System.out.println("Links : " + links);
 		
 		synchronized (state) {
 			System.out.println("Accumulate");
@@ -146,6 +145,7 @@ public class Worker extends Node{
 			state.markUrlComplete(page);
 		}
 
+		System.out.println("Got out of criticle section");
 		
 		for (String s : links) {
 			// If we're tracking this domain handle it

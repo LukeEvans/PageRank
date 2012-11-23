@@ -64,10 +64,12 @@ public class PageMetadata {
 	}
 	
 	public void addOutgoingLinks(ArrayList<String> outs) {
+		System.out.println("Adding links in metadata");
 		edges.addOutgoingSet(outs);
 	}
 
 	public void addWords(WordList wl) {
+		System.out.println("Adding words in metadata");
 		words.addSet(wl);
 	}
 	

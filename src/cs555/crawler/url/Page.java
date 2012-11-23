@@ -48,8 +48,8 @@ public class Page {
 	}
 	
 	public void accumulate(ArrayList<String> outgoingLinks, WordList words) {
-		System.out.println("Word List : " + words);
-		System.out.println("outgoing : " + outgoingLinks);
+//		System.out.println("Word List : " + words);
+//		System.out.println("outgoing : " + outgoingLinks);
 		
 		metaData.addOutgoingLinks(outgoingLinks);
 		metaData.addWords(words);

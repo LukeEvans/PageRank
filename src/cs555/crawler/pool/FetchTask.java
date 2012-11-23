@@ -34,7 +34,7 @@ public class FetchTask implements Task {
 
 	// Node
 	Worker node;
-	
+
 	// Page
 	Page page;
 
@@ -48,7 +48,7 @@ public class FetchTask implements Task {
 
 		node = w;
 		page = p;
-		
+
 	}
 
 	//================================================================================
@@ -62,33 +62,33 @@ public class FetchTask implements Task {
 
 			Document doc = Jsoup.connect(urlString).ignoreHttpErrors(true).timeout(6000).get();
 			Elements links = doc.select("a[href]");
-			
+
 
 			String text = "";
-			
+
 			if (doc.head() != null) {
 				text += doc.head().text() + "\n";
 			}
-			
+
 			if (doc.body() != null) {
 				text += doc.body().text();
 			}
-			
+
 			for (Element link : links) {
 				urls.add(link.attr("abs:href"));
 			}
-			
+
 			WordList words = new WordList();
 			words.addPageWords(text);
-			
+
 			ArrayList<String> freshLinks = removeBadDomains(urls);
-			
+
 			node.linkComplete(page, freshLinks, getFileMap(urls), words);
 
 			//SaveTask saver = new SaveTask(urlString, text);
 			//saver.save();
 
-			
+
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -128,11 +128,11 @@ public class FetchTask implements Task {
 		int swf = 0;
 		int docx = 0;
 		int mp3 = 0;
-		
+
 		for (String s : links) {
 
 			String copy = new String(s);
-			
+
 			if (s.endsWith(".html")) html++;
 			else if (s.endsWith(".htm")) htm++;
 			else if (s.endsWith(".doc")) doc++;
@@ -155,10 +155,10 @@ public class FetchTask implements Task {
 			else if (s.endsWith(".swf")) swf++;
 			else if (s.endsWith(".docx")) docx++;
 			else if (s.endsWith(".mp3")) mp3++;
-		
+
 			copy = copy.replace("www.", "");
 			copy = copy.replace(request.domain, "");
-			
+
 		}
 
 
@@ -187,7 +187,7 @@ public class FetchTask implements Task {
 		fileMap.put("swf", swf);
 		fileMap.put("docx", docx);
 		fileMap.put("mp3", mp3);
-		
+
 		return fileMap;
 	}
 
@@ -209,8 +209,11 @@ public class FetchTask implements Task {
 				if (s.contains("." + d)) {
 
 					if (!linkIsFile(s)) { 
-						newList.add(trim(s));
-						continue;
+
+						if (!s.equalsIgnoreCase(urlString)) {
+							newList.add(trim(s));
+							continue;
+						}
 					}
 				}
 			}
@@ -223,10 +226,10 @@ public class FetchTask implements Task {
 		if (s.endsWith("/")) {
 			return s.substring(0, s.length()-1);
 		}
-		
+
 		return s;
 	}
-	
+
 	public boolean linkIsFile(String link) {
 		List<String> ext = Arrays.asList("php", "doc", "pdf", "jpg", "png", "gif", "z", "ps", "gz", "zip", "dvi", "avi", "jpeg", "ppt", "text", "txt", "tex", "tar", "tgz", "ogg", "au", "pptx", "m", "mkv", "pps", "eps", "pgm", "c", "docx", "cl", "tcl", "wmv", "swf", "mp3", "exe", "flv");
 

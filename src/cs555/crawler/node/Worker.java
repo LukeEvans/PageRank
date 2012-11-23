@@ -144,6 +144,7 @@ public class Worker extends Node{
 			state.markUrlComplete(page);
 		}
 
+		System.out.println("Links : " + links);
 		for (String s : links) {
 			// If we're tracking this domain handle it
 			if (s.contains("." + domain)) {

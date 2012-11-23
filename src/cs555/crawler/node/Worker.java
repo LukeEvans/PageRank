@@ -138,13 +138,15 @@ public class Worker extends Node{
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
 		System.out.println("Link complete : " + page.urlString);
+		System.out.println("Links : " + links);
 		
 		synchronized (state) {
+			System.out.println("Accumulate");
 			state.findPendingUrl(page).accumulate(links, wordList);
 			state.markUrlComplete(page);
 		}
 
-		System.out.println("Links : " + links);
+		
 		for (String s : links) {
 			// If we're tracking this domain handle it
 			if (s.contains("." + domain)) {

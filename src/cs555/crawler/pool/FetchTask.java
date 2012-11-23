@@ -81,6 +81,7 @@ public class FetchTask implements Task {
 			WordList words = new WordList();
 			words.addPageWords(text);
 			
+			System.out.println("Read : " + words);
 			ArrayList<String> freshLinks = removeBadDomains(urls);
 			
 			node.linkComplete(page, freshLinks, getFileMap(urls), words);

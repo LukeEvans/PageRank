@@ -162,6 +162,21 @@ public class CrawlerState {
 		return null;
 	}
 	
+	// Find a page in any state
+	public Page findPage(Page p) {
+		Page returnPage = findReadyUrl(p);
+		
+		if (returnPage == null) {
+			returnPage = findPendingUrl(p);
+		}
+		
+		if (returnPage == null) {
+			returnPage = findCompleteUrl(p);
+		}
+		
+		return returnPage;
+	}
+	
 	// Mark complete
 	public void markUrlComplete(Page u){
 		Page url = findPendingUrl(u);

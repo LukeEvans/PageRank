@@ -72,8 +72,7 @@ public class Worker extends Node{
 			FetchRequest request = new FetchRequest();
 			request.unmarshall(bytes);
 
-			//System.out.println("Got handoff\n" + request.url + " Depth: " + request.depth);
-
+			
 			publishLink(request);
 
 			break;
@@ -110,6 +109,16 @@ public class Worker extends Node{
 				state.makrUrlPending(page);
 				fetchURL(page, request);
 			}
+			
+			// Add incoming link to this page
+			if (request.links != null && request.links.size() > 0) {
+				String incoming = request.links.get(0);
+				Page thisPage = state.findPage(page);
+				
+				if (thisPage != null) {
+					thisPage.addIncomingLink(incoming);
+				}
+			}
 
 		}
 	}
@@ -145,9 +154,10 @@ public class Worker extends Node{
 			// Else, hand it off
 			else {
 				Link managerLink = connect(nodeManager);
-
-				//System.out.println("Does not contain my domain : " + domain + " =? " + s);
-				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s, new ArrayList<String>());
+				
+				ArrayList<String> handoffSourceURL = new ArrayList<String>();
+				handoffSourceURL.add(page.urlString);
+				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s,handoffSourceURL);
 				managerLink.sendData(handoff.marshall());
 
 				managerLink.close();

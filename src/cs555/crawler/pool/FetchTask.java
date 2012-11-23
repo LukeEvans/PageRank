@@ -228,7 +228,7 @@ public class FetchTask implements Task {
 	}
 	
 	public boolean linkIsFile(String link) {
-		List<String> ext = Arrays.asList("doc", "pdf", "jpg", "png", "gif", "z", "ps", "gz", "zip", "dvi", "avi", "jpeg", "ppt", "text", "txt", "tex", "tar", "tgz", "ogg", "au", "pptx", "m", "mkv", "pps", "eps", "pgm", "c", "docx", "cl", "tcl", "wmv", "swf", "mp3", "exe", "flv");
+		List<String> ext = Arrays.asList("php", "doc", "pdf", "jpg", "png", "gif", "z", "ps", "gz", "zip", "dvi", "avi", "jpeg", "ppt", "text", "txt", "tex", "tar", "tgz", "ogg", "au", "pptx", "m", "mkv", "pps", "eps", "pgm", "c", "docx", "cl", "tcl", "wmv", "swf", "mp3", "exe", "flv");
 
 		for (String e : ext) {
 			if (link.toLowerCase().endsWith("." + e)) {

@@ -19,6 +19,7 @@ public class PageMetadata {
 		links = new ArrayList<String>();
 		fileMap = new HashMap<String, Integer>();
 		edges = new Edges();
+		words = new WordList();
 	}
 
 	//================================================================================

@@ -104,7 +104,6 @@ public class NodeManager extends Node{
 				System.out.println("got reply : " + p.hostname + " has " + p.domain);
 				
 				totalCrawled += Integer.parseInt(reply.url);
-				break;
 			}
 		}
 		

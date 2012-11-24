@@ -267,6 +267,7 @@ public class Worker extends Node{
 
 							// Do something with state....
 							System.out.println("Read state : " + state.graphDiagnostics());
+							break;
 						}
 						
 						else {

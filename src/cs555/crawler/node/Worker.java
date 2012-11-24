@@ -132,8 +132,6 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-			NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-			sendBytes(nodeManager, complete.marshall());
 			return;
 		}
 

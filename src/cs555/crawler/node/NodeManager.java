@@ -179,6 +179,7 @@ public class NodeManager extends Node{
 				
 				if (peerList.allPeersDone()) {
 					// Broadcast to everyone to print data
+					System.out.println("Broadcasting complete");
 					broadcastCompletion();
 				}	
 				

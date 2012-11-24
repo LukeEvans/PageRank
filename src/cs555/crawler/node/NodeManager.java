@@ -189,6 +189,8 @@ public class NodeManager extends Node{
 			
 			Peer peer = peerList.findPeer(Tools.getShortHostname(l.remoteHost), localComplete.number);
 
+			System.out.println("Complete message from : " + Tools.getShortHostname(l.remoteHost));
+			
 			if (peer != null) {
 				peer.ready = true;
 			}

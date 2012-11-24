@@ -111,7 +111,11 @@ public class CrawlerState implements java.io.Serializable{
 		return getNextReadySet(readyList.size());
 	}
 	
-	// Get multiple pages
+	public ArrayList<Page> getCompletedPages() {
+		return pendingList;
+	}
+	
+ 	// Get multiple pages
 	public ArrayList<Page> getNextReadySet(int n){
 		ArrayList<Page> readySet= new ArrayList<Page>();
 		

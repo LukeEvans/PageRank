@@ -135,7 +135,7 @@ public class Worker extends Node{
 
 			synchronized (state) {
 				if (!state.pendingLinksRemaining()) {
-					NodeComplete complete = new NodeComplete(Constants.Node_Complete);
+					NodeComplete complete = new NodeComplete(serverPort);
 					sendBytes(nodeManager, complete.marshall());
 				}
 			}
@@ -215,7 +215,7 @@ public class Worker extends Node{
 		// If we're done, print
 		if (!state.shouldContinue()) {
 			System.out.println("Sending complete message");
-			NodeComplete complete = new NodeComplete(Constants.Node_Complete);
+			NodeComplete complete = new NodeComplete(serverPort);
 			sendBytes(nodeManager, complete.marshall());
 		}	
 

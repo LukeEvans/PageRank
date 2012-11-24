@@ -159,7 +159,14 @@ public class NodeManager extends Node{
 
 		case Constants.Node_Complete:
 
+			NodeComplete complete = new NodeComplete();
+			complete.unmarshall(bytes);
+			
+			Peer p = peerList.findPeer(l.remoteHost, complete.number);
+			
 			synchronized (peerList) {
+				p.ready = true;
+				
 				if (peerList.allPeersDone()) {
 					// Broadcast to everyone to print data
 					broadcastCompletion();

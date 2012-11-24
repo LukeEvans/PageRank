@@ -165,10 +165,17 @@ public class NodeManager extends Node{
 			System.out.println("remote host : " + l.remoteHost);
 			System.out.println("remote port : " + complete.number);
 			
-			Peer p = peerList.findPeer(l.remoteHost, complete.number);
+			Peer p = peerList.findPeer(Tools.getShortHostname(l.remoteHost), complete.number);
 			
 			synchronized (peerList) {
-				p.ready = true;
+				
+				if (p != null) {
+					p.ready = true;
+				}
+				
+				else {
+					System.out.println("peer is not found : " + l.remoteHost);
+				}
 				
 				if (peerList.allPeersDone()) {
 					// Broadcast to everyone to print data

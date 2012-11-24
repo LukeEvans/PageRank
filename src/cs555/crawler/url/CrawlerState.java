@@ -104,6 +104,10 @@ public class CrawlerState implements java.io.Serializable{
 		return null;
 	}
 	
+	public int crawledLinks() {
+		return doneList.size();
+	}
+	
 	// get all pages
 	public ArrayList<Page> getAllPages() {
 		return getNextReadySet(readyList.size());

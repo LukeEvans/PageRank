@@ -84,6 +84,7 @@ public class NodeManager extends Node{
 
 	public void beginPageRank() {
 		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
+		int totalCrawled = 0;
 		
 		for (Peer p : peerList.getAllPeers()) {
 			Link link = connect(p);
@@ -101,8 +102,13 @@ public class NodeManager extends Node{
 				p.domain = reply.domain;
 				
 				System.out.println("got reply : " + p.hostname + " has " + p.domain);
+				
+				totalCrawled += Integer.parseInt(reply.url);
+				break;
 			}
 		}
+		
+		System.out.println("Total Links Crawled : " + totalCrawled);
 	}
 	
  	//================================================================================

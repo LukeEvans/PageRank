@@ -101,7 +101,7 @@ public class Worker extends Node{
 			
 			readFromDisk();
 
-			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, domain);
+			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
 			l.sendData(reply.marshall());
 			
 			break;

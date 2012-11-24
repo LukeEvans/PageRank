@@ -132,6 +132,14 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
+			
+			synchronized (state) {
+				if (!state.pendingLinksRemaining()) {
+					System.out.println("Sending complete message");
+					NodeComplete complete = new NodeComplete(Constants.Node_Complete);
+					sendBytes(nodeManager, complete.marshall());
+				}
+			}
 			return;
 		}
 
@@ -239,7 +247,7 @@ public class Worker extends Node{
 		synchronized (state) {
 			System.out.println("\n================================================================================");
 			System.out.println("Diagnostics for domain : " + domain);
-			System.out.println(state.graphDiagnostics());
+			System.out.println("Crawled Links : " + state.crawledLinks());
 			System.out.println("================================================================================\n");	
 		}
 	}

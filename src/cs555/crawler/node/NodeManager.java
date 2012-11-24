@@ -47,16 +47,7 @@ public class NodeManager extends Node{
 	}
 
 	public void beginRound(){
-		// Get Peer
-		Peer peer = peerList.getNextPeer();
-		Link link = connect(peer);
 
-		// Get links
-		Page page = state.getNextReadyPage();
-		FetchRequest request = page.getFetchRequest();
-		link.sendData(request.marshall());
-
-		System.out.println("Sent: \n" + request);
 	}
 
 	//================================================================================
@@ -194,7 +185,8 @@ public class NodeManager extends Node{
 		
 		// Page Rank Request
 		else if (workType.equalsIgnoreCase("rank")) {
-			
+			// Begin page rank
+			manager.beginPageRank();
 		}
 		
 		else {

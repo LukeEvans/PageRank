@@ -20,7 +20,7 @@ public class RankTask implements Task {
 	}
 	
 	public void run() {
-		// TODO Auto-generated method stub
+		System.out.println("Ranking");
 		
 		for (Page p : state.getAllPages()) {
 			for (String url : p.getOutgoingLinks()) {

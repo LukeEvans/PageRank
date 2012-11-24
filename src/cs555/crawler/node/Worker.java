@@ -22,6 +22,7 @@ import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.Payload;
+import cs555.crawler.wireformats.RankTransmit;
 import cs555.crawler.wireformats.Verification;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.pool.*;
@@ -29,6 +30,7 @@ import cs555.crawler.pool.*;
 public class Worker extends Node{
 
 	Peer nodeManager;
+	Link managerLink;
 	ThreadPoolManager poolManager;
 	String domain;
 	CrawlerState state;
@@ -39,7 +41,7 @@ public class Worker extends Node{
 	public Worker(int port,int threads){
 		super(port);
 		nodeManager = null;
-
+		managerLink = null;
 		poolManager = new ThreadPoolManager(threads);
 		domain = new String();
 		state = new CrawlerState();
@@ -67,6 +69,8 @@ public class Worker extends Node{
 			l.sendData(electionReply.marshall());
 
 			nodeManager = new Peer(election.host, election.port);
+			managerLink = connect(nodeManager);
+			
 			domain = election.domain;
 
 			System.out.println(election);
@@ -87,8 +91,6 @@ public class Worker extends Node{
 			break;
 
 		case Constants.Node_Complete:
-			System.out.println("Got complete message");
-			//state.completeGraph();
 			crawlComplete();
 			System.exit(0);
 
@@ -99,7 +101,8 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-
+			managerLink = connect(nodeManager);
+			
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
@@ -136,7 +139,7 @@ public class Worker extends Node{
 			synchronized (state) {
 				if (!state.pendingLinksRemaining()) {
 					NodeComplete complete = new NodeComplete(serverPort);
-					sendBytes(nodeManager, complete.marshall());
+					managerLink.sendData(complete.marshall());
 				}
 			}
 			return;
@@ -201,14 +204,10 @@ public class Worker extends Node{
 
 			// Else, hand it off
 			else {
-				Link managerLink = connect(nodeManager);
-
 				ArrayList<String> handoffSourceURL = new ArrayList<String>();
 				handoffSourceURL.add(page.urlString);
 				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s,handoffSourceURL);
 				managerLink.sendData(handoff.marshall());
-
-				managerLink.close();
 			}
 		}
 
@@ -218,13 +217,6 @@ public class Worker extends Node{
 			NodeComplete complete = new NodeComplete(serverPort);
 			sendBytes(nodeManager, complete.marshall());
 		}	
-
-//		else {
-//
-//			if (state.pendingList.size() <= 10) {
-//				System.out.println("remaining : " + state.remaining());
-//			}
-//		}
 
 	}
 
@@ -242,9 +234,13 @@ public class Worker extends Node{
 		}
 	}
 
-	public void addIncomingPageForAll(ArrayList<String> links, String from) {
-
+	//================================================================================
+	// Page Rank Methods 
+	//================================================================================
+	public void forwardRanking(RankTransmit trans) {
+		managerLink.sendData(trans.marshall());
 	}
+	
 	//================================================================================
 	// Printing
 	//================================================================================
@@ -276,7 +272,6 @@ public class Worker extends Node{
 				System.out.println("file String : " + fileString);
 
 				if (fileString.endsWith(".results")) {
-
 
 					domain = Tools.inflateURL(fileString.replace(".results", ""));
 

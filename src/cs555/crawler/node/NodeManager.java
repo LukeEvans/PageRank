@@ -146,10 +146,7 @@ public class NodeManager extends Node{
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
-				//synchronized (peerList) {
-					leader.ready = false;	
-				//}
-
+				leader.ready = false;	
 
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
 				sendBytes(leader, handoff.marshall());
@@ -161,24 +158,18 @@ public class NodeManager extends Node{
 
 			NodeComplete complete = new NodeComplete();
 			complete.unmarshall(bytes);
-			
+
 			Peer p = peerList.findPeer(Tools.getShortHostname(l.remoteHost), complete.number);
-			
-			//synchronized (peerList) {
-				
-				if (p != null) {
-					p.ready = true;
-				}
-				
-				else {
-					System.out.println("peer is not found : " + l.remoteHost);
-				}
-				
-				if (peerList.allPeersDone()) {
-					// Broadcast to everyone to print data
-					broadcastCompletion();
-				}	
-			//}
+
+
+			if (p != null) {
+				p.ready = true;
+			}
+
+			if (peerList.allPeersDone()) {
+				// Broadcast to everyone to print data
+				broadcastCompletion();
+			}	
 
 			break;
 
@@ -188,7 +179,6 @@ public class NodeManager extends Node{
 			break;
 		}
 
-		l.close();
 	}
 
 

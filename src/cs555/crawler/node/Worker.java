@@ -236,7 +236,9 @@ public class Worker extends Node{
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.exists() && fileEntry.isFile()) {
 				String fileString = fileEntry.getName();
-
+				
+				System.out.println("file String : " + fileString);
+				
 				if (fileString.endsWith(".results")) {
 					String[] fileParts = fileString.split(".");
 					domain = fileParts[0];

@@ -162,6 +162,9 @@ public class NodeManager extends Node{
 			NodeComplete complete = new NodeComplete();
 			complete.unmarshall(bytes);
 			
+			System.out.println("remote host : " + l.remoteHost);
+			System.out.println("remote port : " + complete.number);
+			
 			Peer p = peerList.findPeer(l.remoteHost, complete.number);
 			
 			synchronized (peerList) {

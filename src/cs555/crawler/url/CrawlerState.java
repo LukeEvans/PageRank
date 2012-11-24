@@ -16,10 +16,10 @@ public class CrawlerState implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ArrayList<Page> readyList;
-	ArrayList<Page> pendingList;
-	ArrayList<Page> doneList;
-	ArrayList<Page> errorList;
+	public ArrayList<Page> readyList;
+	public ArrayList<Page> pendingList;
+	public ArrayList<Page> doneList;
+	public ArrayList<Page> errorList;
 	
 	String linkFile;
 	int maxDepth;

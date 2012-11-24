@@ -99,24 +99,24 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-			
+
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
 			l.sendData(reply.marshall());
-			
+
 			break;
 
 		case Constants.Payload:
 			Payload payload = new Payload();
 			payload.unmarshall(bytes);
-			
+
 			if (payload.number == Constants.Continue) {
 				System.out.println("Starint page rank!");
 			}
-			
+
 			break;
-			
+
 		default:
 			System.out.println("Unrecognized Message");
 			break;
@@ -132,12 +132,12 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-			
+
 			//synchronized (state) {
-				if (!state.pendingLinksRemaining()) {
-					NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-					sendBytes(nodeManager, complete.marshall());
-				}
+			if (!state.pendingLinksRemaining()) {
+				NodeComplete complete = new NodeComplete(Constants.Node_Complete);
+				sendBytes(nodeManager, complete.marshall());
+			}
 			//}
 			return;
 		}
@@ -179,8 +179,16 @@ public class Worker extends Node{
 		System.out.println("Link complete : " + page.urlString);
 
 		synchronized (state) {
-			state.findPendingUrl(page).accumulate(links, wordList);
-			state.markUrlComplete(page);
+			Page p = state.findPendingUrl(page);
+
+			if (p != null) {
+				p.accumulate(links, wordList);
+				state.markUrlComplete(page);
+			}
+			
+			else {
+				System.out.println("link completed that wasn't pending");
+			}
 		}
 
 		for (String s : links) {
@@ -210,6 +218,13 @@ public class Worker extends Node{
 			NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 			sendBytes(nodeManager, complete.marshall());
 		}	
+		
+		else {
+			
+			if (state.pendingList.size() <= 10) {
+				System.out.println("remaining : " + state.remaining());
+			}
+		}
 
 	}
 
@@ -257,12 +272,12 @@ public class Worker extends Node{
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.exists() && fileEntry.isFile()) {
 				String fileString = fileEntry.getName();
-				
+
 				System.out.println("file String : " + fileString);
-				
+
 				if (fileString.endsWith(".results")) {
 
-					
+
 					domain = Tools.inflateURL(fileString.replace(".results", ""));
 
 					System.out.println("domain : " + domain);
@@ -287,11 +302,11 @@ public class Worker extends Node{
 							System.out.println("Read state : " + state.graphDiagnostics());
 							break;
 						}
-						
+
 						else {
 							System.out.println("State could not be read from file");
 						}
-						
+
 						obj_in.close();
 
 					} catch (IOException e) {
@@ -325,7 +340,7 @@ public class Worker extends Node{
 	}
 
 	public void crawlComplete() {
-		
+
 		synchronized (state) {
 			state.completeGraph();
 		}

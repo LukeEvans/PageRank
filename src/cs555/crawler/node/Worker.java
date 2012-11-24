@@ -88,7 +88,7 @@ public class Worker extends Node{
 
 		case Constants.Node_Complete:
 			System.out.println("Got complete message");
-			state.completeGraph();
+			//state.completeGraph();
 			crawlComplete();
 			System.exit(0);
 
@@ -132,6 +132,8 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
+			NodeComplete complete = new NodeComplete(Constants.Node_Complete);
+			sendBytes(nodeManager, complete.marshall());
 			return;
 		}
 
@@ -318,6 +320,11 @@ public class Worker extends Node{
 	}
 
 	public void crawlComplete() {
+		
+		synchronized (state) {
+			state.completeGraph();
+		}
+
 		printNodeInfo();
 
 		try {

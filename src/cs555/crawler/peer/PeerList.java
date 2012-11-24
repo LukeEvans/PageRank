@@ -159,6 +159,14 @@ public class PeerList {
 		return pending;
 	}
 	
+	public boolean allPeersDone() {
+		if (getAllPendingPeers().size() == 0) {
+			return true;
+		}
+		
+		return true;
+	}
+	
 	// Get all peers
 	public ArrayList<Peer> getAllPeers(){
 		return listOfPeers;

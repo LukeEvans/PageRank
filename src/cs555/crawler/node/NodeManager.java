@@ -66,7 +66,6 @@ public class NodeManager extends Node{
 			peer.setDomain(page.domain);
 
 			synchronized (state) {
-				state.numberOfWorkers++;
 				ElectionMessage electionMsg = new ElectionMessage(serverPort, Tools.getLocalHostname(), page.domain, page.urlString);
 				sendBytes(peer, electionMsg.marshall());
 			}
@@ -147,6 +146,7 @@ public class NodeManager extends Node{
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
+				leader.ready = false;
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
 				sendBytes(leader, handoff.marshall());
 			}
@@ -156,8 +156,7 @@ public class NodeManager extends Node{
 		case Constants.Node_Complete:
 
 			synchronized (state) {
-				state.numberOfWorkers--;
-				if (state.numberOfWorkers == 0) {
+				if (peerList.allPeersDone()) {
 					// Broadcast to everyone to print data
 					broadcastCompletion();
 				}

@@ -24,7 +24,6 @@ public class CrawlerState implements java.io.Serializable{
 	String linkFile;
 	int maxDepth;
 	
-	public int numberOfWorkers;
 	
 	//================================================================================
 	// Constructors
@@ -37,7 +36,6 @@ public class CrawlerState implements java.io.Serializable{
 		doneList = new ArrayList<Page>();
 		errorList = new ArrayList<Page>();
 		maxDepth = Constants.depth;
-		numberOfWorkers = 0;
 		
 		buildState();
 	}
@@ -240,6 +238,7 @@ public class CrawlerState implements java.io.Serializable{
 	}
 	
 	public void completeGraph() {
+		
 		// For every link we crawled, mark it's endpoints with the proper starting point
 		for (Page page : doneList) {
 			for (String link : page.getOutgoingLinks()) {

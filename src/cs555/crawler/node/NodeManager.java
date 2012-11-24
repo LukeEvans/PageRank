@@ -200,6 +200,9 @@ public class NodeManager extends Node{
 				broadcastContinue(Constants.PRContinue);
 			}	
 			
+			else {
+				System.out.println("remaining : " + peerList.numberRemainingPeers());
+			}
 			
 			break;
 			

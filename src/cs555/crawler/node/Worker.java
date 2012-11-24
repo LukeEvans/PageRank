@@ -83,7 +83,7 @@ public class Worker extends Node{
 		case Constants.Node_Complete:
 			System.out.println("Got complete message");
 			state.completeGraph();
-			printNodeInfo();
+			crawlComplete();
 			System.exit(0);
 			
 			break;
@@ -233,6 +233,18 @@ public class Worker extends Node{
 			obj_out.writeObject (state);
 			
 			obj_out.close();
+		}
+	}
+	
+	public void crawlComplete() {
+		printNodeInfo();
+		
+		try {
+			saveToDisk();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Could not save crawl state to disk");
+			e.printStackTrace();
 		}
 	}
 	//================================================================================

@@ -159,6 +159,10 @@ public class PeerList {
 		return pending;
 	}
 	
+	public int numberRemainingPeers() {
+		return getAllPendingPeers().size();
+	}
+	
 	public boolean allPeersDone() {
 		if (getAllPendingPeers().size() == 0) {
 			return true;

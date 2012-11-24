@@ -87,6 +87,7 @@ public class PageMetadata implements java.io.Serializable {
 	public String toString() {
 		String s = "";
 
+		s += "Score : " + pageScore + "\n";
 		s += edges.toString();
 		//s += words.toString();
 

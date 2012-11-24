@@ -23,7 +23,10 @@ public class RankTask implements Task {
 		System.out.println("Ranking");
 		
 		for (Page p : state.getAllPages()) {
+			System.out.println("new page");
 			for (String url : p.getOutgoingLinks()) {
+				System.out.println("New outgoing link");
+				
 				Page outgoing = state.findPage(url);
 				RankData data = new RankData(Constants.pageRank, p.getOutgoingScore(), url); 
 				

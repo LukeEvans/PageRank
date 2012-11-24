@@ -26,7 +26,7 @@ public class Constants {
 	public static final int URL_Complete = 7;
 	public static final int URL_Error = 8;
 	
-	
+	public static final int Continue = 98;
 	public static final int Failure = 99;
 	public static final int Success = 100;
 	

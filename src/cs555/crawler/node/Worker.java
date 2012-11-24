@@ -21,6 +21,7 @@ import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
+import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.Verification;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.pool.*;
@@ -106,6 +107,16 @@ public class Worker extends Node{
 			
 			break;
 
+		case Constants.Payload:
+			Payload payload = new Payload();
+			payload.unmarshall(bytes);
+			
+			if (payload.number == Constants.Continue) {
+				System.out.println("Starint page rank!");
+			}
+			
+			break;
+			
 		default:
 			System.out.println("Unrecognized Message");
 			break;

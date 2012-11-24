@@ -15,6 +15,7 @@ import cs555.crawler.wireformats.FetchResponse;
 import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
+import cs555.crawler.wireformats.Payload;
 
 public class NodeManager extends Node{
 
@@ -81,7 +82,15 @@ public class NodeManager extends Node{
 			sendBytes(p, complete.marshall());
 		}
 	}
-
+	
+	public void broadcastContinue() {
+		Payload cont = new Payload(Constants.Continue);
+		
+		for (Peer p : peerList.getAllPeers()) {
+			sendBytes(p, cont.marshall());
+		}
+	}
+	
 	public void beginPageRank() {
 		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
 		int totalCrawled = 0;
@@ -108,6 +117,7 @@ public class NodeManager extends Node{
 		}
 		
 		System.out.println("Total Links Crawled : " + totalCrawled);
+		broadcastContinue();
 	}
 	
  	//================================================================================

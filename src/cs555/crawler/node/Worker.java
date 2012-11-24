@@ -157,7 +157,7 @@ public class Worker extends Node{
 	public void publishLink(FetchRequest request) {
 
 		// If this link doesn't belong to us, return
-		if (!request.url.contains(domain)) {
+		if (!request.url.contains(domain) && !request.url.contains("chm.colostate.edu")) {
 			System.out.println("Trying to publish url that doesn't belong to me. URL: " + request.url + " Domain: " + domain );
 			return;
 		}

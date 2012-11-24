@@ -93,7 +93,7 @@ public class Page implements java.io.Serializable {
 	public String toString(){
 		String s = "";
 		
-		s += urlString + ": \n";
+		s += urlString + ": ";
 		s += metaData.toString();
 		
 		return s;

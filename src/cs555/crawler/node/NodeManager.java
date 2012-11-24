@@ -239,7 +239,7 @@ public class NodeManager extends Node{
 			
 		default:
 
-			System.out.println("Unrecognized Message");
+			System.out.println("Unrecognized Message: " + messageType);
 			break;
 		}
 

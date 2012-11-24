@@ -131,6 +131,7 @@ public class Worker extends Node{
 
 			else if (payload.number == Constants.PRComplete) {
 				System.out.println("Page Rank Complete");
+				System.out.println(state.graphDiagnostics());
 			}
 			
 			break;
@@ -347,7 +348,6 @@ public class Worker extends Node{
 					Object obj;
 					try {
 						// Read from disk using FileInputStream
-						System.out.println("Abs path : " + fileEntry.getAbsolutePath());
 						FileInputStream f_in = new FileInputStream(fileEntry.getAbsolutePath());
 
 						// Read object using ObjectInputStream

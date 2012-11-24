@@ -263,7 +263,7 @@ public class Worker extends Node{
 							state = (CrawlerState) obj;
 
 							// Do something with state....
-							System.out.println("Read state : " + state);
+							System.out.println("Read state : " + state.graphDiagnostics());
 						}
 						
 						else {

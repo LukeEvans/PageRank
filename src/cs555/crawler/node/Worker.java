@@ -1,5 +1,8 @@
 package cs555.crawler.node;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -213,6 +216,23 @@ public class Worker extends Node{
 			System.out.println("Diagnostics for domain : " + domain);
 			System.out.println(state.graphDiagnostics());
 			System.out.println("================================================================================\n");	
+		}
+	}
+	
+	public void saveToDisk() throws IOException {
+		synchronized (state) {
+			// Write to disk with FileOutputStream
+			FileOutputStream f_out = new 
+				FileOutputStream(Constants.base_path + domain + ".results");
+
+			// Write object with ObjectOutputStream
+			ObjectOutputStream obj_out = new
+				ObjectOutputStream (f_out);
+
+			// Write object out to disk
+			obj_out.writeObject (state);
+			
+			obj_out.close();
 		}
 	}
 	//================================================================================

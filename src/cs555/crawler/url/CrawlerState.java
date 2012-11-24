@@ -10,8 +10,12 @@ import java.util.Map;
 
 import cs555.crawler.utilities.*;
 
-public class CrawlerState {
+public class CrawlerState implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<Page> readyList;
 	ArrayList<Page> pendingList;
 	ArrayList<Page> doneList;

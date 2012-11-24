@@ -11,6 +11,7 @@ public class PageMetadata {
 	public HashMap<String, Integer> fileMap;
 	public Edges edges;
 	public WordList words;
+	public int pageScore;
 
 	//================================================================================
 	// Constructor
@@ -20,6 +21,7 @@ public class PageMetadata {
 		fileMap = new HashMap<String, Integer>();
 		edges = new Edges();
 		words = new WordList();
+		pageScore = 100;
 	}
 
 	//================================================================================

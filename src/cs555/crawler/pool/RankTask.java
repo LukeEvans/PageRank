@@ -29,11 +29,13 @@ public class RankTask implements Task {
 				
 				// If the link belongs to us, handle it
 				if (outgoing != null) {
-					outgoing.tallyRankData(data);
+					System.out.println("handling : " + url);
+					node.handlRanking(outgoing, data);
 				}
 				
 				// Else, forward it
 				else {
+					System.out.println("forwarding : " + url);
 					node.forwardRanking(data);
 				}
 			}

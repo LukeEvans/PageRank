@@ -272,6 +272,16 @@ public class Worker extends Node{
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================
+	public void handlRanking(Page p, RankData data) {
+		synchronized (state) {
+			Page page = state.findPage(p);
+			
+			if (page != null) {
+				page.tallyRankData(data);
+			}
+		}
+	}
+	
 	public void forwardRanking(RankData data) {
 		managerLink.sendData(data.marshall());
 	}

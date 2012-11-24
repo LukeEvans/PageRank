@@ -240,13 +240,9 @@ public class Worker extends Node{
 				System.out.println("file String : " + fileString);
 				
 				if (fileString.endsWith(".results")) {
-					String[] fileParts = fileString.split(".");
+
 					
-					for (String s : fileParts) {
-						System.out.println("part : " + s);
-					}
-					
-					domain = fileParts[0];
+					domain = Tools.inflateURL(fileString.replace(".results", ""));
 
 					System.out.println("domain : " + domain);
 

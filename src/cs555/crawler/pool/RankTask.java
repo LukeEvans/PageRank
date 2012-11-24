@@ -22,6 +22,8 @@ public class RankTask implements Task {
 	public void run() {
 		System.out.println("Ranking");
 		
+		System.out.println("\n\nRANKING STATE : " + state.graphDiagnostics());
+		
 		for (Page p : state.getAllPages()) {
 			System.out.println("new page");
 			for (String url : p.getOutgoingLinks()) {

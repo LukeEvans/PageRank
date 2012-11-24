@@ -126,6 +126,7 @@ public class Worker extends Node{
 			}
 
 			else if (payload.number == Constants.PRContinue) {
+				System.out.println("Got continue. Tallying remote");
 				tallyRemoteRanks();
 			}
 
@@ -299,6 +300,7 @@ public class Worker extends Node{
 
 	public void tallyRemoteRanks() {
 		synchronized (incomingRankData) {
+			System.out.println("Woooo hoo. Talling remote ones now");
 			// Start processing the ranks that came in
 			for (RankData data : incomingRankData) {
 				Page page = state.findPage(data.url);

@@ -196,6 +196,7 @@ public class NodeManager extends Node{
 			}
 
 			if (peerList.allPeersDone()) {
+				System.out.println("Sending continue");
 				broadcastContinue(Constants.PRContinue);
 			}	
 			

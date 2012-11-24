@@ -77,7 +77,7 @@ public class NodeManager extends Node{
 	public void broadcastCompletion() {
 		NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 
-		for (Peer p : peerList.getAllPendingPeers()) {
+		for (Peer p : peerList.getAllPeers()) {
 			sendBytes(p, complete.marshall());
 		}
 	}

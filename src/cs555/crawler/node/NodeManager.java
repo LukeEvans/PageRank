@@ -157,12 +157,11 @@ public class NodeManager extends Node{
 
 		case Constants.Node_Complete:
 
-			synchronized (peerList) {
-				if (peerList.allPeersDone()) {
-					// Broadcast to everyone to print data
-					broadcastCompletion();
-				}
+			if (peerList.allPeersDone()) {
+				// Broadcast to everyone to print data
+				broadcastCompletion();
 			}
+
 			break;
 
 		default:

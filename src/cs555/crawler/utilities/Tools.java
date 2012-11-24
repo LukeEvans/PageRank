@@ -133,4 +133,17 @@ public class Tools {
 		System.exit(1);
 
 	}
+	
+	//================================================================================
+	// URL Functions
+	//================================================================================
+	public static String flattenURL(String url) {
+		String s = url.replace("/", "<-_->");
+		return s;
+	}
+	
+	public static String inflateURL(String url) {
+		String s = url.replace("<-_->", "/");
+		return s;
+	}
 }

@@ -220,10 +220,13 @@ public class Worker extends Node{
 	}
 	
 	public void saveToDisk() throws IOException {
+		
+		String flatDomain = Tools.flattenURL(domain);
+		
 		synchronized (state) {
 			// Write to disk with FileOutputStream
 			FileOutputStream f_out = new 
-				FileOutputStream(Constants.base_path + domain + ".results");
+				FileOutputStream(Constants.base_path + flatDomain + ".results");
 
 			// Write object with ObjectOutputStream
 			ObjectOutputStream obj_out = new

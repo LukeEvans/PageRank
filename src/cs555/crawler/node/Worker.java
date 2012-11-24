@@ -247,6 +247,11 @@ public class Worker extends Node{
 			sendBytes(nodeManager, complete.marshall());
 		}	
 
+		else {
+			if (state.pendingList.size() <= 10) {
+				System.out.println(state.remaining());
+			}
+		}
 	}
 
 	public void linkErrored(Page page) {

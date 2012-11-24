@@ -250,7 +250,8 @@ public class Worker extends Node{
 					Object obj;
 					try {
 						// Read from disk using FileInputStream
-						FileInputStream f_in = new FileInputStream(fileString);
+						System.out.println("Abs path : " + fileEntry.getAbsolutePath());
+						FileInputStream f_in = new FileInputStream(fileEntry.getAbsolutePath());
 
 						// Read object using ObjectInputStream
 						ObjectInputStream obj_in = new ObjectInputStream (f_in);

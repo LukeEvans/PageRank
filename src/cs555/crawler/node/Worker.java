@@ -320,7 +320,7 @@ public class Worker extends Node{
 		}
 
 		// Finalize scores
-		for (Page p : state.getAllPages()) {
+		for (Page p : state.getCompletedPages()) {
 			p.rankRoundComplete();
 		}
 

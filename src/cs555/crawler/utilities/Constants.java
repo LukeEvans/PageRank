@@ -17,6 +17,8 @@ public class Constants {
 	public static final int Fetch_Response = 7;
 	public static final int Handoff_Lookup = 8;
 	public static final int Handoff_Reply = 9;
+	public static final int Page_Rank_init = 10;
+	public static final int Page_Rank_Transmit = 11;
 	
 	// URL states
 	public static final int URL_Ready = 5;
@@ -42,4 +44,6 @@ public class Constants {
 	
 	// File basepath
 	public static final String base_path = "/tmp/evansl/crawlData/";
+	
+	public static final String pageRank = "pageRank";
 }

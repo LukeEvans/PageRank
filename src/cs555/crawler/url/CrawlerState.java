@@ -24,7 +24,7 @@ public class CrawlerState implements java.io.Serializable{
 	String linkFile;
 	int maxDepth;
 	
-	public int numberOfCrawlers;
+	public int numberOfWorkers;
 	
 	//================================================================================
 	// Constructors
@@ -37,7 +37,7 @@ public class CrawlerState implements java.io.Serializable{
 		doneList = new ArrayList<Page>();
 		errorList = new ArrayList<Page>();
 		maxDepth = Constants.depth;
-		numberOfCrawlers = 0;
+		numberOfWorkers = 0;
 		
 		buildState();
 	}

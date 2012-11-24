@@ -1,10 +1,14 @@
 package cs555.crawler.node;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 import cs555.crawler.communications.Link;
 import cs555.crawler.url.CrawlerState;
@@ -16,6 +20,7 @@ import cs555.crawler.wireformats.ElectionMessage;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
+import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.Verification;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.pool.*;
@@ -75,7 +80,7 @@ public class Worker extends Node{
 			FetchRequest request = new FetchRequest();
 			request.unmarshall(bytes);
 
-			
+
 			publishLink(request);
 
 			break;
@@ -85,9 +90,19 @@ public class Worker extends Node{
 			state.completeGraph();
 			crawlComplete();
 			System.exit(0);
-			
+
 			break;
+
+		case Constants.Page_Rank_init:
+			PageRankInit prInit = new PageRankInit();
+			prInit.unmarshall(bytes);
+
+			nodeManager = new Peer(prInit.host, prInit.port);
 			
+			readFromDisk();
+
+			break;
+
 		default:
 			System.out.println("Unrecognized Message");
 			break;
@@ -108,17 +123,17 @@ public class Worker extends Node{
 
 		synchronized (state) {
 			Page page = new Page(request.url, request.depth, request.domain);
-			
+
 			if (state.addPage(page)) {
 				state.makrUrlPending(page);
 				fetchURL(page, request);
 			}
-			
+
 			// Add incoming link to this page
 			if (request.links != null && request.links.size() > 0) {
 				String incoming = request.links.get(0);
 				Page thisPage = state.findPage(page);
-				
+
 				if (thisPage != null) {
 					thisPage.addIncomingLink(incoming);
 				}
@@ -129,7 +144,7 @@ public class Worker extends Node{
 
 
 	public void fetchURL(Page page, FetchRequest request) {
-		
+
 		System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
@@ -141,16 +156,12 @@ public class Worker extends Node{
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
 		System.out.println("Link complete : " + page.urlString);
-		
+
 		synchronized (state) {
-			System.out.println("Accumulate");
 			state.findPendingUrl(page).accumulate(links, wordList);
-			System.out.println("marking complete");
 			state.markUrlComplete(page);
 		}
 
-		System.out.println("Got out of criticle section");
-		
 		for (String s : links) {
 			// If we're tracking this domain handle it
 			if (s.contains("." + domain)) {
@@ -162,7 +173,7 @@ public class Worker extends Node{
 			// Else, hand it off
 			else {
 				Link managerLink = connect(nodeManager);
-				
+
 				ArrayList<String> handoffSourceURL = new ArrayList<String>();
 				handoffSourceURL.add(page.urlString);
 				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s,handoffSourceURL);
@@ -196,7 +207,7 @@ public class Worker extends Node{
 	}
 
 	public void addIncomingPageForAll(ArrayList<String> links, String from) {
-		
+
 	}
 	//================================================================================
 	// Printing
@@ -209,7 +220,7 @@ public class Worker extends Node{
 			System.out.println("================================================================================\n");	
 		}
 	}
-	
+
 	public void printNodeInfo() {
 		synchronized (state) {
 			System.out.println("\n================================================================================");
@@ -218,30 +229,78 @@ public class Worker extends Node{
 			System.out.println("================================================================================\n");	
 		}
 	}
-	
+
+	public void readFromDisk() {
+		File folder = new File(Constants.base_path);
+
+		for (File fileEntry : folder.listFiles()) {
+			if (fileEntry.exists() && fileEntry.isFile()) {
+				String fileString = fileEntry.getName();
+
+				if (fileString.endsWith(".results")) {
+					String[] fileParts = fileString.split(".");
+					domain = fileParts[0];
+
+					System.out.println("domain : " + domain);
+
+					// Read an object
+					Object obj;
+					try {
+						// Read from disk using FileInputStream
+						FileInputStream f_in = new FileInputStream(fileString);
+
+						// Read object using ObjectInputStream
+						ObjectInputStream obj_in = new ObjectInputStream (f_in);
+
+						obj = obj_in.readObject();
+
+						if (obj instanceof CrawlerState) {
+							// Cast object to a State
+							state = (CrawlerState) obj;
+
+							// Do something with state....
+							System.out.println("Read state : " + state);
+						}
+						
+						else {
+							System.out.println("State could not be read from file");
+						}
+						
+						obj_in.close();
+
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
 	public void saveToDisk() throws IOException {
-		
+
 		String flatDomain = Tools.flattenURL(domain);
-		
+
 		synchronized (state) {
 			// Write to disk with FileOutputStream
-			FileOutputStream f_out = new 
-				FileOutputStream(Constants.base_path + flatDomain + ".results");
+			FileOutputStream f_out = new FileOutputStream(Constants.base_path + flatDomain + ".results");
 
 			// Write object with ObjectOutputStream
-			ObjectOutputStream obj_out = new
-				ObjectOutputStream (f_out);
+			ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
 
 			// Write object out to disk
 			obj_out.writeObject (state);
-			
+
 			obj_out.close();
 		}
 	}
-	
+
 	public void crawlComplete() {
 		printNodeInfo();
-		
+
 		try {
 			saveToDisk();
 		} catch (IOException e) {

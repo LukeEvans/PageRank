@@ -10,7 +10,7 @@ public class RankTask implements Task {
 
 	CrawlerState state;
 	Worker node;
-	
+
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -18,43 +18,41 @@ public class RankTask implements Task {
 		state = cs;
 		node = w;
 	}
-	
+
 	public void run() {
 		System.out.println("Ranking");
-		
+
 		System.out.println("\n\nRANKING STATE : " + state.graphDiagnostics());
-		
+
 		for (Page p : state.getCompletedPages()) {
-			System.out.println("new page");
 			for (String url : p.getOutgoingLinks()) {
-				System.out.println("New outgoing link");
-				
+
 				Page outgoing = state.findPage(url);
 				RankData data = new RankData(Constants.pageRank, p.getOutgoingScore(), url); 
-				
+
 				// If the link belongs to us, handle it
 				if (outgoing != null) {
-					System.out.println("handling : " + url);
 					node.handlRanking(outgoing, data);
 				}
-				
+
 				// Else, forward it
 				else {
-					System.out.println("forwarding : " + url);
-					node.forwardRanking(data);
+					if (!url.contains(p.domain)) {
+						node.forwardRanking(data);
+					}
 				}
 			}
 		}
-		
+
 		node.localRankingComplete();
 	}
 
 	@Override
 	public void setRunning(int i) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
+
 
 }

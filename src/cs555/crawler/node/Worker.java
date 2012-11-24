@@ -287,8 +287,14 @@ public class Worker extends Node{
 	}
 
 	public void localRankingComplete() {
+		System.out.println("Sending local complete");
 		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
 		managerLink.sendData(localComplete.marshall());
+		
+		LocalRankComplete test = new LocalRankComplete();
+		test.unmarshall(localComplete.marshall());
+		
+		System.out.println("Testing : " + test.number);
 	}
 
 	public void tallyRemoteRanks() {

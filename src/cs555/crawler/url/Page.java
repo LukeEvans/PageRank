@@ -54,9 +54,7 @@ public class Page implements java.io.Serializable {
 	public void accumulate(ArrayList<String> outgoingLinks, WordList words) {
 		
 		metaData.addOutgoingLinks(outgoingLinks);
-		metaData.addWords(words);
-		
-		System.out.println("Done accumulating");
+		metaData.addWords(words);		
 	}
 	
 	public ArrayList<String> getOutgoingLinks() {

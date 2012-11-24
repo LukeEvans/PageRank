@@ -242,7 +242,10 @@ public class Worker extends Node{
 				if (fileString.endsWith(".results")) {
 					String[] fileParts = fileString.split(".");
 					
-					System.out.println("file parts : " + fileParts);
+					for (String s : fileParts) {
+						System.out.println("part : " + s);
+					}
+					
 					domain = fileParts[0];
 
 					System.out.println("domain : " + domain);

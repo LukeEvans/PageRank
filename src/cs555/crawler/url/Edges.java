@@ -2,8 +2,12 @@ package cs555.crawler.url;
 
 import java.util.ArrayList;
 
-public class Edges {
+public class Edges implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public ArrayList<String> incoming;
 	public ArrayList<String> outgoing;
 	

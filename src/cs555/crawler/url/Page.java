@@ -6,8 +6,12 @@ import java.util.HashMap;
 import cs555.crawler.utilities.*;
 import cs555.crawler.wireformats.FetchRequest;
 
-public class Page {
+public class Page implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int status;
 	public String urlString;
 	public int depth;

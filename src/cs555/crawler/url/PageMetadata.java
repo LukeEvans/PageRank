@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PageMetadata {
+public class PageMetadata implements java.io.Serializable {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<String> links;
 	public HashMap<String, Integer> fileMap;
 	public Edges edges;

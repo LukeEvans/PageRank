@@ -167,7 +167,7 @@ public class Worker extends Node{
 
 	public void fetchURL(Page page, FetchRequest request) {
 
-		//System.out.println("Fetching : " + request.url);
+		System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
 	}

@@ -183,6 +183,10 @@ public class CrawlerState implements java.io.Serializable{
 		return returnPage;
 	}
 	
+	public Page findPage(String url) {
+		return findPage(new Page(url));
+	}
+	
 	// Mark complete
 	public void markUrlComplete(Page u){
 		Page url = findPendingUrl(u);

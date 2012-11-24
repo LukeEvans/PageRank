@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 
 import cs555.crawler.communications.Link;
@@ -22,7 +23,7 @@ import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.Payload;
-import cs555.crawler.wireformats.RankTransmit;
+import cs555.crawler.wireformats.RankData;
 import cs555.crawler.wireformats.Verification;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.pool.*;
@@ -34,6 +35,7 @@ public class Worker extends Node{
 	ThreadPoolManager poolManager;
 	String domain;
 	CrawlerState state;
+	Vector<RankData> incomingRankData;
 
 	//================================================================================
 	// Constructor
@@ -45,6 +47,7 @@ public class Worker extends Node{
 		poolManager = new ThreadPoolManager(threads);
 		domain = new String();
 		state = new CrawlerState();
+		incomingRankData = new Vector<RankData>();
 	}
 
 
@@ -70,7 +73,7 @@ public class Worker extends Node{
 
 			nodeManager = new Peer(election.host, election.port);
 			managerLink = connect(nodeManager);
-			
+
 			domain = election.domain;
 
 			System.out.println(election);
@@ -102,7 +105,7 @@ public class Worker extends Node{
 
 			nodeManager = new Peer(prInit.host, prInit.port);
 			managerLink = connect(nodeManager);
-			
+
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
@@ -132,6 +135,12 @@ public class Worker extends Node{
 	// Add links to crawl
 	//================================================================================
 	public void publishLink(FetchRequest request) {
+
+		// If this link doesn't belong to us, return
+		if (!request.url.contains(domain)) {
+			System.out.println("Trying to publish url that doesn't belong to me. URL: " + request.url + " Domain: " + domain );
+			return;
+		}
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
@@ -237,10 +246,35 @@ public class Worker extends Node{
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================
-	public void forwardRanking(RankTransmit trans) {
-		managerLink.sendData(trans.marshall());
+	public void forwardRanking(RankData data) {
+		managerLink.sendData(data.marshall());
 	}
-	
+
+	public void localRankingComplete() {
+
+		synchronized (incomingRankData) {
+			// Start processing the ranks that came in
+			for (RankData data : incomingRankData) {
+				Page page = state.findPage(data.url);
+
+				if (page != null) {
+					page.tallyRankData(data);
+				}
+
+				else {
+					System.out.println("Incoming rank data for a page that doesn't exist: " + data.url);
+				}
+			}
+
+		}
+		
+		// Finalize scores
+		
+		// Tell the node manager that wer're done with this round
+		
+
+	}
+
 	//================================================================================
 	// Printing
 	//================================================================================

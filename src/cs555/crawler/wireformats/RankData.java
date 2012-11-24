@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
 
-public class RankTransmit {
+public class RankData {
 
 	public int size;
 	
@@ -27,16 +27,20 @@ public class RankTransmit {
 	//================================================================================
 	// Constructors
 	//================================================================================
-	public RankTransmit(String d, int s, String u, ArrayList<String> list){
+	public RankData(String d, int s, String u, ArrayList<String> list){
 		init(d, s, u, list);
 	}
 	
-	public RankTransmit(String d, int s, String u, URL[] urls){
+	public RankData(String d, int s, String u){
+		init(d, s, u, new ArrayList<String>());
+	}
+	
+	public RankData(String d, int s, String u, URL[] urls){
 		init(d, s, u, removeUnrelatedLinks(urls,d));
 		
 	}
 	
-	public RankTransmit(){
+	public RankData(){
 		init("",0,"",new ArrayList<String>());
 	}
 	

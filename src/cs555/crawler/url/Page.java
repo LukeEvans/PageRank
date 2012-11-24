@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import cs555.crawler.utilities.*;
 import cs555.crawler.wireformats.FetchRequest;
+import cs555.crawler.wireformats.RankData;
 
 public class Page implements java.io.Serializable {
 
@@ -63,6 +64,18 @@ public class Page implements java.io.Serializable {
 	
 	public void addIncomingLink(String in) {
 		metaData.addIncomingLink(in);
+	}
+	
+	public int getOutgoingScore() {
+		return metaData.pageScore / metaData.edges.outgoing.size();
+	}
+	
+	public void tallyRankData(RankData data) {
+		metaData.tallyScore(data.score);
+	}
+	
+	public void rankRoundComplete() {
+		metaData.finalizeScore();
 	}
 	
 	//================================================================================

@@ -211,7 +211,6 @@ public class FetchTask implements Task {
 					if (!linkIsFile(s)) { 
 
 						if (!trim(s).equalsIgnoreCase(urlString)) {
-							System.out.println("Adding : " + s + " == " + urlString);
 							newList.add(trim(s));
 							continue;
 						}
@@ -225,6 +224,10 @@ public class FetchTask implements Task {
 
 	public String trim(String s) {
 		if (s.endsWith("/")) {
+			return s.substring(0, s.length()-1);
+		}
+		
+		if (s.endsWith("#")) {
 			return s.substring(0, s.length()-1);
 		}
 

@@ -72,12 +72,10 @@ public class PageMetadata implements java.io.Serializable {
 	}
 	
 	public void addOutgoingLinks(ArrayList<String> outs) {
-		System.out.println("Adding links in metadata");
 		edges.addOutgoingSet(outs);
 	}
 
 	public void addWords(WordList wl) {
-		System.out.println("Adding words in metadata");
 		words.addSet(wl);
 	}
 	
@@ -88,7 +86,7 @@ public class PageMetadata implements java.io.Serializable {
 		String s = "";
 
 		s += "Score : " + pageScore + "\n";
-		s += edges.toString();
+		//s += edges.toString();
 		//s += words.toString();
 
 		return s;

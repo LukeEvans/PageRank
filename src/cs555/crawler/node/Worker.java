@@ -134,7 +134,7 @@ public class Worker extends Node{
 				System.out.println("Page Rank Complete");
 				System.out.println(state.graphDiagnostics());
 			}
-			
+
 			break;
 
 		case Constants.Page_Rank_Transmit:
@@ -276,13 +276,13 @@ public class Worker extends Node{
 	public void handlRanking(Page p, RankData data) {
 		synchronized (state) {
 			Page page = state.findPage(p);
-			
+
 			if (page != null) {
 				page.tallyRankData(data);
 			}
 		}
 	}
-	
+
 	public void forwardRanking(RankData data) {
 		managerLink.sendData(data.marshall());
 	}
@@ -290,11 +290,14 @@ public class Worker extends Node{
 	public void localRankingComplete() {
 		System.out.println("Sending local complete");
 		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
-		managerLink.sendData(localComplete.marshall());
-		
+		Link link = connect(nodeManager);
+		link.sendData(localComplete.marshall());
+		link.close();
+
+
 		LocalRankComplete test = new LocalRankComplete();
 		test.unmarshall(localComplete.marshall());
-		
+
 		System.out.println("Testing : " + test.number);
 	}
 
@@ -325,7 +328,7 @@ public class Worker extends Node{
 		PageRankRoundComplete complete = new PageRankRoundComplete(serverPort);
 		managerLink.sendData(complete.marshall());
 	}
-	
+
 	//================================================================================
 	// Printing
 	//================================================================================

@@ -146,7 +146,9 @@ public class NodeManager extends Node{
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
-				leader.ready = false;
+				synchronized (peerList) {
+					leader.ready = false;	
+				}
 
 
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
@@ -157,9 +159,11 @@ public class NodeManager extends Node{
 
 		case Constants.Node_Complete:
 
-			if (peerList.allPeersDone()) {
-				// Broadcast to everyone to print data
-				broadcastCompletion();
+			synchronized (peerList) {
+				if (peerList.allPeersDone()) {
+					// Broadcast to everyone to print data
+					broadcastCompletion();
+				}	
 			}
 
 			break;

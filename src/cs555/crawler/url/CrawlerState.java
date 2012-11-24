@@ -112,7 +112,7 @@ public class CrawlerState implements java.io.Serializable{
 	}
 	
 	public ArrayList<Page> getCompletedPages() {
-		return pendingList;
+		return doneList;
 	}
 	
  	// Get multiple pages

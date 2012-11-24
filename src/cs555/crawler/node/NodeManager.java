@@ -86,7 +86,22 @@ public class NodeManager extends Node{
 		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
 		
 		for (Peer p : peerList.getAllPeers()) {
-			sendBytes(p, prInit.marshall());
+			Link link = connect(p);
+			link.sendData(prInit.marshall());
+			
+			// Wait for machine's domain
+			byte[] bytes = link.waitForData();
+			
+			if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
+				PageRankInit reply = new PageRankInit();
+				reply.unmarshall(bytes);
+				
+				p.hostname = reply.host;
+				p.port = reply.port;
+				p.domain = reply.domain;
+				
+				System.out.println("got reply : " + p.hostname + " has " + p.domain);
+			}
 		}
 	}
 	

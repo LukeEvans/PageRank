@@ -19,6 +19,11 @@ public class Constants {
 	public static final int Handoff_Reply = 9;
 	public static final int Page_Rank_init = 10;
 	public static final int Page_Rank_Transmit = 11;
+	public static final int Page_Rank_Begin = 12;
+	public static final int Local_Complete = 13;
+	public static final int PRContinue = 14;
+	public static final int PRound_Complete = 15;
+	public static final int PRComplete = 16;
 	
 	// URL states
 	public static final int URL_Ready = 5;
@@ -30,7 +35,7 @@ public class Constants {
 	public static final int Failure = 99;
 	public static final int Success = 100;
 	
-	public static final int depth = 5;
+	public static final int depth = 1;
 	
 	public static final int Page_Rank_Rounds = 1;
 	

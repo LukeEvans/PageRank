@@ -13,9 +13,12 @@ import cs555.crawler.wireformats.ElectionMessage;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.FetchResponse;
 import cs555.crawler.wireformats.HandoffLookup;
+import cs555.crawler.wireformats.LocalRankComplete;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
+import cs555.crawler.wireformats.PageRankRoundComplete;
 import cs555.crawler.wireformats.Payload;
+import cs555.crawler.wireformats.RankData;
 
 public class NodeManager extends Node{
 
@@ -25,6 +28,8 @@ public class NodeManager extends Node{
 	String linkFile;
 	String slaveFile;
 	int maxDepth;
+	
+	int RankRound;
 
 	//================================================================================
 	// Constructor
@@ -38,19 +43,9 @@ public class NodeManager extends Node{
 		slaveFile = sf;
 		maxDepth = Constants.depth;
 
+		RankRound = 0;
 	}
-
-	//================================================================================
-	// Round
-	//================================================================================
-	public boolean shouldContinue(){
-		return state.shouldContinue();
-	}
-
-	public void beginRound(){
-
-	}
-
+	
 	//================================================================================
 	// Send
 	//================================================================================
@@ -82,10 +77,11 @@ public class NodeManager extends Node{
 		}
 	}
 
-	public void broadcastContinue() {
-		Payload cont = new Payload(Constants.Continue);
+	public void broadcastContinue(int type) {
+		Payload cont = new Payload(type);
 
 		for (Peer p : peerList.getAllPeers()) {
+			p.ready = false;
 			sendBytes(p, cont.marshall());
 		}
 	}
@@ -94,31 +90,45 @@ public class NodeManager extends Node{
 		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
 		int totalCrawled = 0;
 
-		for (Peer p : peerList.getAllPeers()) {
-			Link link = connect(p);
-			link.sendData(prInit.marshall());
+		synchronized (peerList) {
+			for (Peer p : peerList.getAllPeers()) {
+				p.ready = false;
+				Link link = connect(p);
+				link.sendData(prInit.marshall());
 
-			// Wait for machine's domain
-			byte[] bytes = link.waitForData();
+				// Wait for machine's domain
+				byte[] bytes = link.waitForData();
 
-			if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
-				PageRankInit reply = new PageRankInit();
-				reply.unmarshall(bytes);
+				if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
+					PageRankInit reply = new PageRankInit();
+					reply.unmarshall(bytes);
 
-				p.hostname = reply.host;
-				p.port = reply.port;
-				p.domain = reply.domain;
+					p.hostname = reply.host;
+					p.port = reply.port;
+					p.domain = reply.domain;
 
-				System.out.println("got reply : " + p.hostname + " has " + p.domain);
+					System.out.println("got reply : " + p.hostname + " has " + p.domain);
 
-				totalCrawled += Integer.parseInt(reply.url);
+					totalCrawled += Integer.parseInt(reply.url);
+				}
 			}
 		}
 
 		System.out.println("Total Links Crawled : " + totalCrawled);
-		broadcastContinue();
+		beginRound();
 	}
 
+	public void beginRound() {
+		if (RankRound == Constants.Page_Rank_Rounds) {
+			System.out.println("Page Rank complete");
+			return;
+		}
+		
+		RankRound++;
+		broadcastContinue(Constants.Page_Rank_Begin);
+		
+	}
+	
 	//================================================================================
 	// Receive
 	//================================================================================
@@ -173,6 +183,60 @@ public class NodeManager extends Node{
 
 			break;
 
+		case Constants.Local_Complete:
+			LocalRankComplete localComplete = new LocalRankComplete();
+			localComplete.unmarshall(bytes);
+			
+			Peer peer = peerList.findPeer(Tools.getShortHostname(l.remoteHost), localComplete.number);
+
+			if (peer != null) {
+				peer.ready = true;
+			}
+
+			if (peerList.allPeersDone()) {
+				broadcastContinue(Constants.PRContinue);
+			}	
+			
+			
+			break;
+			
+		case Constants.PRound_Complete:
+			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
+			roundComplete.unmarshall(bytes);
+			
+			Peer worker = peerList.findPeer(Tools.getShortHostname(l.remoteHost), roundComplete.number);
+
+			if (worker != null) {
+				worker.ready = true;
+			}
+
+			if (peerList.allPeersDone()) {
+				
+				if (RankRound < Constants.Page_Rank_Rounds) {
+					beginRound();
+				}
+				
+				else {
+					broadcastContinue(Constants.PRComplete);
+				}
+			}	
+			
+			break;
+		
+		case Constants.Page_Rank_Transmit:
+			RankData data = new RankData();
+			data.unmarshall(bytes);
+			
+			Peer prLeader = peerList.findDomainLeader(data.url);
+
+			if (prLeader != null) {
+				Link prLink = connect(prLeader);
+				prLink.sendData(data.marshall());
+				prLink.close();
+			}
+			
+			break;
+			
 		default:
 
 			System.out.println("Unrecognized Message");

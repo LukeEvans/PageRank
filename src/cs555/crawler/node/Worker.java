@@ -20,8 +20,10 @@ import cs555.crawler.utilities.Tools;
 import cs555.crawler.wireformats.ElectionMessage;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.HandoffLookup;
+import cs555.crawler.wireformats.LocalRankComplete;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
+import cs555.crawler.wireformats.PageRankRoundComplete;
 import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.RankData;
 import cs555.crawler.wireformats.Verification;
@@ -117,9 +119,27 @@ public class Worker extends Node{
 			Payload payload = new Payload();
 			payload.unmarshall(bytes);
 
-			if (payload.number == Constants.Continue) {
-				System.out.println("Starint page rank!");
+			if (payload.number == Constants.Page_Rank_Begin) {
+				System.out.println("Starting page rank!");
+				RankTask ranker = new RankTask(state, this);
+				poolManager.execute(ranker);
 			}
+
+			else if (payload.number == Constants.PRContinue) {
+				tallyRemoteRanks();
+			}
+
+			else if (payload.number == Constants.PRComplete) {
+				System.out.println("Page Rank Complete");
+			}
+			
+			break;
+
+		case Constants.Page_Rank_Transmit:
+			RankData data = new RankData();
+			data.unmarshall(bytes);
+
+			incomingRankData.add(data);
 
 			break;
 
@@ -251,7 +271,11 @@ public class Worker extends Node{
 	}
 
 	public void localRankingComplete() {
+		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
+		managerLink.sendData(localComplete.marshall());
+	}
 
+	public void tallyRemoteRanks() {
 		synchronized (incomingRankData) {
 			// Start processing the ranks that came in
 			for (RankData data : incomingRankData) {
@@ -267,14 +291,17 @@ public class Worker extends Node{
 			}
 
 		}
-		
+
 		// Finalize scores
-		
-		// Tell the node manager that wer're done with this round
-		
+		for (Page p : state.getAllPages()) {
+			p.rankRoundComplete();
+		}
 
+		// Tell the node manager that we're done with this round
+		PageRankRoundComplete complete = new PageRankRoundComplete(serverPort);
+		managerLink.sendData(complete.marshall());
 	}
-
+	
 	//================================================================================
 	// Printing
 	//================================================================================

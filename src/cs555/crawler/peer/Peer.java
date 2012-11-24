@@ -16,6 +16,7 @@ public class Peer {
 		port = p;
 		domain = new String();
 		ready = true;
+		
 	}
 
 	

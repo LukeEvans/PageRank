@@ -50,7 +50,7 @@ public class RankData {
 		urlLength = u.length();
 		url = u;
 		links = list;
-		type = Constants.Fetch_Request;
+		type = Constants.Page_Rank_Transmit;
 		score = sc;
 		numberOfLinks = list.size();
 		

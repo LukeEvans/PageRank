@@ -10,15 +10,13 @@ public class RankTask implements Task {
 
 	CrawlerState state;
 	Worker node;
-	String domain;
 	
 	//================================================================================
 	// Constructor
 	//================================================================================
-	public RankTask(CrawlerState cs, Worker w, String d) {
+	public RankTask(CrawlerState cs, Worker w) {
 		state = cs;
 		node = w;
-		domain = d;
 	}
 	
 	public void run() {

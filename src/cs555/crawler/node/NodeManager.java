@@ -81,45 +81,45 @@ public class NodeManager extends Node{
 			sendBytes(p, complete.marshall());
 		}
 	}
-	
+
 	public void broadcastContinue() {
 		Payload cont = new Payload(Constants.Continue);
-		
+
 		for (Peer p : peerList.getAllPeers()) {
 			sendBytes(p, cont.marshall());
 		}
 	}
-	
+
 	public void beginPageRank() {
 		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
 		int totalCrawled = 0;
-		
+
 		for (Peer p : peerList.getAllPeers()) {
 			Link link = connect(p);
 			link.sendData(prInit.marshall());
-			
+
 			// Wait for machine's domain
 			byte[] bytes = link.waitForData();
-			
+
 			if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
 				PageRankInit reply = new PageRankInit();
 				reply.unmarshall(bytes);
-				
+
 				p.hostname = reply.host;
 				p.port = reply.port;
 				p.domain = reply.domain;
-				
+
 				System.out.println("got reply : " + p.hostname + " has " + p.domain);
-				
+
 				totalCrawled += Integer.parseInt(reply.url);
 			}
 		}
-		
+
 		System.out.println("Total Links Crawled : " + totalCrawled);
 		broadcastContinue();
 	}
-	
- 	//================================================================================
+
+	//================================================================================
 	// Receive
 	//================================================================================
 	// Receieve data
@@ -146,7 +146,10 @@ public class NodeManager extends Node{
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
-				leader.ready = false;
+				synchronized (peerList) {
+					leader.ready = false;
+				}
+
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
 				sendBytes(leader, handoff.marshall());
 			}
@@ -155,7 +158,7 @@ public class NodeManager extends Node{
 
 		case Constants.Node_Complete:
 
-			synchronized (state) {
+			synchronized (peerList) {
 				if (peerList.allPeersDone()) {
 					// Broadcast to everyone to print data
 					broadcastCompletion();
@@ -211,13 +214,13 @@ public class NodeManager extends Node{
 			// Broadcast our election message
 			manager.broadcastElection();
 		}
-		
+
 		// Page Rank Request
 		else if (workType.equalsIgnoreCase("rank")) {
 			// Begin page rank
 			manager.beginPageRank();
 		}
-		
+
 		else {
 			System.out.println("Unrecognized type of request. 'crawl' or 'rank' expected");
 		}

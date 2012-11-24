@@ -135,7 +135,6 @@ public class Worker extends Node{
 			
 			synchronized (state) {
 				if (!state.pendingLinksRemaining()) {
-					System.out.println("Sending complete message");
 					NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 					sendBytes(nodeManager, complete.marshall());
 				}

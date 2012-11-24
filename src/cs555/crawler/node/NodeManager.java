@@ -146,9 +146,8 @@ public class NodeManager extends Node{
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
-				synchronized (peerList) {
-					leader.ready = false;
-				}
+				leader.ready = false;
+
 
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
 				sendBytes(leader, handoff.marshall());

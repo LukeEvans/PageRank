@@ -43,6 +43,7 @@ public class Link {
 
 		try {
 			sout.write(dataToBeSent);
+			sout.flush();
 		} catch (IOException e){
 			Tools.printStackTrace(e);
 		}

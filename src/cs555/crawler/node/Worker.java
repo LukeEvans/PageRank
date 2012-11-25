@@ -327,6 +327,9 @@ public class Worker extends Node{
 
 		// Tell the node manager that we're done with this round
 		PageRankRoundComplete complete = new PageRankRoundComplete(serverPort);
+//		Link link = connect(nodeManager);
+//		link.sendData(complete.marshall());
+//		link.close();
 		managerLink.sendData(complete.marshall());
 	}
 

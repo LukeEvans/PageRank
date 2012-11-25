@@ -102,7 +102,7 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 	@Override
 	public int compareTo(Page o) {
 		if (metaData.pageScore == o.metaData.pageScore) return 0;
-		if (metaData.pageScore > o.metaData.pageScore) return 1;
-		else return -1;		
+		if (metaData.pageScore > o.metaData.pageScore) return -1;
+		else return 1;		
 	}
 }

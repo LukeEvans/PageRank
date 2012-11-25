@@ -257,7 +257,7 @@ public class Worker extends Node{
 		}	
 
 		else {
-			if (state.pendingList.size() <= 10) {
+			if (state.pendingList.size() <= 100) {
 				System.out.println(state.remaining());
 			}
 		}

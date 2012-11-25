@@ -189,7 +189,7 @@ public class NodeManager extends Node{
 			
 			Peer peer = peerList.findPeer(Tools.getShortHostname(l.remoteHost), localComplete.number);
 
-			System.out.println("Complete message from : " + Tools.getShortHostname(l.remoteHost));
+			//System.out.println("Complete message from : " + Tools.getShortHostname(l.remoteHost));
 			
 			if (peer != null) {
 				peer.ready = true;
@@ -201,7 +201,7 @@ public class NodeManager extends Node{
 			}	
 			
 			else {
-				System.out.println("remaining : " + peerList.numberRemainingPeers());
+				//System.out.println("remaining : " + peerList.numberRemainingPeers());
 			}
 			
 			break;
@@ -249,6 +249,7 @@ public class NodeManager extends Node{
 			break;
 		}
 
+		l.close();
 	}
 
 

@@ -120,18 +120,15 @@ public class Worker extends Node{
 			payload.unmarshall(bytes);
 
 			if (payload.number == Constants.Page_Rank_Begin) {
-				System.out.println("Starting page rank!");
 				RankTask ranker = new RankTask(state, this);
 				poolManager.execute(ranker);
 			}
 
 			else if (payload.number == Constants.PRContinue) {
-				System.out.println("Got continue. Tallying remote");
 				tallyRemoteRanks();
 			}
 
 			else if (payload.number == Constants.PRComplete) {
-				System.out.println("Page Rank Complete");
 				System.out.println(state.graphDiagnostics());
 			}
 
@@ -141,7 +138,6 @@ public class Worker extends Node{
 			RankData data = new RankData();
 			data.unmarshall(bytes);
 
-			System.out.println("Adding remote");
 			incomingRankData.add(data);
 
 			break;
@@ -294,17 +290,10 @@ public class Worker extends Node{
 		Link link = connect(nodeManager);
 		link.sendData(localComplete.marshall());
 		link.close();
-
-
-		LocalRankComplete test = new LocalRankComplete();
-		test.unmarshall(localComplete.marshall());
-
-		System.out.println("Testing : " + test.number);
 	}
 
 	public void tallyRemoteRanks() {
 		synchronized (incomingRankData) {
-			System.out.println("Woooo hoo. Talling remote ones now");
 			// Start processing the ranks that came in
 			for (RankData data : incomingRankData) {
 				Page page = state.findPage(data.url);
@@ -313,9 +302,6 @@ public class Worker extends Node{
 					page.tallyRankData(data);
 				}
 
-				else {
-					System.out.println("Incoming rank data for a page that doesn't exist: " + data.url);
-				}
 			}
 
 		}

@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -222,6 +223,10 @@ public class CrawlerState implements java.io.Serializable{
 		}
 	}
 	
+	public void sortCompleted() {
+		Collections.sort(doneList);
+	}
+	
 	//================================================================================
 	// Completion methods 
 	//================================================================================
@@ -376,4 +381,5 @@ public class CrawlerState implements java.io.Serializable{
 		}
 		return s;
 	}
+
 }

@@ -7,7 +7,7 @@ import cs555.crawler.utilities.*;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.RankData;
 
-public class Page implements java.io.Serializable {
+public class Page implements Comparable<Page>, java.io.Serializable {
 
 	/**
 	 * 
@@ -97,5 +97,12 @@ public class Page implements java.io.Serializable {
 		s += metaData.toString();
 		
 		return s;
+	}
+
+	@Override
+	public int compareTo(Page o) {
+		if (metaData.pageScore == o.metaData.pageScore) return 0;
+		if (metaData.pageScore > o.metaData.pageScore) return 1;
+		else return -1;		
 	}
 }

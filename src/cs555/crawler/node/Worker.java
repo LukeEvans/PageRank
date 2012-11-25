@@ -141,6 +141,7 @@ public class Worker extends Node{
 			RankData data = new RankData();
 			data.unmarshall(bytes);
 
+			System.out.println("Adding remote");
 			incomingRankData.add(data);
 
 			break;

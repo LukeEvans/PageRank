@@ -26,6 +26,7 @@ public class Link {
 		port = s.getPort();
 		node = n;
 		remoteHost = socket.getInetAddress().getHostName();
+		System.out.println("Added this for a link name : " + remoteHost);
 		receiver = new LinkReceiverThread(socket, this);
 	}
 

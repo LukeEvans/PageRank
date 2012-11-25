@@ -90,8 +90,6 @@ public class Worker extends Node{
 		case Constants.Fetch_Request:
 			FetchRequest request = new FetchRequest();
 			request.unmarshall(bytes);
-
-			System.out.println("Handoff bitches");
 			
 			publishLink(request);
 

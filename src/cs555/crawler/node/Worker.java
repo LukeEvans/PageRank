@@ -26,7 +26,6 @@ import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.PageRankRoundComplete;
 import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.RankData;
-import cs555.crawler.wireformats.Verification;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.pool.*;
 
@@ -72,8 +71,8 @@ public class Worker extends Node{
 
 			nodeManager = new Peer(election.host, election.port);
 			nodeManager.setLink(l);
-			Verification electionReply = new Verification(election.type);
-			nodeManager.sendData(electionReply.marshall());
+//			Verification electionReply = new Verification(election.type);
+//			nodeManager.sendData(electionReply.marshall());
 			
 			//managerLink = connect(nodeManager);
 
@@ -202,7 +201,7 @@ public class Worker extends Node{
 
 	public void fetchURL(Page page, FetchRequest request) {
 
-		System.out.println("Fetching : " + request.url);
+		//System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
 	}
@@ -212,7 +211,7 @@ public class Worker extends Node{
 	// Fetch Completion
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
-		System.out.println("Link complete : " + page.urlString);
+		//System.out.println("Link complete : " + page.urlString);
 
 		synchronized (state) {
 			Page p = state.findPendingUrl(page);
@@ -243,6 +242,7 @@ public class Worker extends Node{
 //				Link link = connect(nodeManager);
 //				link.sendData(handoff.marshall());
 //				link.close();
+				System.out.println("Sending handoff");
 				nodeManager.sendData(handoff.marshall());
 			}
 		}

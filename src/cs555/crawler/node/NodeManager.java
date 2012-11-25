@@ -60,6 +60,7 @@ public class NodeManager extends Node{
 			Peer peer = peerList.getReadyPeer();
 			peer.setDomain(page.domain);
 			peer.setLink(connect(peer));
+			peer.initLink();
 
 			synchronized (state) {
 				ElectionMessage electionMsg = new ElectionMessage(serverPort, Tools.getLocalHostname(), page.domain, page.urlString);

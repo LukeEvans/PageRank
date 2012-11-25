@@ -24,7 +24,12 @@ public class Peer {
 
 	public void setLink(Link l) {
 		link = l;
-		link.initLink();
+	}
+
+	public void initLink() {
+		if (link != null) {
+			link.initLink();
+		}
 	}
 	
 	public void sendData(byte[] bytes) {

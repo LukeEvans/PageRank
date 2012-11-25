@@ -91,7 +91,8 @@ public class Worker extends Node{
 			FetchRequest request = new FetchRequest();
 			request.unmarshall(bytes);
 
-
+			System.out.println("Handoff bitches");
+			
 			publishLink(request);
 
 			break;

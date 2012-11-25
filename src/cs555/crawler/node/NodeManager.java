@@ -246,7 +246,7 @@ public class NodeManager extends Node{
 			
 		default:
 
-			System.out.println("Unrecognized Message from: " + Tools.getShortHostname(l.remoteHost));
+			System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
 			break;
 		}
 

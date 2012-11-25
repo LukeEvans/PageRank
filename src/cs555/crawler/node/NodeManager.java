@@ -59,10 +59,11 @@ public class NodeManager extends Node{
 
 			Peer peer = peerList.getReadyPeer();
 			peer.setDomain(page.domain);
+			peer.setLink(connect(peer));
 
 			synchronized (state) {
 				ElectionMessage electionMsg = new ElectionMessage(serverPort, Tools.getLocalHostname(), page.domain, page.urlString);
-				sendBytes(peer, electionMsg.marshall());
+				peer.sendData(electionMsg.marshall());
 			}
 
 
@@ -73,7 +74,7 @@ public class NodeManager extends Node{
 		NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 
 		for (Peer p : peerList.getAllPeers()) {
-			sendBytes(p, complete.marshall());
+			p.sendData(complete.marshall());
 		}
 	}
 
@@ -82,7 +83,7 @@ public class NodeManager extends Node{
 
 		for (Peer p : peerList.getAllPeers()) {
 			p.ready = false;
-			sendBytes(p, cont.marshall());
+			p.sendData(cont.marshall());
 		}
 	}
 
@@ -93,11 +94,11 @@ public class NodeManager extends Node{
 		synchronized (peerList) {
 			for (Peer p : peerList.getAllPeers()) {
 				p.ready = false;
-				Link link = connect(p);
-				link.sendData(prInit.marshall());
+				p.setLink(connect(p));
+				p.sendData(prInit.marshall());
 
 				// Wait for machine's domain
-				byte[] bytes = link.waitForData();
+				byte[] bytes = p.waitForData();
 
 				if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
 					PageRankInit reply = new PageRankInit();
@@ -159,7 +160,7 @@ public class NodeManager extends Node{
 				leader.ready = false;	
 
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
-				sendBytes(leader, handoff.marshall());
+				leader.sendData(handoff.marshall());
 			}
 
 			break;
@@ -236,9 +237,7 @@ public class NodeManager extends Node{
 			Peer prLeader = peerList.findDomainLeader(data.url);
 
 			if (prLeader != null) {
-				Link prLink = connect(prLeader);
-				prLink.sendData(data.marshall());
-				prLink.close();
+				prLeader.sendData(data.marshall());
 			}
 			
 			break;
@@ -249,7 +248,6 @@ public class NodeManager extends Node{
 			break;
 		}
 
-		l.close();
 	}
 
 

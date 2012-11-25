@@ -1,5 +1,7 @@
 package cs555.crawler.peer;
 
+import cs555.crawler.communications.Link;
+
 // Class to abstract the peer
 public class Peer {
 
@@ -7,6 +9,7 @@ public class Peer {
 	public int port;
 	public String domain;
 	public boolean ready;
+	Link link;
 
 	//================================================================================
 	// Constructor
@@ -16,9 +19,20 @@ public class Peer {
 		port = p;
 		domain = new String();
 		ready = true;
-		
+		link = null;
 	}
 
+	public void setLink(Link l) {
+		link = l;
+	}
+	
+	public void sendData(byte[] bytes) {
+		link.sendData(bytes);
+	}
+	
+	public byte[] waitForData() {
+		return link.waitForData();
+	}
 	
 	//================================================================================
 	// Domain Tracking

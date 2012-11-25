@@ -33,7 +33,7 @@ import cs555.crawler.pool.*;
 public class Worker extends Node{
 
 	Peer nodeManager;
-	Link managerLink;
+	//Link managerLink;
 	ThreadPoolManager poolManager;
 	String domain;
 	CrawlerState state;
@@ -45,7 +45,7 @@ public class Worker extends Node{
 	public Worker(int port,int threads){
 		super(port);
 		nodeManager = null;
-		managerLink = null;
+		//managerLink = null;
 		poolManager = new ThreadPoolManager(threads);
 		domain = new String();
 		state = new CrawlerState();
@@ -74,7 +74,9 @@ public class Worker extends Node{
 			l.sendData(electionReply.marshall());
 
 			nodeManager = new Peer(election.host, election.port);
-			managerLink = connect(nodeManager);
+			nodeManager.setLink(l);
+			
+			//managerLink = connect(nodeManager);
 
 			domain = election.domain;
 
@@ -106,7 +108,8 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-			managerLink = connect(nodeManager);
+			nodeManager.setLink(l);
+			//managerLink = connect(nodeManager);
 
 			readFromDisk();
 
@@ -149,7 +152,6 @@ public class Worker extends Node{
 			break;
 		}
 
-		l.close();
 	}
 
 	//================================================================================
@@ -172,7 +174,7 @@ public class Worker extends Node{
 //					Link link = connect(nodeManager);
 //					link.sendData(complete.marshall());
 //					link.close();
-					managerLink.sendData(complete.marshall());
+					nodeManager.sendData(complete.marshall());
 				}
 			}
 			return;
@@ -243,7 +245,7 @@ public class Worker extends Node{
 //				Link link = connect(nodeManager);
 //				link.sendData(handoff.marshall());
 //				link.close();
-				managerLink.sendData(handoff.marshall());
+				nodeManager.sendData(handoff.marshall());
 			}
 		}
 
@@ -270,7 +272,8 @@ public class Worker extends Node{
 			// If we're done, print
 			if (!state.shouldContinue()) {
 				NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-				sendBytes(nodeManager, complete.marshall());
+				nodeManager.sendData(complete.marshall());
+				//sendBytes(nodeManager, complete.marshall());
 			}
 		}
 	}
@@ -292,7 +295,7 @@ public class Worker extends Node{
 //		Link link = connect(nodeManager);
 //		link.sendData(data.marshall());
 //		link.close();
-		managerLink.sendData(data.marshall());
+		nodeManager.sendData(data.marshall());
 	}
 
 	public void localRankingComplete() {
@@ -301,7 +304,7 @@ public class Worker extends Node{
 //		Link link = connect(nodeManager);
 //		link.sendData(localComplete.marshall());
 //		link.close();
-		managerLink.sendData(localComplete.marshall());
+		nodeManager.sendData(localComplete.marshall());
 	}
 
 	public void tallyRemoteRanks() {
@@ -328,7 +331,7 @@ public class Worker extends Node{
 //		Link link = connect(nodeManager);
 //		link.sendData(complete.marshall());
 //		link.close();
-		managerLink.sendData(complete.marshall());
+		nodeManager.sendData(complete.marshall());
 	}
 
 	//================================================================================

@@ -129,6 +129,8 @@ public class Worker extends Node{
 			}
 
 			else if (payload.number == Constants.PRComplete) {
+				// Sort the crawl state
+				state.sortCompleted();
 				System.out.println(state.graphDiagnostics());
 			}
 

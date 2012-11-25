@@ -74,7 +74,7 @@ public class Worker extends Node{
 			l.sendData(electionReply.marshall());
 
 			nodeManager = new Peer(election.host, election.port);
-			nodeManager.setLink(connect(nodeManager));
+			nodeManager.setLink(l);
 			
 			//managerLink = connect(nodeManager);
 
@@ -108,7 +108,7 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-			nodeManager.setLink(connect(nodeManager));
+			nodeManager.setLink(l);
 			//managerLink = connect(nodeManager);
 
 			readFromDisk();

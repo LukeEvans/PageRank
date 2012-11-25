@@ -31,6 +31,7 @@ public class Peer {
 	}
 	
 	public byte[] waitForData() {
+		System.out.println("Waiting for data");
 		return link.waitForData();
 	}
 	

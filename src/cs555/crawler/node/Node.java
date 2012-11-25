@@ -58,12 +58,12 @@ public class Node {
 		link.sendData(payload.marshall());
 	}
 
-	// Send any bytes
-	public void sendBytes(Peer p, byte[] bytes) {
-		Link link = connect(p);
-		link.sendData(bytes);
-		link.close();
-	}
+//	// Send any bytes
+//	public void sendBytes(Peer p, byte[] bytes) {
+//		Link link = connect(p);
+//		link.sendData(bytes);
+//		link.close();
+//	}
 	
 	//================================================================================
 	// Broadcast

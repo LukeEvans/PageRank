@@ -70,11 +70,10 @@ public class Worker extends Node{
 			ElectionMessage election = new ElectionMessage();
 			election.unmarshall(bytes);
 
-			Verification electionReply = new Verification(election.type);
-			l.sendData(electionReply.marshall());
-
 			nodeManager = new Peer(election.host, election.port);
 			nodeManager.setLink(l);
+			Verification electionReply = new Verification(election.type);
+			nodeManager.sendData(electionReply.marshall());
 			
 			//managerLink = connect(nodeManager);
 
@@ -114,7 +113,7 @@ public class Worker extends Node{
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
-			l.sendData(reply.marshall());
+			nodeManager.sendData(reply.marshall());
 
 			break;
 
@@ -253,7 +252,8 @@ public class Worker extends Node{
 		if (!state.shouldContinue()) {
 			System.out.println("Sending complete message");
 			NodeComplete complete = new NodeComplete(serverPort);
-			sendBytes(nodeManager, complete.marshall());
+			nodeManager.sendData(complete.marshall());
+			//sendBytes(nodeManager, complete.marshall());
 		}	
 
 		else {

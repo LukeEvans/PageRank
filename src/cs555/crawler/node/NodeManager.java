@@ -154,7 +154,7 @@ public class NodeManager extends Node{
 			HandoffLookup lookup = new HandoffLookup();
 			lookup.unmarshall(bytes);
 
-			System.out.println("Got lookup req ");
+			//System.out.println("Got lookup req ");
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
 			if (leader != null) {
@@ -170,10 +170,10 @@ public class NodeManager extends Node{
 
 			NodeComplete complete = new NodeComplete();
 			complete.unmarshall(bytes);
-
+			
 			Peer p = peerList.findPeer(Tools.getShortHostname(l.remoteHost), complete.number);
 
-			System.out.println("complete from : " + p.hostname);
+			System.out.println("complete from : " + l.remoteHost);
 			
 			if (p != null) {
 				p.ready = true;

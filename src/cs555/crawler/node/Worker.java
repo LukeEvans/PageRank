@@ -255,12 +255,14 @@ public class Worker extends Node{
 			nodeManager.sendData(complete.marshall());
 			//sendBytes(nodeManager, complete.marshall());
 		}	
-
+		
 		else {
 			if (state.pendingList.size() <= 100) {
 				System.out.println(state.remaining());
 			}
 		}
+		
+		System.out.println("remaining : " + state.pendingList.size());
 	}
 
 	public void linkErrored(Page page) {

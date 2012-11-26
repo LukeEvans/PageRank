@@ -118,6 +118,7 @@ public class Tools {
 	}
 	
 	public static void sleep(int time, int fraction) {
+		System.out.println("sleeping for : " + (time * (1000/fraction)));
 		try {
 			Thread.sleep(time * (1000/fraction));
 		} catch (InterruptedException e) {

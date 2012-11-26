@@ -35,6 +35,7 @@ public class Tools {
 		  
 		} catch(IOException e) {
 			System.out.println("Could not create bytes from object");
+			e.printStackTrace();
 			return null;
 		}
 	}

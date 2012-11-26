@@ -1,11 +1,12 @@
 package cs555.crawler.peer;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import cs555.crawler.communications.Link;
 
 // Class to abstract the peer
-public class Peer implements java.io.Serializable {
+public class Peer implements Serializable {
 
 	/**
 	 * 
@@ -95,7 +96,7 @@ public class Peer implements java.io.Serializable {
 	public String toString() {
 		String s = "";
 
-		s += "[" + hostname + ", " + port + "]";
+		s += "[" + hostname + ", " + port + " , " + domain + "]";
 
 		return s;
 	}

@@ -33,7 +33,7 @@ public class NodeManager extends Node{
 	
 	int RankRound;
 
-	Vector<RankData> chard;
+	Vector<String> chard;
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -47,7 +47,7 @@ public class NodeManager extends Node{
 		maxDepth = Constants.depth;
 
 		RankRound = 0;
-		chard = new Vector<RankData>();
+		chard = new Vector<String>();
 	}
 	
 	//================================================================================
@@ -153,6 +153,10 @@ public class NodeManager extends Node{
 		int messageType = Tools.getMessageType(bytes);
 
 		//System.out.println("message : " + messageType);
+		
+		if (l.remoteHost.equalsIgnoreCase("chard")) {
+			chard.add("chard");
+		}
 		
 		switch (messageType) {
 		case Constants.Fetch_Response:
@@ -267,10 +271,6 @@ public class NodeManager extends Node{
 			data.unmarshall(bytes);
 			
 			//System.out.println("transmit from : " + l.remoteHost);
-			
-			if (l.remoteHost.equalsIgnoreCase("chard")) {
-				chard.add(data);
-			}
 			
 			Peer prLeader = peerList.findDomainLeader(data.url);
 

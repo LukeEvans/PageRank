@@ -32,6 +32,7 @@ public class Peer {
 		if (link != null) {
 			link.initLink();
 		}
+		System.out.println("not inited motha fucka");
 	}
 	
 	public void sendData(byte[] bytes) {

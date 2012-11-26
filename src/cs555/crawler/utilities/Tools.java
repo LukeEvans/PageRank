@@ -61,8 +61,12 @@ public class Tools {
 		OutputStream sout;
 
 		try {
-			sout = s.getOutputStream();
-			return sout;
+			if (!s.isClosed()) {
+				sout = s.getOutputStream();
+				return sout;
+			}
+			
+			return null;
 		} catch (IOException e){
 			printStackTrace(e);
 			return null;
@@ -82,7 +86,7 @@ public class Tools {
 
 			try {
 				String host = Inet4Address.getLocalHost().getHostName();
-				
+
 				return host;
 
 			} catch (UnknownHostException e) {
@@ -92,16 +96,16 @@ public class Tools {
 
 		return hname;
 	}
-	
+
 	// Get hostname without domain
 	public static String getShortHostname(String hname){
 		String host = getHostname(hname);
 		String[] hostParts = host.split("\\.");
-		
+
 		if (hostParts.length > 1){
 			return hostParts[0];
 		}
-		
+
 		return null;
 	}
 
@@ -133,7 +137,7 @@ public class Tools {
 		System.exit(1);
 
 	}
-	
+
 	//================================================================================
 	// URL Functions
 	//================================================================================
@@ -141,7 +145,7 @@ public class Tools {
 		String s = url.replace("/", "<-_->");
 		return s;
 	}
-	
+
 	public static String inflateURL(String url) {
 		String s = url.replace("<-_->", "/");
 		return s;

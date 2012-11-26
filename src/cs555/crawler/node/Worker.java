@@ -302,7 +302,7 @@ public class Worker extends Node{
 		
 	}
 
-	public synchronized void localRankingComplete() {
+	public void localRankingComplete() {
 		System.out.println("Sending local complete");
 		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
 //		Link link = connect(nodeManager);

@@ -132,6 +132,7 @@ public class Worker extends Node{
 			}
 
 			else if (payload.number == Constants.PRContinue) {
+				System.out.println("Tallying remote");
 				tallyRemoteRanks();
 			}
 
@@ -347,6 +348,7 @@ public class Worker extends Node{
 //		link.sendData(complete.marshall());
 //		link.close();
 		nodeManager.sendData(complete.marshall());
+		System.out.println("Sent rank round complete");
 	}
 
 	//================================================================================

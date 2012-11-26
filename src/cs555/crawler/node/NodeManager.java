@@ -225,7 +225,7 @@ public class NodeManager extends Node{
 			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
 			roundComplete.unmarshall(bytes);
 			
-			Peer worker = peerList.findPeer(Tools.getShortHostname(l.remoteHost), roundComplete.number);
+			Peer worker = peerList.findPeer(l.remoteHost, roundComplete.number);
 
 			if (worker != null) {
 				worker.ready = true;

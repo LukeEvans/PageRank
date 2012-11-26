@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import cs555.crawler.utilities.*;
 
 // Peer list is a data structure to maintain the list of peers in the system
-public class PeerList {
+public class PeerList implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<Peer> listOfPeers;;
 	String localHost;
 	int locaPort;

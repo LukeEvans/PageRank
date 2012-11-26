@@ -5,8 +5,12 @@ import java.io.IOException;
 import cs555.crawler.communications.Link;
 
 // Class to abstract the peer
-public class Peer {
+public class Peer implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String hostname;
 	public int port;
 	public String domain;

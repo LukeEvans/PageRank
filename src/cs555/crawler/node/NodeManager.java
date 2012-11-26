@@ -62,6 +62,10 @@ public class NodeManager extends Node{
 		}
 	}
 	
+	public void sendObject(Peer p, Object o) {
+		sendData(p, Tools.objectToBytes(o));
+	}
+	
 	public void broadcastElection(){
 
 		ArrayList<Page> allDomains = new ArrayList<Page>(state.getAllPages());
@@ -131,6 +135,12 @@ public class NodeManager extends Node{
 		}
 
 		System.out.println("Total Links Crawled : " + totalCrawled);
+		System.out.println("Sending peer list"); 
+		
+		for (Peer p : peerList.getAllPeers()) {
+			sendObject(p, peerList);
+		}
+		
 		beginRound();
 	}
 
@@ -219,10 +229,6 @@ public class NodeManager extends Node{
 			localComplete.unmarshall(bytes);
 			
 			Peer peer = peerList.findPeer(l.remoteHost, localComplete.number);
-
-			//System.out.println("\n\nmessage\n\n");
-			
-			//System.out.println("Complete message from : " + peer.hostname);
 			
 			if (peer != null) {
 				peer.ready = true;
@@ -233,18 +239,12 @@ public class NodeManager extends Node{
 				broadcastContinue(Constants.PRContinue);
 			}	
 			
-			else {
-				//System.out.println("remaining : " + peerList.numberRemainingPeers());
-			}
-			
 			break;
 			
 		case Constants.PRound_Complete:
 			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
 			roundComplete.unmarshall(bytes);
-			
-			//System.out.println("\nyoyoyo got round complete from : " + l.remoteHost);
-			
+						
 			Peer worker = peerList.findPeer(l.remoteHost, roundComplete.number);
 
 			if (worker != null) {
@@ -258,9 +258,7 @@ public class NodeManager extends Node{
 				}
 				
 				else {
-					broadcastContinue(Constants.PRComplete);
-					
-					System.out.println("Got tranits from chard : " + chard.size());
+					broadcastContinue(Constants.PRComplete);					
 				}
 			}	
 			
@@ -269,9 +267,7 @@ public class NodeManager extends Node{
 		case Constants.Page_Rank_Transmit:
 			RankData data = new RankData();
 			data.unmarshall(bytes);
-			
-			//System.out.println("transmit from : " + l.remoteHost);
-			
+						
 			Peer prLeader = peerList.findDomainLeader(data.url);
 
 			if (prLeader != null) {

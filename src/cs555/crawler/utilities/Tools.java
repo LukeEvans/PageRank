@@ -1,7 +1,13 @@
 package cs555.crawler.utilities;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Inet4Address;
 import java.net.Socket;
@@ -14,6 +20,43 @@ public class Tools {
 	// ================================================================================
 	// Message functions
 	// ================================================================================
+	public static byte[] objectToBytes(Object o) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		try {
+		  out = new ObjectOutputStream(bos);   
+		  out.writeObject(o);
+		  byte[] bytes = bos.toByteArray();
+		  
+		  out.close();
+		  bos.close();
+		  
+		  return bytes;
+		  
+		} catch(IOException e) {
+			System.out.println("Could not create bytes from object");
+			return null;
+		}
+	}
+	
+	public static Object bytesToObject(byte[] bytes) {
+		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+		ObjectInput in = null;
+		try {
+		  in = new ObjectInputStream(bis);
+		  Object o = in.readObject(); 
+		  
+		  bis.close();
+		  in.close();
+		  
+		  return o;
+		  
+		} catch(Exception e) {
+			System.out.println("Could not creat object from bytes");
+			return null;
+		}
+	}
+	
 	// Get Message type
 	public static int getMessageType(byte[] bytes) {
 		byte[] copy = bytes.clone();

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import cs555.crawler.utilities.*;
 
-public class CrawlerState implements java.io.Serializable{
+public class CrawlerState implements java.io.Serializable {
 
 	/**
 	 * 

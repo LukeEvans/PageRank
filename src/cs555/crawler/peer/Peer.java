@@ -34,7 +34,7 @@ public class Peer {
 		}
 	}
 
-	public void sendData(byte[] bytes) {
+	public synchronized void sendData(byte[] bytes) {
 		if (link != null) { 
 			try {
 				link.sendData(bytes);

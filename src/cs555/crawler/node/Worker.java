@@ -32,6 +32,7 @@ import cs555.crawler.pool.*;
 import cs555.crawler.rankControl.BeginRound;
 import cs555.crawler.rankControl.DomainInfo;
 import cs555.crawler.rankControl.RankElection;
+import cs555.crawler.rankControl.RankInfo;
 
 public class Worker extends Node{
 
@@ -39,8 +40,7 @@ public class Worker extends Node{
 	ThreadPoolManager poolManager;
 	String domain;
 	CrawlerState state;
-	Vector<RankData> incomingRankData;
-	Vector<RankData> outgoingRankData;
+	Vector<RankInfo> incomingRankData;
 
 	PeerList peerList;
 	
@@ -54,8 +54,7 @@ public class Worker extends Node{
 		poolManager = new ThreadPoolManager(threads);
 		domain = new String();
 		state = new CrawlerState();
-		incomingRankData = new Vector<RankData>();
-		outgoingRankData = new Vector<RankData>();
+		incomingRankData = new Vector<RankInfo>();
 		peerList = null;
 	}
 
@@ -106,10 +105,14 @@ public class Worker extends Node{
 
 			DomainInfo reply = new DomainInfo(Tools.getLocalHostname(), serverPort, domain, state.crawledLinks());
 			sendObject(nodeManager, reply);
+			
+			return;
 		}
 		
 		if (obj instanceof BeginRound) {
 			System.out.println("Begining round");
+			
+			return;
 		}
 		
 		switch (messageType) {
@@ -176,7 +179,6 @@ public class Worker extends Node{
 				// Sort the crawl state
 				state.sortCompleted();
 				System.out.println(state.graphDiagnostics());
-				System.out.println("sent transits : " + outgoingRankData.size());
 			}
 
 			break;
@@ -185,7 +187,7 @@ public class Worker extends Node{
 			RankData data = new RankData();
 			data.unmarshall(bytes);
 
-			incomingRankData.add(data);
+			//incomingRankData.add(data);
 
 			break;
 
@@ -317,7 +319,7 @@ public class Worker extends Node{
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================
-	public void handlRanking(Page p, RankData data) {
+	public void handlRanking(Page p, RankInfo data) {
 		synchronized (state) {
 			Page page = state.findPage(p);
 
@@ -327,9 +329,16 @@ public class Worker extends Node{
 		}
 	}
 
-	public void forwardRanking(RankData data) {
-		outgoingRankData.add(data);
-		sendData(nodeManager, data.marshall());
+	public void forwardRanking(RankInfo data) {
+		Peer leader = peerList.findDomainLeader(data.url);
+		
+		if (leader != null) {
+			sendObject(leader, data);
+		}
+		
+		else {
+			System.out.println("leader is null");
+		}
 	}
 
 	public void localRankingComplete() {
@@ -344,7 +353,7 @@ public class Worker extends Node{
 	public void tallyRemoteRanks() {
 		synchronized (incomingRankData) {
 			// Start processing the ranks that came in
-			for (RankData data : incomingRankData) {
+			for (RankInfo data : incomingRankData) {
 				Page page = state.findPage(data.url);
 
 				if (page != null) {

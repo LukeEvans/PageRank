@@ -22,5 +22,8 @@ public class RankInfo implements Serializable{
 		score = s;
 	}
 
-	
+	public RankInfo(String u, int s) {
+		url = u;
+		score = s;
+	}
 }

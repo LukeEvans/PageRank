@@ -3,6 +3,7 @@ package cs555.crawler.url;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.utilities.*;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.RankData;
@@ -70,7 +71,7 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 		return metaData.pageScore / metaData.edges.outgoing.size();
 	}
 	
-	public void tallyRankData(RankData data) {
+	public void tallyRankData(RankInfo data) {
 		metaData.tallyScore(data.score);
 	}
 	

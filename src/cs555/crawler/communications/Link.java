@@ -14,7 +14,7 @@ public class Link {
 
 	public String remoteHost;
 	int port;
-	Socket socket;
+	public Socket socket;
 	Node node;
 	LinkReceiverThread receiver;
 

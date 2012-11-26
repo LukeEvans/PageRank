@@ -33,7 +33,7 @@ public class Peer {
 	}
 	
 	public void sendData(byte[] bytes) {
-		if (link != null) {
+		if (link != null && link.socket.isConnected()) {
 			link.sendData(bytes);
 		}
 	}

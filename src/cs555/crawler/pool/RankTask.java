@@ -1,5 +1,7 @@
 package cs555.crawler.pool;
 
+import java.util.ArrayList;
+
 import cs555.crawler.node.Worker;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
@@ -24,16 +26,14 @@ public class RankTask implements Task {
 
 		//System.out.println("\n\nRANKING STATE : " + state.graphDiagnostics());
 
+		
 		for (Page p : state.getCompletedPages()) {
 			for (String url : p.getOutgoingLinks()) {
 
 				Page outgoing = state.findPage(url);
 				RankData data = new RankData(Constants.pageRank, p.getOutgoingScore(), url); 
 
-				RankData test = new RankData();
-				test.unmarshall(data.marshall());
 				
-				System.out.println("test url : " + test.url);
 				// If the link belongs to us, handle it
 				if (outgoing != null) {
 					node.handlRanking(outgoing, data);

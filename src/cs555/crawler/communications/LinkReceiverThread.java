@@ -50,7 +50,8 @@ public class LinkReceiverThread extends Thread{
 				link.dataReceived(numRead,bytesnum);
 				
 			} catch (IOException e){
-				Tools.printStackTrace(e);
+				cont = false;
+				//Tools.printStackTrace(e);
 			}
 		}
 						

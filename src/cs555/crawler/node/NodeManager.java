@@ -139,7 +139,7 @@ public class NodeManager extends Node{
 	public synchronized void receive(byte[] bytes, Link l){
 		int messageType = Tools.getMessageType(bytes);
 
-		System.out.println("message : " + messageType);
+		//System.out.println("message : " + messageType);
 		
 		switch (messageType) {
 		case Constants.Fetch_Response:
@@ -245,6 +245,8 @@ public class NodeManager extends Node{
 		case Constants.Page_Rank_Transmit:
 			RankData data = new RankData();
 			data.unmarshall(bytes);
+			
+			System.out.println("transmit from : " + l.remoteHost);
 			
 			Peer prLeader = peerList.findDomainLeader(data.url);
 

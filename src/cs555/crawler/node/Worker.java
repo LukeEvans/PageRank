@@ -351,6 +351,8 @@ public class Worker extends Node{
 		for (RankData data : outgoingRankData) {
 			sendData(nodeManager, data.marshall());
 		}
+		
+		Tools.sleep(1);
 		sendData(nodeManager, localComplete.marshall());
 
 	}

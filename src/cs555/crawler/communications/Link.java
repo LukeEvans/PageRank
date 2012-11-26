@@ -42,6 +42,7 @@ public class Link {
 		OutputStream sout = Tools.createOutputStream(socket);
 
 		if (sout != null) {
+			sout.flush();
 			sout.write(dataToBeSent);
 			sout.flush();
 		}

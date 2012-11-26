@@ -174,7 +174,7 @@ public class NodeManager extends Node{
 			NodeComplete complete = new NodeComplete();
 			complete.unmarshall(bytes);
 			
-			Peer p = peerList.findPeer(Tools.getShortHostname(l.remoteHost), complete.number);
+			Peer p = peerList.findPeer(l.remoteHost, complete.number);
 
 			//System.out.println("complete from : " + l.remoteHost);
 			

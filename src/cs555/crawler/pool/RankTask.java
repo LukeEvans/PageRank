@@ -30,6 +30,10 @@ public class RankTask implements Task {
 				Page outgoing = state.findPage(url);
 				RankData data = new RankData(Constants.pageRank, p.getOutgoingScore(), url); 
 
+				RankData test = new RankData();
+				test.unmarshall(data.marshall());
+				
+				System.out.println("test url : " + test.url);
 				// If the link belongs to us, handle it
 				if (outgoing != null) {
 					node.handlRanking(outgoing, data);

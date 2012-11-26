@@ -197,7 +197,7 @@ public class NodeManager extends Node{
 			LocalRankComplete localComplete = new LocalRankComplete();
 			localComplete.unmarshall(bytes);
 			
-			Peer peer = peerList.findPeer(Tools.getShortHostname(l.remoteHost), localComplete.number);
+			Peer peer = peerList.findPeer(l.remoteHost, localComplete.number);
 
 			//System.out.println("Complete message from : " + Tools.getShortHostname(l.remoteHost));
 			

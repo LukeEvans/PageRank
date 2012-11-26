@@ -292,14 +292,14 @@ public class Worker extends Node{
 		}
 	}
 
-	public void forwardRanking(RankData data) {
+	public synchronized void forwardRanking(RankData data) {
 //		Link link = connect(nodeManager);
 //		link.sendData(data.marshall());
 //		link.close();
 		nodeManager.sendData(data.marshall());
 	}
 
-	public void localRankingComplete() {
+	public synchronized void localRankingComplete() {
 		System.out.println("Sending local complete");
 		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
 //		Link link = connect(nodeManager);

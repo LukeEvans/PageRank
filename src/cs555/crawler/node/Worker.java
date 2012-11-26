@@ -91,6 +91,13 @@ public class Worker extends Node{
 		
 		if (obj instanceof PeerList) {
 			peerList = (PeerList) obj;
+			
+			// Init all links
+			for (Peer p : peerList.getAllPeers()) {
+				p.setLink(connect(p));
+				p.initLink();
+			}
+			
 			System.out.println("Received peer list : " + peerList);
 			return;
 		}

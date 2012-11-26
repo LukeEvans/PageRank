@@ -429,7 +429,7 @@ public class Worker extends Node{
 
 	public void crawlComplete() {
 
-		//nodeManager.closeLink();
+		nodeManager.closeLink();
 		
 		synchronized (state) {
 			state.completeGraph();

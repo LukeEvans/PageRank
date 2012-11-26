@@ -40,6 +40,7 @@ public class ServerSockThread extends Thread{
 		while (cont) {
 			try {
 				socket = server.accept();
+				System.out.println("New socket at : " + socket.getLocalPort());
 				Link link = new Link(socket, node);
 				link.initLink();
 								

@@ -37,8 +37,8 @@ public class Peer {
 	public synchronized void sendData(byte[] bytes) {
 		if (link != null) { 
 			try {
-				System.out.println("Sending to port   : " + link.socket.getPort());
-				System.out.println("Sending from port : " + link.socket.getLocalPort());
+				//System.out.println("Sending to port   : " + link.socket.getPort());
+				//System.out.println("Sending from port : " + link.socket.getLocalPort());
 				link.sendData(bytes);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

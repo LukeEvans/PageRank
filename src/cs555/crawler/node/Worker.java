@@ -319,11 +319,11 @@ public class Worker extends Node{
 //			nodeManager.sendData(data.marshall());
 //		}
 		
-		//outgoingRankData.add(data);
 		//nodeManager.sendData(data.marshall());
 		//SendTask send = new SendTask(nodeManager, data.marshall());
 		//poolManager.execute(send);
 		
+		outgoingRankData.add(data);
 		//sendData(nodeManager, data.marshall());
 	}
 
@@ -348,6 +348,9 @@ public class Worker extends Node{
 //			e.printStackTrace();
 //		}
 		
+		for (RankData data : outgoingRankData) {
+			sendData(nodeManager, data.marshall());
+		}
 		sendData(nodeManager, localComplete.marshall());
 
 	}

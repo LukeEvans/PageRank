@@ -300,9 +300,9 @@ public class Worker extends Node{
 		//		Link link = connect(nodeManager);
 		//		link.sendData(data.marshall());
 		//		link.close();
-		synchronized (nodeManager) {
-			nodeManager.sendData(data.marshall());
-		}
+//		synchronized (nodeManager) {
+//			nodeManager.sendData(data.marshall());
+//		}
 
 	}
 

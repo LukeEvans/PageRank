@@ -324,7 +324,7 @@ public class Worker extends Node{
 		//poolManager.execute(send);
 		
 		//outgoingRankData.add(data);
-		Tools.sleep(.3);
+		Tools.sleep(1, 5);
 		sendData(nodeManager, data.marshall());
 	}
 

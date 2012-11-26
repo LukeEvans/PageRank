@@ -117,9 +117,9 @@ public class Tools {
 		}
 	}
 	
-	public static void sleep(double time) {
+	public static void sleep(int time, int fraction) {
 		try {
-			Thread.sleep((long) (time * 1000));
+			Thread.sleep(time * (1000/fraction));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

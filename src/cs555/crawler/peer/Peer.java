@@ -15,7 +15,7 @@ public class Peer implements java.io.Serializable {
 	public int port;
 	public String domain;
 	public boolean ready;
-	Link link;
+	transient Link link;
 
 	//================================================================================
 	// Constructor

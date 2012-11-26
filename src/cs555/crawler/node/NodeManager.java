@@ -1,5 +1,6 @@
 package cs555.crawler.node;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import cs555.crawler.communications.Link;
@@ -49,6 +50,15 @@ public class NodeManager extends Node{
 	//================================================================================
 	// Send
 	//================================================================================
+	public void sendData(Peer p, byte[] bytes) {
+		try {
+			p.sendData(bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void broadcastElection(){
 
 		ArrayList<Page> allDomains = new ArrayList<Page>(state.getAllPages());
@@ -64,7 +74,7 @@ public class NodeManager extends Node{
 
 			synchronized (state) {
 				ElectionMessage electionMsg = new ElectionMessage(serverPort, Tools.getLocalHostname(), page.domain, page.urlString);
-				peer.sendData(electionMsg.marshall());
+				sendData(peer, electionMsg.marshall());
 			}
 
 
@@ -75,7 +85,7 @@ public class NodeManager extends Node{
 		NodeComplete complete = new NodeComplete(Constants.Node_Complete);
 
 		for (Peer p : peerList.getAllPeers()) {
-			p.sendData(complete.marshall());
+			sendData(p, complete.marshall());
 		}
 	}
 
@@ -84,7 +94,7 @@ public class NodeManager extends Node{
 
 		for (Peer p : peerList.getAllPeers()) {
 			p.ready = false;
-			p.sendData(cont.marshall());
+			sendData(p, cont.marshall());
 		}
 	}
 
@@ -96,7 +106,7 @@ public class NodeManager extends Node{
 			for (Peer p : peerList.getAllPeers()) {
 				p.ready = false;
 				p.setLink(connect(p));
-				p.sendData(prInit.marshall());
+				sendData(p, prInit.marshall());
 
 				// Wait for machine's domain
 				byte[] bytes = p.waitForData();
@@ -167,7 +177,7 @@ public class NodeManager extends Node{
 				leader.ready = false;	
 
 				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
-				leader.sendData(handoff.marshall());
+				sendData(leader, handoff.marshall());
 			}
 
 			break;
@@ -253,7 +263,7 @@ public class NodeManager extends Node{
 			Peer prLeader = peerList.findDomainLeader(data.url);
 
 			if (prLeader != null) {
-				prLeader.sendData(data.marshall());
+				sendData(prLeader, data.marshall());
 			}
 			
 			break;

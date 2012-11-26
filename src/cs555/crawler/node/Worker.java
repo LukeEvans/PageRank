@@ -60,6 +60,14 @@ public class Worker extends Node{
 	}
 
 	//================================================================================
+	// Send
+	//================================================================================
+	public void sendData(Peer p, byte[] bytes) {
+		SendTask send = new SendTask(p, bytes);
+		poolManager.execute(send);
+	}
+	
+	//================================================================================
 	// Receive
 	//================================================================================
 	// Receieve data
@@ -115,7 +123,8 @@ public class Worker extends Node{
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
-			nodeManager.sendData(reply.marshall());
+			sendData(nodeManager, reply.marshall());
+			//nodeManager.sendData(reply.marshall());
 
 
 			break;
@@ -177,7 +186,8 @@ public class Worker extends Node{
 					//					Link link = connect(nodeManager);
 					//					link.sendData(complete.marshall());
 					//					link.close();
-					nodeManager.sendData(complete.marshall());
+					//nodeManager.sendData(complete.marshall());
+					sendData(nodeManager, complete.marshall());
 				}
 			}
 			return;
@@ -249,7 +259,8 @@ public class Worker extends Node{
 				//				link.sendData(handoff.marshall());
 				//				link.close();
 				//System.out.println("Sending handoff");
-				nodeManager.sendData(handoff.marshall());
+				//nodeManager.sendData(handoff.marshall());
+				sendData(nodeManager, handoff.marshall());
 			}
 		}
 
@@ -257,8 +268,9 @@ public class Worker extends Node{
 		if (!state.shouldContinue()) {
 			System.out.println("Sending complete message");
 			NodeComplete complete = new NodeComplete(serverPort);
-			nodeManager.sendData(complete.marshall());
+			//nodeManager.sendData(complete.marshall());
 			//sendBytes(nodeManager, complete.marshall());
+			sendData(nodeManager, complete.marshall());
 		}	
 
 		else {
@@ -279,7 +291,8 @@ public class Worker extends Node{
 			// If we're done, print
 			if (!state.shouldContinue()) {
 				NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-				nodeManager.sendData(complete.marshall());
+				//nodeManager.sendData(complete.marshall());
+				sendData(nodeManager, complete.marshall());
 				//sendBytes(nodeManager, complete.marshall());
 			}
 		}
@@ -307,7 +320,9 @@ public class Worker extends Node{
 //		}
 		
 		//outgoingRankData.add(data);
-		nodeManager.sendData(data.marshall());
+		//nodeManager.sendData(data.marshall());
+		SendTask send = new SendTask(nodeManager, data.marshall());
+		poolManager.execute(send);
 	}
 
 	public void localRankingComplete() {
@@ -357,7 +372,8 @@ public class Worker extends Node{
 		//		Link link = connect(nodeManager);
 		//		link.sendData(complete.marshall());
 		//		link.close();
-		nodeManager.sendData(complete.marshall());
+		//nodeManager.sendData(complete.marshall());
+		sendData(nodeManager, complete.marshall());
 		System.out.println("Sent rank round complete");
 	}
 

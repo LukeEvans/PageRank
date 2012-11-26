@@ -155,7 +155,7 @@ public class NodeManager extends Node{
 			lookup.unmarshall(bytes);
 
 			if (l.remoteHost.equalsIgnoreCase("chard")) {
-				System.out.println("Got lookup req from chard");
+				//System.out.println("Got lookup req from chard");
 			}
 			
 			Peer leader = peerList.findDomainLeader(lookup.url);
@@ -253,7 +253,7 @@ public class NodeManager extends Node{
 			
 		default:
 
-			System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
+			//System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
 			break;
 		}
 

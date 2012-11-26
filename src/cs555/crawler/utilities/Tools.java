@@ -116,6 +116,15 @@ public class Tools {
 			printStackTrace(e);
 		}
 	}
+	
+	public static void sleep(double time) {
+		try {
+			Thread.sleep((long) (time * 1000));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	//================================================================================
 	// Byte Manipulations
 	//================================================================================

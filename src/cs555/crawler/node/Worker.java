@@ -37,6 +37,7 @@ public class Worker extends Node{
 	String domain;
 	CrawlerState state;
 	Vector<RankData> incomingRankData;
+	Vector<RankData> outgoingRankData;
 
 	//================================================================================
 	// Constructor
@@ -49,6 +50,7 @@ public class Worker extends Node{
 		domain = new String();
 		state = new CrawlerState();
 		incomingRankData = new Vector<RankData>();
+		outgoingRankData = new Vector<RankData>();
 	}
 
 
@@ -303,7 +305,8 @@ public class Worker extends Node{
 //		synchronized (nodeManager) {
 //			nodeManager.sendData(data.marshall());
 //		}
-
+		
+		outgoingRankData.add(data);
 	}
 
 	public void localRankingComplete() {
@@ -313,6 +316,11 @@ public class Worker extends Node{
 		//		link.sendData(localComplete.marshall());
 		//		link.close();
 		synchronized (nodeManager) {
+			
+			for (RankData data : outgoingRankData) {
+				nodeManager.sendData(data.marshall());
+			}
+			
 			nodeManager.sendData(localComplete.marshall());
 			System.out.println("Sent complete");
 		}

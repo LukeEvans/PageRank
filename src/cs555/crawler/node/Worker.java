@@ -111,6 +111,8 @@ public class Worker extends Node{
 		
 		if (obj instanceof BeginRound) {
 			System.out.println("Begining round");
+			RankTask ranker = new RankTask(state, this);
+			poolManager.execute(ranker);
 			
 			return;
 		}

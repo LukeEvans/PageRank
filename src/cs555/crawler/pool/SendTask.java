@@ -17,9 +17,7 @@ public class SendTask implements Task {
 		dataToSend = d;
 	}
 
-	public void run() {
-		System.out.println("Sending"); 
-		
+	public void run() {		
 		try {
 			peer.sendData(dataToSend);
 		} catch (IOException e) {

@@ -235,6 +235,8 @@ public class NodeManager extends Node{
 			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
 			roundComplete.unmarshall(bytes);
 			
+			System.out.println("\nyoyoyo got round complete from : " + l.remoteHost);
+			
 			Peer worker = peerList.findPeer(l.remoteHost, roundComplete.number);
 
 			if (worker != null) {

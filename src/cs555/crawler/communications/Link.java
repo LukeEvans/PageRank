@@ -26,6 +26,13 @@ public class Link {
 		port = s.getPort();
 		node = n;
 		remoteHost = socket.getInetAddress().getHostName();
+		
+		String shortHost = Tools.getShortHostname(remoteHost);
+		
+		if (shortHost != null) {
+			remoteHost = shortHost;
+		}
+		
 		receiver = new LinkReceiverThread(socket, this);
 	}
 

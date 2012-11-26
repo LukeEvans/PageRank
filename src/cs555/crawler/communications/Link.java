@@ -40,9 +40,11 @@ public class Link {
 	public void sendData(byte[] dataToBeSent) throws IOException{
 
 		OutputStream sout = Tools.createOutputStream(socket);
-		
-		sout.write(dataToBeSent);
-		sout.flush();
+
+		if (sout != null) {
+			sout.write(dataToBeSent);
+			sout.flush();
+		}
 	}
 
 

@@ -71,9 +71,9 @@ public class Worker extends Node{
 
 			nodeManager = new Peer(election.host, election.port);
 			nodeManager.setLink(l);
-//			Verification electionReply = new Verification(election.type);
-//			nodeManager.sendData(electionReply.marshall());
-			
+			//			Verification electionReply = new Verification(election.type);
+			//			nodeManager.sendData(electionReply.marshall());
+
 			//managerLink = connect(nodeManager);
 
 			domain = election.domain;
@@ -89,7 +89,7 @@ public class Worker extends Node{
 		case Constants.Fetch_Request:
 			FetchRequest request = new FetchRequest();
 			request.unmarshall(bytes);
-			
+
 			publishLink(request);
 
 			break;
@@ -105,20 +105,16 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-			//nodeManager.setLink(l);
-			nodeManager.setLink(connect(nodeManager));
-			nodeManager.initLink();
+			nodeManager.setLink(l);
+			//nodeManager.setLink(connect(nodeManager));
+			//nodeManager.initLink();
 			//managerLink = connect(nodeManager);
 
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
-			try {
-				l.sendData(reply.marshall());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			nodeManager.sendData(reply.marshall());
+
 
 			break;
 
@@ -176,9 +172,9 @@ public class Worker extends Node{
 			synchronized (state) {
 				if (!state.pendingLinksRemaining()) {
 					NodeComplete complete = new NodeComplete(serverPort);
-//					Link link = connect(nodeManager);
-//					link.sendData(complete.marshall());
-//					link.close();
+					//					Link link = connect(nodeManager);
+					//					link.sendData(complete.marshall());
+					//					link.close();
 					nodeManager.sendData(complete.marshall());
 				}
 			}
@@ -247,9 +243,9 @@ public class Worker extends Node{
 				ArrayList<String> handoffSourceURL = new ArrayList<String>();
 				handoffSourceURL.add(page.urlString);
 				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s,handoffSourceURL);
-//				Link link = connect(nodeManager);
-//				link.sendData(handoff.marshall());
-//				link.close();
+				//				Link link = connect(nodeManager);
+				//				link.sendData(handoff.marshall());
+				//				link.close();
 				//System.out.println("Sending handoff");
 				nodeManager.sendData(handoff.marshall());
 			}
@@ -262,13 +258,13 @@ public class Worker extends Node{
 			nodeManager.sendData(complete.marshall());
 			//sendBytes(nodeManager, complete.marshall());
 		}	
-		
+
 		else {
 			if (state.pendingList.size() <= 100) {
 				System.out.println(state.remaining());
 			}
 		}
-		
+
 		//System.out.println("remaining : " + state.pendingList.size());
 	}
 
@@ -301,26 +297,26 @@ public class Worker extends Node{
 	}
 
 	public void forwardRanking(RankData data) {
-//		Link link = connect(nodeManager);
-//		link.sendData(data.marshall());
-//		link.close();
+		//		Link link = connect(nodeManager);
+		//		link.sendData(data.marshall());
+		//		link.close();
 		synchronized (nodeManager) {
 			nodeManager.sendData(data.marshall());
 		}
-		
+
 	}
 
 	public void localRankingComplete() {
 		System.out.println("Sending local complete");
 		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
-//		Link link = connect(nodeManager);
-//		link.sendData(localComplete.marshall());
-//		link.close();
+		//		Link link = connect(nodeManager);
+		//		link.sendData(localComplete.marshall());
+		//		link.close();
 		synchronized (nodeManager) {
 			nodeManager.sendData(localComplete.marshall());
 			System.out.println("Sent complete");
 		}
-		
+
 	}
 
 	public void tallyRemoteRanks() {
@@ -344,9 +340,9 @@ public class Worker extends Node{
 
 		// Tell the node manager that we're done with this round
 		PageRankRoundComplete complete = new PageRankRoundComplete(serverPort);
-//		Link link = connect(nodeManager);
-//		link.sendData(complete.marshall());
-//		link.close();
+		//		Link link = connect(nodeManager);
+		//		link.sendData(complete.marshall());
+		//		link.close();
 		nodeManager.sendData(complete.marshall());
 		System.out.println("Sent rank round complete");
 	}
@@ -446,7 +442,7 @@ public class Worker extends Node{
 	public void crawlComplete() {
 
 		nodeManager.closeLink();
-		
+
 		synchronized (state) {
 			state.completeGraph();
 		}

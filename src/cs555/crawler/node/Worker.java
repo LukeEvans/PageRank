@@ -323,8 +323,8 @@ public class Worker extends Node{
 		//SendTask send = new SendTask(nodeManager, data.marshall());
 		//poolManager.execute(send);
 		
-		outgoingRankData.add(data);
-		//sendData(nodeManager, data.marshall());
+		//outgoingRankData.add(data);
+		sendData(nodeManager, data.marshall());
 	}
 
 	public void localRankingComplete() {
@@ -348,9 +348,6 @@ public class Worker extends Node{
 //			e.printStackTrace();
 //		}
 		
-		for (RankData data : outgoingRankData) {
-			sendData(nodeManager, data.marshall());
-		}
 		
 		Tools.sleep(1);
 		sendData(nodeManager, localComplete.marshall());

@@ -105,7 +105,9 @@ public class Worker extends Node{
 			prInit.unmarshall(bytes);
 
 			nodeManager = new Peer(prInit.host, prInit.port);
-			nodeManager.setLink(l);
+			//nodeManager.setLink(l);
+			nodeManager.setLink(connect(nodeManager));
+			nodeManager.initLink();
 			//managerLink = connect(nodeManager);
 
 			readFromDisk();

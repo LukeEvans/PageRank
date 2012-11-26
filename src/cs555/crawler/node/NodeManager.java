@@ -139,7 +139,6 @@ public class NodeManager extends Node{
 	public synchronized void receive(byte[] bytes, Link l){
 		int messageType = Tools.getMessageType(bytes);
 
-		System.out.println("message type : " + messageType);
 		switch (messageType) {
 		case Constants.Fetch_Response:
 
@@ -213,7 +212,7 @@ public class NodeManager extends Node{
 			}	
 			
 			else {
-				//System.out.println("remaining : " + peerList.numberRemainingPeers());
+				System.out.println("remaining : " + peerList.numberRemainingPeers());
 			}
 			
 			break;
@@ -255,7 +254,7 @@ public class NodeManager extends Node{
 			
 		default:
 
-			System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
+			//System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
 			break;
 		}
 

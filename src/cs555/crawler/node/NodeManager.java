@@ -189,7 +189,7 @@ public class NodeManager extends Node{
 			return;
 		}
 		
-		if (obj instanceof LocalRankComplete) {
+		if (obj instanceof LocalRankingComplete) {
 			LocalRankingComplete complete = (LocalRankingComplete) obj;
 			System.out.println("Local complete from : " + complete.host);
 			Peer donePeer = peerList.findPeer(complete.host, complete.port);
@@ -203,6 +203,8 @@ public class NodeManager extends Node{
 				LocalRankingComplete localComplete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
 				broadcastObject(localComplete);
 			}
+			
+			return;
 		}
 		
 		switch (messageType) {

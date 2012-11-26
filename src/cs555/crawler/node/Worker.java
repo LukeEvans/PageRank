@@ -321,8 +321,9 @@ public class Worker extends Node{
 		
 		//outgoingRankData.add(data);
 		//nodeManager.sendData(data.marshall());
-		SendTask send = new SendTask(nodeManager, data.marshall());
-		poolManager.execute(send);
+		//SendTask send = new SendTask(nodeManager, data.marshall());
+		//poolManager.execute(send);
+		sendData(nodeManager, data.marshall());
 	}
 
 	public void localRankingComplete() {
@@ -337,14 +338,16 @@ public class Worker extends Node{
 //		}
 		
 		
-		try {
-			Link link = connect(nodeManager);
-			link.sendData(localComplete.marshall());
-			link.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Link link = connect(nodeManager);
+//			link.sendData(localComplete.marshall());
+//			link.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		sendData(nodeManager, localComplete.marshall());
 
 	}
 
@@ -374,7 +377,7 @@ public class Worker extends Node{
 		//		link.close();
 		//nodeManager.sendData(complete.marshall());
 		sendData(nodeManager, complete.marshall());
-		System.out.println("Sent rank round complete");
+		//System.out.println("Sent rank round complete");
 	}
 
 	//================================================================================

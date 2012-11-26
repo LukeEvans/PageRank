@@ -107,13 +107,14 @@ public class Worker extends Node{
 			nodeManager = new Peer(prInit.host, prInit.port);
 			//nodeManager.setLink(l);
 			nodeManager.setLink(connect(nodeManager));
-			nodeManager.initLink();
+			
 			//managerLink = connect(nodeManager);
 
 			readFromDisk();
 
 			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
 			nodeManager.sendData(reply.marshall());
+			nodeManager.initLink();
 
 			break;
 

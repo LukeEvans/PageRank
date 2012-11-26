@@ -186,6 +186,10 @@ public class NodeManager extends Node{
 				// Broadcast to everyone to print data
 				broadcastCompletion();
 			}	
+			
+			else {
+				System.out.println("remaining : " + peerList.numberRemainingPeers());
+			}
 
 			break;
 

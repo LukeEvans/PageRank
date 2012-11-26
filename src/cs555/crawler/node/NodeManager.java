@@ -192,6 +192,17 @@ public class NodeManager extends Node{
 		if (obj instanceof LocalRankComplete) {
 			LocalRankingComplete complete = (LocalRankingComplete) obj;
 			System.out.println("Local complete from : " + complete.host);
+			Peer donePeer = peerList.findPeer(complete.host, complete.port);
+			
+			if (donePeer != null) {
+				donePeer.ready = true;
+			}
+			
+			if (peerList.allPeersDone()) {
+				System.out.println("sending continue");
+				LocalRankingComplete localComplete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
+				broadcastObject(localComplete);
+			}
 		}
 		
 		switch (messageType) {

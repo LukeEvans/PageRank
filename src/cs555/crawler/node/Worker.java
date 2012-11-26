@@ -31,6 +31,7 @@ import cs555.crawler.peer.PeerList;
 import cs555.crawler.pool.*;
 import cs555.crawler.rankControl.BeginRound;
 import cs555.crawler.rankControl.DomainInfo;
+import cs555.crawler.rankControl.LocalRankingComplete;
 import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
 
@@ -126,8 +127,13 @@ public class Worker extends Node{
 		
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
-			System.out.println("Got rank info");
+			incomingRankData.add(info);
 			
+			return;
+		}
+		
+		if (obj instanceof LocalRankingComplete) {
+			System.out.println("Processing remote scores: " + incomingRankData.size());
 			return;
 		}
 		
@@ -359,11 +365,10 @@ public class Worker extends Node{
 
 	public void localRankingComplete() {
 		System.out.println("Sending local complete");
-		LocalRankComplete localComplete = new LocalRankComplete(serverPort);
+		LocalRankingComplete complete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
 		
-		Tools.sleep(1);
-		sendData(nodeManager, localComplete.marshall());
-
+		//Tools.sleep(1);
+		sendObject(nodeManager, complete);
 	}
 
 	public void tallyRemoteRanks() {

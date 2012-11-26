@@ -29,19 +29,21 @@ import cs555.crawler.wireformats.RankData;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
 import cs555.crawler.pool.*;
+import cs555.crawler.rankControl.BeginRound;
 import cs555.crawler.rankControl.DomainInfo;
 import cs555.crawler.rankControl.RankElection;
 
 public class Worker extends Node{
 
 	Peer nodeManager;
-	//Link managerLink;
 	ThreadPoolManager poolManager;
 	String domain;
 	CrawlerState state;
 	Vector<RankData> incomingRankData;
 	Vector<RankData> outgoingRankData;
 
+	PeerList peerList;
+	
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -54,6 +56,7 @@ public class Worker extends Node{
 		state = new CrawlerState();
 		incomingRankData = new Vector<RankData>();
 		outgoingRankData = new Vector<RankData>();
+		peerList = null;
 	}
 
 
@@ -88,7 +91,7 @@ public class Worker extends Node{
 		}
 		
 		if (obj instanceof PeerList) {
-			PeerList peerList = (PeerList) obj;
+			peerList = (PeerList) obj;
 			System.out.println("Received peer list : " + peerList);
 			return;
 		}
@@ -103,6 +106,10 @@ public class Worker extends Node{
 
 			DomainInfo reply = new DomainInfo(Tools.getLocalHostname(), serverPort, domain, state.crawledLinks());
 			sendObject(nodeManager, reply);
+		}
+		
+		if (obj instanceof BeginRound) {
+			System.out.println("Begining round");
 		}
 		
 		switch (messageType) {

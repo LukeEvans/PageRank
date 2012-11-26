@@ -36,6 +36,12 @@ public class PeerList implements Serializable{
 		// Remove ourselves
 		removeSelf();
 	}
+	
+	public PeerList(int p) {
+		listOfPeers = new ArrayList<Peer>();
+		localHost = Tools.getLocalHostname();
+		locaPort = p;
+	}
 
 	// Read hosts from file
 	public void buildList(){

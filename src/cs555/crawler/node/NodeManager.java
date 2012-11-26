@@ -7,6 +7,7 @@ import java.util.Vector;
 import cs555.crawler.communications.Link;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
+import cs555.crawler.rankControl.BeginRound;
 import cs555.crawler.rankControl.DomainInfo;
 import cs555.crawler.rankControl.LocalRankingComplete;
 import cs555.crawler.rankControl.RankElection;
@@ -108,6 +109,15 @@ public class NodeManager extends Node{
 		}
 	}
 
+	public void broadcastObject(Object o) {
+		byte[] data = Tools.objectToBytes(o);
+		
+		for (Peer p : peerList.getAllPeers()) {
+			p.ready = false;
+			sendData(p, data);
+		}
+	}
+	
 	public void beginPageRank() {
 		RankElection election = new RankElection(Tools.getLocalHostname(), serverPort);
 		int totalCrawled = 0;
@@ -160,8 +170,8 @@ public class NodeManager extends Node{
 		}
 		
 		RankRound++;
-		broadcastContinue(Constants.Page_Rank_Begin);
-		
+		BeginRound begin = new BeginRound(RankRound);
+		broadcastObject(begin);		
 	}
 	
 	//================================================================================

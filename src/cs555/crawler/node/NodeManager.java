@@ -111,6 +111,7 @@ public class NodeManager extends Node{
 
 					System.out.println("got reply : " + p.hostname + " has " + p.domain);
 
+					p.initLink();
 					totalCrawled += Integer.parseInt(reply.url);
 				}
 			}

@@ -124,6 +124,13 @@ public class Worker extends Node{
 			return;
 		}
 		
+		if (obj instanceof RankInfo) {
+			RankInfo info = (RankInfo) obj;
+			System.out.println("Got rank info");
+			
+			return;
+		}
+		
 		switch (messageType) {
 		case Constants.Election_Message:
 			ElectionMessage election = new ElectionMessage();

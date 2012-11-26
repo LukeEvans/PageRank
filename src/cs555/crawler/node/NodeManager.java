@@ -212,9 +212,9 @@ public class NodeManager extends Node{
 			
 			Peer peer = peerList.findPeer(l.remoteHost, localComplete.number);
 
-			System.out.println("\n\nmessage\n\n");
+			//System.out.println("\n\nmessage\n\n");
 			
-			System.out.println("Complete message from : " + peer.hostname);
+			//System.out.println("Complete message from : " + peer.hostname);
 			
 			if (peer != null) {
 				peer.ready = true;
@@ -260,7 +260,7 @@ public class NodeManager extends Node{
 			RankData data = new RankData();
 			data.unmarshall(bytes);
 			
-			System.out.println("transmit from : " + l.remoteHost);
+			//System.out.println("transmit from : " + l.remoteHost);
 			
 			Peer prLeader = peerList.findDomainLeader(data.url);
 

@@ -139,6 +139,8 @@ public class NodeManager extends Node{
 	public synchronized void receive(byte[] bytes, Link l){
 		int messageType = Tools.getMessageType(bytes);
 
+		System.out.println("message : " + messageType);
+		
 		switch (messageType) {
 		case Constants.Fetch_Response:
 

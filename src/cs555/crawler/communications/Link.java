@@ -37,7 +37,7 @@ public class Link {
 	//================================================================================
 	// Send 
 	//================================================================================
-	public synchronized void sendData(byte[] dataToBeSent) throws IOException{
+	public void sendData(byte[] dataToBeSent) throws IOException{
 
 		OutputStream sout = Tools.createOutputStream(socket);
 

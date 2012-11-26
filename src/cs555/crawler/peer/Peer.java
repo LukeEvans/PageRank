@@ -39,8 +39,6 @@ public class Peer {
 			try {
 				link.sendData(bytes);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				return;
 			}
 		}

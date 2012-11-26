@@ -292,11 +292,14 @@ public class Worker extends Node{
 		}
 	}
 
-	public synchronized void forwardRanking(RankData data) {
+	public void forwardRanking(RankData data) {
 //		Link link = connect(nodeManager);
 //		link.sendData(data.marshall());
 //		link.close();
-		nodeManager.sendData(data.marshall());
+		synchronized (nodeManager) {
+			nodeManager.sendData(data.marshall());
+		}
+		
 	}
 
 	public synchronized void localRankingComplete() {
@@ -305,9 +308,11 @@ public class Worker extends Node{
 //		Link link = connect(nodeManager);
 //		link.sendData(localComplete.marshall());
 //		link.close();
-		nodeManager.sendData(localComplete.marshall());
+		synchronized (nodeManager) {
+			nodeManager.sendData(localComplete.marshall());
+			System.out.println("Sent complete");
+		}
 		
-		System.out.println("Sent complete");
 	}
 
 	public void tallyRemoteRanks() {

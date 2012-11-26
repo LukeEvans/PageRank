@@ -2,6 +2,7 @@ package cs555.crawler.node;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import cs555.crawler.communications.Link;
 import cs555.crawler.peer.Peer;
@@ -32,6 +33,7 @@ public class NodeManager extends Node{
 	
 	int RankRound;
 
+	Vector<RankData> chard;
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -45,6 +47,7 @@ public class NodeManager extends Node{
 		maxDepth = Constants.depth;
 
 		RankRound = 0;
+		chard = new Vector<RankData>();
 	}
 	
 	//================================================================================
@@ -252,6 +255,8 @@ public class NodeManager extends Node{
 				
 				else {
 					broadcastContinue(Constants.PRComplete);
+					
+					System.out.println("Got tranits from chard : " + chard.size());
 				}
 			}	
 			
@@ -262,6 +267,10 @@ public class NodeManager extends Node{
 			data.unmarshall(bytes);
 			
 			//System.out.println("transmit from : " + l.remoteHost);
+			
+			if (l.remoteHost.equalsIgnoreCase("chard")) {
+				chard.add(data);
+			}
 			
 			Peer prLeader = peerList.findDomainLeader(data.url);
 

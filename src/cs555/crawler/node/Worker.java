@@ -147,6 +147,7 @@ public class Worker extends Node{
 				// Sort the crawl state
 				state.sortCompleted();
 				System.out.println(state.graphDiagnostics());
+				System.out.println("sent transits : " + outgoingRankData.size());
 			}
 
 			break;
@@ -323,8 +324,7 @@ public class Worker extends Node{
 		//SendTask send = new SendTask(nodeManager, data.marshall());
 		//poolManager.execute(send);
 		
-		//outgoingRankData.add(data);
-		//Tools.sleep(1, 5);
+		outgoingRankData.add(data);
 		sendData(nodeManager, data.marshall());
 	}
 

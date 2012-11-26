@@ -33,7 +33,9 @@ public class Peer {
 	}
 	
 	public void sendData(byte[] bytes) {
-		link.sendData(bytes);
+		if (link != null) {
+			link.sendData(bytes);
+		}
 	}
 	
 	public byte[] waitForData() {
@@ -42,7 +44,10 @@ public class Peer {
 	}
 	
 	public void closeLink() {
-		link.close();
+		if (link != null) {
+			link.close();
+			link = null;
+		}
 	}
 	//================================================================================
 	// Domain Tracking

@@ -166,10 +166,6 @@ public class NodeManager extends Node{
 
 			HandoffLookup lookup = new HandoffLookup();
 			lookup.unmarshall(bytes);
-
-			if (l.remoteHost.equalsIgnoreCase("chard")) {
-				//System.out.println("Got lookup req from chard");
-			}
 			
 			Peer leader = peerList.findDomainLeader(lookup.url);
 
@@ -226,7 +222,7 @@ public class NodeManager extends Node{
 			}	
 			
 			else {
-				System.out.println("remaining : " + peerList.numberRemainingPeers());
+				//System.out.println("remaining : " + peerList.numberRemainingPeers());
 			}
 			
 			break;
@@ -235,7 +231,7 @@ public class NodeManager extends Node{
 			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
 			roundComplete.unmarshall(bytes);
 			
-			System.out.println("\nyoyoyo got round complete from : " + l.remoteHost);
+			//System.out.println("\nyoyoyo got round complete from : " + l.remoteHost);
 			
 			Peer worker = peerList.findPeer(l.remoteHost, roundComplete.number);
 
@@ -272,7 +268,7 @@ public class NodeManager extends Node{
 			
 		default:
 
-			//System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
+			System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
 			break;
 		}
 

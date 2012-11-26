@@ -202,6 +202,8 @@ public class NodeManager extends Node{
 			
 			Peer peer = peerList.findPeer(l.remoteHost, localComplete.number);
 
+			System.out.println("\n\nmessage\n\n");
+			
 			System.out.println("Complete message from : " + peer.hostname);
 			
 			if (peer != null) {

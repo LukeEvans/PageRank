@@ -306,6 +306,8 @@ public class Worker extends Node{
 //		link.sendData(localComplete.marshall());
 //		link.close();
 		nodeManager.sendData(localComplete.marshall());
+		
+		System.out.println("Sent complete");
 	}
 
 	public void tallyRemoteRanks() {

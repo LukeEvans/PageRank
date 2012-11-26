@@ -306,7 +306,8 @@ public class Worker extends Node{
 //			nodeManager.sendData(data.marshall());
 //		}
 		
-		outgoingRankData.add(data);
+		//outgoingRankData.add(data);
+		nodeManager.sendData(data.marshall());
 	}
 
 	public void localRankingComplete() {
@@ -315,14 +316,19 @@ public class Worker extends Node{
 		//		Link link = connect(nodeManager);
 		//		link.sendData(localComplete.marshall());
 		//		link.close();
-		synchronized (nodeManager) {
-			
-			for (RankData data : outgoingRankData) {
-				nodeManager.sendData(data.marshall());
-			}
-			
-			nodeManager.sendData(localComplete.marshall());
-			System.out.println("Sent complete");
+//		synchronized (nodeManager) {
+//			nodeManager.sendData(localComplete.marshall());
+//			System.out.println("Sent complete");
+//		}
+		
+		
+		try {
+			Link link = connect(nodeManager);
+			link.sendData(localComplete.marshall());
+			link.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

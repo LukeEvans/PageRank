@@ -29,6 +29,8 @@ import cs555.crawler.wireformats.RankData;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
 import cs555.crawler.pool.*;
+import cs555.crawler.rankControl.DomainInfo;
+import cs555.crawler.rankControl.RankElection;
 
 public class Worker extends Node{
 
@@ -68,6 +70,10 @@ public class Worker extends Node{
 		poolManager.execute(send);
 	}
 	
+	public void sendObject(Peer p, Object o) {
+		sendData(p, Tools.objectToBytes(o));
+	}
+	
 	//================================================================================
 	// Receive
 	//================================================================================
@@ -75,11 +81,28 @@ public class Worker extends Node{
 	public synchronized void receive(byte[] bytes, Link l){
 		int messageType = Tools.getMessageType(bytes);
 
-		Object o = Tools.bytesToObject(bytes);
+		Object obj = Tools.bytesToObject(bytes);
+		 
+		if (obj == null) {
+			return;
+		}
 		
-		if (o != null && o instanceof PeerList) {
-			PeerList peerList = (PeerList) o;
+		if (obj instanceof PeerList) {
+			PeerList peerList = (PeerList) obj;
 			System.out.println("Received peer list : " + peerList);
+			return;
+		}
+		
+		if (obj instanceof RankElection) {
+			RankElection election = (RankElection) obj;
+			
+			nodeManager = new Peer(election.managerHost, election.managerPort);
+			nodeManager.setLink(l);
+
+			readFromDisk();
+
+			DomainInfo reply = new DomainInfo(Tools.getLocalHostname(), serverPort, domain, state.crawledLinks());
+			sendObject(nodeManager, reply);
 		}
 		
 		switch (messageType) {

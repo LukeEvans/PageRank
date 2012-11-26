@@ -7,6 +7,9 @@ import java.util.Vector;
 import cs555.crawler.communications.Link;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
+import cs555.crawler.rankControl.DomainInfo;
+import cs555.crawler.rankControl.LocalRankingComplete;
+import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.utilities.Constants;
@@ -106,30 +109,36 @@ public class NodeManager extends Node{
 	}
 
 	public void beginPageRank() {
-		PageRankInit prInit = new PageRankInit(serverPort, Tools.getLocalHostname(), Constants.pageRank, Constants.pageRank);
+		RankElection election = new RankElection(Tools.getLocalHostname(), serverPort);
 		int totalCrawled = 0;
 
 		synchronized (peerList) {
 			for (Peer p : peerList.getAllPeers()) {
 				p.ready = false;
 				p.setLink(connect(p));
-				sendData(p, prInit.marshall());
+				sendObject(p, election);
 
 				// Wait for machine's domain
 				byte[] bytes = p.waitForData();
 
-				if (Tools.getMessageType(bytes) == Constants.Page_Rank_init) {
-					PageRankInit reply = new PageRankInit();
-					reply.unmarshall(bytes);
-
-					p.hostname = reply.host;
-					p.port = reply.port;
-					p.domain = reply.domain;
-
-					System.out.println("got reply : " + p.hostname + " has " + p.domain);
-
+				Object obj = Tools.bytesToObject(bytes);
+				
+				if (obj == null) {
+					System.out.println("Null domain info");
+					return;
+				}
+				
+				if (obj instanceof DomainInfo) {
+					DomainInfo domainInfo = (DomainInfo) obj;
+					p.hostname = domainInfo.hostname;
+					p.port = domainInfo.port;
+					p.domain = domainInfo.domain;
 					p.initLink();
-					totalCrawled += Integer.parseInt(reply.url);
+					
+					totalCrawled += domainInfo.linksCrawled;
+					
+					System.out.println("got reply : " + p.hostname + " has " + p.domain);
+						
 				}
 			}
 		}
@@ -163,9 +172,16 @@ public class NodeManager extends Node{
 		int messageType = Tools.getMessageType(bytes);
 
 		//System.out.println("message : " + messageType);
+
+		Object obj = Tools.bytesToObject(bytes);
 		
-		if (l.remoteHost.equalsIgnoreCase("chard")) {
-			chard.add("chard");
+		if (obj == null) {
+			return;
+		}
+		
+		if (obj instanceof LocalRankComplete) {
+			LocalRankingComplete complete = (LocalRankingComplete) obj;
+			System.out.println("Local complete from : " + complete.host);
 		}
 		
 		switch (messageType) {

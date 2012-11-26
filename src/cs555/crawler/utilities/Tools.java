@@ -53,7 +53,7 @@ public class Tools {
 		  return o;
 		  
 		} catch(Exception e) {
-			System.out.println("Could not creat object from bytes");
+			//System.out.println("Could not creat object from bytes");
 			return null;
 		}
 	}

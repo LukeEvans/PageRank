@@ -163,18 +163,23 @@ public class NodeManager extends Node{
 
 		case Constants.Handoff_Lookup:
 
+			try {
+				HandoffLookup lookup = new HandoffLookup();
+				lookup.unmarshall(bytes);
+				
+				Peer leader = peerList.findDomainLeader(lookup.url);
 
-			HandoffLookup lookup = new HandoffLookup();
-			lookup.unmarshall(bytes);
-			
-			Peer leader = peerList.findDomainLeader(lookup.url);
+				if (leader != null) {
+					leader.ready = false;	
 
-			if (leader != null) {
-				leader.ready = false;	
-
-				FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
-				sendData(leader, handoff.marshall());
+					FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
+					sendData(leader, handoff.marshall());
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("Got a handoff request for some reason");
 			}
+
 
 			break;
 

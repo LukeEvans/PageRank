@@ -188,7 +188,7 @@ public class NodeManager extends Node{
 			}	
 			
 			else {
-				System.out.println("remaining : " + peerList.numberRemainingPeers());
+				//System.out.println("remaining : " + peerList.numberRemainingPeers());
 			}
 
 			break;

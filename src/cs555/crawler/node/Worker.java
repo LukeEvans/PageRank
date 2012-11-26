@@ -242,7 +242,7 @@ public class Worker extends Node{
 //				Link link = connect(nodeManager);
 //				link.sendData(handoff.marshall());
 //				link.close();
-				System.out.println("Sending handoff");
+				//System.out.println("Sending handoff");
 				nodeManager.sendData(handoff.marshall());
 			}
 		}
@@ -261,7 +261,7 @@ public class Worker extends Node{
 			}
 		}
 		
-		System.out.println("remaining : " + state.pendingList.size());
+		//System.out.println("remaining : " + state.pendingList.size());
 	}
 
 	public void linkErrored(Page page) {
@@ -429,6 +429,8 @@ public class Worker extends Node{
 
 	public void crawlComplete() {
 
+		nodeManager.closeLink();
+		
 		synchronized (state) {
 			state.completeGraph();
 		}

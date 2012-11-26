@@ -37,6 +37,7 @@ public class Peer {
 	public void sendData(byte[] bytes) {
 		if (link != null) { 
 			try {
+				System.out.println("trying");
 				link.sendData(bytes);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

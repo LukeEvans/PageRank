@@ -32,9 +32,11 @@ public class Peer {
 		if (link != null) {
 			link.initLink();
 		}
-		System.out.println("not inited motha fucka");
+		else {
+			System.out.println("not inited motha fucka");
+		}
 	}
-	
+
 	public void sendData(byte[] bytes) {
 		if (link != null) { 
 			try {
@@ -46,12 +48,12 @@ public class Peer {
 			}
 		}
 	}
-	
+
 	public byte[] waitForData() {
 		System.out.println("Waiting for data");
 		return link.waitForData();
 	}
-	
+
 	public void closeLink() {
 		if (link != null) {
 			link.close();
@@ -64,7 +66,7 @@ public class Peer {
 	public void setDomain(String d) {
 		domain = new String(d);
 	}
-	
+
 	//================================================================================
 	// House Keeping
 	//================================================================================
@@ -80,7 +82,7 @@ public class Peer {
 		return false;
 	}
 
-	
+
 	// Override .toString method
 	public String toString() {
 		String s = "";

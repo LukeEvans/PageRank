@@ -1,5 +1,7 @@
 package cs555.crawler.peer;
 
+import java.io.IOException;
+
 import cs555.crawler.communications.Link;
 
 // Class to abstract the peer
@@ -33,8 +35,14 @@ public class Peer {
 	}
 	
 	public void sendData(byte[] bytes) {
-		if (link != null && !link.socket.isClosed() && link.socket.isConnected()) {
-			link.sendData(bytes);
+		if (link != null) { 
+			try {
+				link.sendData(bytes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
 		}
 	}
 	

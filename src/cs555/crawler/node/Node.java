@@ -53,10 +53,10 @@ public class Node {
 	// Send
 	//================================================================================
 	// Send data
-	public void sendPayload(Link link, int number){
-		Payload payload = new Payload(number);
-		link.sendData(payload.marshall());
-	}
+//	public void sendPayload(Link link, int number){
+//		Payload payload = new Payload(number);
+//		link.sendData(payload.marshall());
+//	}
 
 //	// Send any bytes
 //	public void sendBytes(Peer p, byte[] bytes) {
@@ -68,19 +68,19 @@ public class Node {
 	//================================================================================
 	// Broadcast
 	//================================================================================
-	public void broadcastMessage(ArrayList<Peer> nodes, byte[] data, int expectedReply){
-		for (Peer peer : nodes){
-			Link link = connect(peer);
-			link.sendData(data);
-
-			int replyInt = link.waitForIntReply();
-			
-			if (expectedReply != replyInt){
-				System.out.println("Reply Doesn't match");
-				System.exit(1);
-			}
-		}
-	}
+//	public void broadcastMessage(ArrayList<Peer> nodes, byte[] data, int expectedReply){
+//		for (Peer peer : nodes){
+//			Link link = connect(peer);
+//			link.sendData(data);
+//
+//			int replyInt = link.waitForIntReply();
+//			
+//			if (expectedReply != replyInt){
+//				System.out.println("Reply Doesn't match");
+//				System.exit(1);
+//			}
+//		}
+//	}
 
 	//================================================================================
 	// Receive

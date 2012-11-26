@@ -37,16 +37,12 @@ public class Link {
 	//================================================================================
 	// Send 
 	//================================================================================
-	public void sendData(byte[] dataToBeSent){
+	public void sendData(byte[] dataToBeSent) throws IOException{
 
 		OutputStream sout = Tools.createOutputStream(socket);
-
-		try {
-			sout.write(dataToBeSent);
-			sout.flush();
-		} catch (IOException e){
-			Tools.printStackTrace(e);
-		}
+		
+		sout.write(dataToBeSent);
+		sout.flush();
 	}
 
 
@@ -75,39 +71,39 @@ public class Link {
 			break;
 		}
 
-	return -1;
-}
+		return -1;
+	}
 
 
-public byte[] waitForData(){
-	InputStream sin = Tools.createInput(socket);
-	byte[] bytesnum = new byte[Constants.LEN_BYTES];
-	int numRead;
+	public byte[] waitForData(){
+		InputStream sin = Tools.createInput(socket);
+		byte[] bytesnum = new byte[Constants.LEN_BYTES];
+		int numRead;
 
-	try {
-		numRead = sin.read(bytesnum);
+		try {
+			numRead = sin.read(bytesnum);
 
-		if (numRead >= 0){
-			return bytesnum;
+			if (numRead >= 0){
+				return bytesnum;
+			}
+
+		} catch (IOException e){
+			Tools.printStackTrace(e);
 		}
 
-	} catch (IOException e){
-		Tools.printStackTrace(e);
+		return null;
 	}
+	//================================================================================
+	// House Keeping
+	//================================================================================
+	public void close() {
+		receiver.cont = false;
 
-	return null;
-}
-//================================================================================
-// House Keeping
-//================================================================================
-public void close() {
-	receiver.cont = false;
-
-	try {
-		socket.close();
-	} catch (IOException e){
-		System.out.println("Could not close socket");
-		Tools.printStackTrace(e);
+		try {
+			socket.close();
+		} catch (IOException e){
+			System.out.println("Could not close socket");
+			Tools.printStackTrace(e);
+		}
 	}
-}
 }

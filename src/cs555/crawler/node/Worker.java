@@ -21,10 +21,6 @@ import cs555.crawler.url.Page;
 import cs555.crawler.url.WordList;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
-import cs555.crawler.wireformats.ElectionMessage;
-import cs555.crawler.wireformats.PageRankInit;
-import cs555.crawler.wireformats.Payload;
-import cs555.crawler.wireformats.RankData;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
 import cs555.crawler.pool.*;
@@ -87,8 +83,6 @@ public class Worker extends Node{
 	//================================================================================
 	// Receieve data
 	public synchronized void receive(byte[] bytes, Link l){
-		int messageType = Tools.getMessageType(bytes);
-
 		Object obj = Tools.bytesToObject(bytes);
 
 		if (obj == null) {
@@ -174,87 +168,6 @@ public class Worker extends Node{
 		if (obj instanceof RoundComplete) {
 			rankComplete();
 			return;
-		}
-
-		switch (messageType) {
-		case Constants.Election_Message:
-			ElectionMessage election = new ElectionMessage();
-			election.unmarshall(bytes);
-
-			nodeManager = new Peer(election.host, election.port);
-			nodeManager.setLink(l);
-
-			domain = election.domain;
-
-			System.out.println(election);
-
-			System.out.println("Crawling...\n");
-			//			FetchRequest domainReq = new FetchRequest(election.domain, 0, election.url, new ArrayList<String>());
-			//			publishLink(domainReq);
-
-			break;
-
-		case Constants.Fetch_Request:
-			//			FetchRequest request = new FetchRequest();
-			//			request.unmarshall(bytes);
-			//
-			//			publishLink(request);
-
-			break;
-
-		case Constants.Node_Complete:
-			crawlComplete();
-			System.exit(0);
-
-			break;
-
-		case Constants.Page_Rank_init:
-			PageRankInit prInit = new PageRankInit();
-			prInit.unmarshall(bytes);
-
-			nodeManager = new Peer(prInit.host, prInit.port);
-			nodeManager.setLink(l);
-
-			readFromDisk();
-
-			PageRankInit reply = new PageRankInit(serverPort, Tools.getLocalHostname(), domain, String.valueOf(state.crawledLinks()));
-			sendData(nodeManager, reply.marshall());
-
-			break;
-
-		case Constants.Payload:
-			Payload payload = new Payload();
-			payload.unmarshall(bytes);
-
-			if (payload.number == Constants.Page_Rank_Begin) {
-				RankTask ranker = new RankTask(state, this);
-				poolManager.execute(ranker);
-			}
-
-			else if (payload.number == Constants.PRContinue) {
-				System.out.println("Tallying remote");
-				tallyRemoteRanks();
-			}
-
-			else if (payload.number == Constants.PRComplete) {
-				// Sort the crawl state
-				state.sortCompleted();
-				System.out.println(state.graphDiagnostics());
-			}
-
-			break;
-
-		case Constants.Page_Rank_Transmit:
-			RankData data = new RankData();
-			data.unmarshall(bytes);
-
-			//incomingRankData.add(data);
-
-			break;
-
-		default:
-			System.out.println("Unrecognized Message");
-			break;
 		}
 
 	}

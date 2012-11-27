@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.utilities.*;
-import cs555.crawler.wireformats.FetchRequest;
 
 public class Page implements Comparable<Page>, java.io.Serializable {
 
@@ -43,10 +42,6 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 	//================================================================================
 	// Modifiers
 	//================================================================================
-	public FetchRequest getFetchRequest(){
-		return new FetchRequest(domain, depth, urlString, metaData.links);
-	}
-	
 	public void accumulate(ArrayList<String> links, HashMap<String, Integer> fileMap) {
 		metaData.addLinks(links);
 		metaData.parseFiles(fileMap);

@@ -20,14 +20,6 @@ import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
-import cs555.crawler.wireformats.FetchRequest;
-import cs555.crawler.wireformats.FetchResponse;
-import cs555.crawler.wireformats.HandoffLookup;
-import cs555.crawler.wireformats.LocalRankComplete;
-import cs555.crawler.wireformats.NodeComplete;
-import cs555.crawler.wireformats.PageRankRoundComplete;
-import cs555.crawler.wireformats.Payload;
-import cs555.crawler.wireformats.RankData;
 
 public class NodeManager extends Node{
 
@@ -105,23 +97,6 @@ public class NodeManager extends Node{
 		
 	}
 
-	public void broadcastCompletion() {
-		NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-
-		for (Peer p : peerList.getAllPeers()) {
-			sendData(p, complete.marshall());
-		}
-	}
-
-	public void broadcastContinue(int type) {
-		Payload cont = new Payload(type);
-
-		for (Peer p : peerList.getAllPeers()) {
-			p.ready = false;
-			sendData(p, cont.marshall());
-		}
-	}
-
 	public void broadcastObject(Object o) {
 		byte[] data = Tools.objectToBytes(o);
 		
@@ -192,9 +167,6 @@ public class NodeManager extends Node{
 	//================================================================================
 	// Receieve data
 	public synchronized void receive(byte[] bytes, Link l){
-		int messageType = Tools.getMessageType(bytes);
-
-		//System.out.println("message : " + messageType);
 
 		Object obj = Tools.bytesToObject(bytes);
 		
@@ -270,121 +242,6 @@ public class NodeManager extends Node{
 			
 			return;
 		}
-		
-		switch (messageType) {
-		case Constants.Fetch_Response:
-
-			FetchResponse response = new FetchResponse();
-			response.unmarshall(bytes);
-
-			System.out.println("Got: " + response);
-
-			break;
-
-		case Constants.Handoff_Lookup:
-
-			try {
-				HandoffLookup lookup = new HandoffLookup();
-				lookup.unmarshall(bytes);
-				
-				Peer leader = peerList.findDomainLeader(lookup.url);
-
-				if (leader != null) {
-					leader.ready = false;	
-
-					FetchRequest handoff = new FetchRequest(leader.domain, lookup.depth, lookup.url, lookup.links);
-					sendData(leader, handoff.marshall());
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println("Got a handoff request for some reason");
-			}
-
-
-			break;
-
-		case Constants.Node_Complete:
-
-			NodeComplete complete = new NodeComplete();
-			complete.unmarshall(bytes);
-			
-			Peer p = peerList.findPeer(l.remoteHost, complete.number);
-
-			//System.out.println("complete from : " + l.remoteHost);
-			
-			if (p != null) {
-				p.ready = true;
-			}
-
-			if (peerList.allPeersDone()) {
-				// Broadcast to everyone to print data
-				broadcastCompletion();
-			}	
-			
-			else {
-				//System.out.println("remaining : " + peerList.numberRemainingPeers());
-			}
-
-			break;
-
-		case Constants.Local_Complete:
-			LocalRankComplete localComplete = new LocalRankComplete();
-			localComplete.unmarshall(bytes);
-			
-			Peer peer = peerList.findPeer(l.remoteHost, localComplete.number);
-			
-			if (peer != null) {
-				peer.ready = true;
-			}
-
-			if (peerList.allPeersDone()) {
-				System.out.println("Sending continue");
-				broadcastContinue(Constants.PRContinue);
-			}	
-			
-			break;
-			
-		case Constants.PRound_Complete:
-			PageRankRoundComplete roundComplete = new PageRankRoundComplete();
-			roundComplete.unmarshall(bytes);
-						
-			Peer worker = peerList.findPeer(l.remoteHost, roundComplete.number);
-
-			if (worker != null) {
-				worker.ready = true;
-			}
-
-			if (peerList.allPeersDone()) {
-				
-				if (RankRound < Constants.Page_Rank_Rounds) {
-					beginRound();
-				}
-				
-				else {
-					broadcastContinue(Constants.PRComplete);					
-				}
-			}	
-			
-			break;
-		
-		case Constants.Page_Rank_Transmit:
-			RankData data = new RankData();
-			data.unmarshall(bytes);
-						
-			Peer prLeader = peerList.findDomainLeader(data.url);
-
-			if (prLeader != null) {
-				sendData(prLeader, data.marshall());
-			}
-			
-			break;
-			
-		default:
-
-			System.out.println("Unrecognized Message: " + messageType + " from: " + l.remoteHost);
-			break;
-		}
-
 	}
 
 

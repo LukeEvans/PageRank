@@ -363,8 +363,15 @@ public class CrawlerState implements java.io.Serializable {
 		
 		s += "Crawled links: " + doneList.size() + "\n";
 		
+		int i = 0;
 		for (Page p : doneList) {
+			if (i == 25) {
+				break;
+			}
+			
 			s += p.toString();
+			
+			i++;
 		}
 		
 		return s;

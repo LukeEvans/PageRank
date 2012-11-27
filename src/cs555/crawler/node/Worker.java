@@ -127,14 +127,12 @@ public class Worker extends Node{
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
 
-			//System.out.println("Got score : " + info.score);
 			incomingRankData.add(info);
 
 			return;
 		}
 
 		if (obj instanceof LocalRankingComplete) {
-			System.out.println("Processing remote scores: " + incomingRankData.size());
 			tallyRemoteRanks();
 			return;
 		}
@@ -362,9 +360,6 @@ public class Worker extends Node{
 		Peer leader = peerList.findDomainLeader(data.url);
 
 		if (leader != null) {
-			if (data.score > 0) {
-				System.out.println("Sending score : " + data.score);
-			}
 			sendObject(leader, data);
 		}
 
@@ -374,7 +369,7 @@ public class Worker extends Node{
 	}
 
 	public void localRankingComplete() {
-		System.out.println("Sending local complete");
+		//System.out.println("Sending local complete");
 		LocalRankingComplete complete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
 
 		//Tools.sleep(1);

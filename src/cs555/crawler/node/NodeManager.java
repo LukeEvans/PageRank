@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import cs555.crawler.communications.Link;
+import cs555.crawler.crawlControl.CrawlComplete;
 import cs555.crawler.crawlControl.CrawlElection;
 import cs555.crawler.crawlControl.LocalCrawlComplete;
 import cs555.crawler.peer.Peer;
@@ -208,6 +209,11 @@ public class NodeManager extends Node{
 				broadcastObject(localComplete);
 			}
 			
+			return;
+		}
+		
+		if (obj instanceof CrawlComplete) {
+			System.out.println("Got crawl complete");
 			return;
 		}
 		

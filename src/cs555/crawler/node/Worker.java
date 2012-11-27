@@ -118,9 +118,7 @@ public class Worker extends Node{
 			Object peerObj = Tools.bytesToObject(peerBytes);
 			if (peerObj instanceof PeerList) {
 				peerList = (PeerList) peerObj;
-				
-				System.out.println("Got peer list : " + peerList);
-				
+								
 				for (Peer p : peerList.getAllPeers()) {
 					p.setLink(connect(p));
 					p.initLink();
@@ -396,11 +394,13 @@ public class Worker extends Node{
 	public void sendCompleteMessage() {
 		synchronized (crawlLock) {
 			if (localCrawlDone) {
+				System.out.println("Sending global");
 				CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
 				sendObject(nodeManager, global);
 			}
 			
 			else {
+				System.out.println("Sending local");
 				LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
 				sendObject(nodeManager, local);
 			}

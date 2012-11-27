@@ -286,8 +286,14 @@ public class Worker extends Node{
 	//================================================================================
 	public void crawlRemoteLinks() {
 		synchronized (incomingCrawlRequests) {
-			for (CrawlRequest req : incomingCrawlRequests) {
+			Vector<CrawlRequest> temp = new Vector<CrawlRequest>(incomingCrawlRequests);
+			
+			for (CrawlRequest req : temp) {
 				publishLink(req);
+				
+				if (incomingCrawlRequests.size() > 0) {
+					incomingCrawlRequests.remove(0);
+				}
 			}
 		}
 	}

@@ -205,7 +205,7 @@ public class NodeManager extends Node{
 		// Crawler Messages
 		if (obj instanceof LocalCrawlComplete) {
 			LocalCrawlComplete complete = (LocalCrawlComplete) obj;
-			System.out.println("local complete from : " + complete.host);
+			//System.out.println("local complete from : " + complete.host);
 			Peer donePeer = peerList.findPeer(complete.host, complete.port);
 			
 			if (donePeer != null) {

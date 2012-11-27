@@ -293,19 +293,19 @@ public class Worker extends Node{
 		// If this link doesn't belong to us, return
 		if (!request.url.contains(domain) && !request.url.contains("chm.colostate.edu")) {
 			System.out.println("Trying to publish url that doesn't belong to me. URL: " + request.url + " Domain: " + domain );
+			if (!state.shouldContinue()) {
+				sendCompleteMessage();
+			}
 			return;
 		}
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
 			if (!state.shouldContinue()) {
-				System.out.println("No really, I'm done");
 				sendCompleteMessage();
 			}
 			return;
 		}
-
-		System.out.println("publishing : " + request.url);
 
 		synchronized (state) {
 			Page page = new Page(request.url, request.depth, request.domain);
@@ -326,14 +326,13 @@ public class Worker extends Node{
 		}
 
 		if (!state.shouldContinue()) {
-			System.out.println("No really, I'm done");
 			sendCompleteMessage();
 		}
 	}
 
 
 	public void fetchURL(Page page, CrawlRequest request) {
-		System.out.println("Fetching : " + request.url);
+		//System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
 	}
@@ -343,7 +342,7 @@ public class Worker extends Node{
 	// Fetch Completion
 	//================================================================================
 	public void linkComplete(Page page, ArrayList<String> links, HashMap<String, Integer> fileMap, WordList wordList) {
-		System.out.println("Link complete : " + page.urlString);
+		//System.out.println("Link complete : " + page.urlString);
 
 		synchronized (state) {
 			Page p = state.findPendingUrl(page);
@@ -401,23 +400,10 @@ public class Worker extends Node{
 	}
 
 	public void sendCompleteMessage() {
-//		System.out.println("complete message method");
-//		//synchronized (crawlLock) {
-//		if (localCrawlDone) {
-//			System.out.println("Sending global");
-//			CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
-//			sendObject(nodeManager, global);
-//		}
-//
-//		else {
-//			System.out.println("Sending local");
-//			LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
-//			sendObject(nodeManager, local);
-//		}
-//		//}
 		LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
 		sendObject(nodeManager, local);
 	}
+	
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================

@@ -86,6 +86,7 @@ public class PageMetadata implements java.io.Serializable {
 	}
 	
 	public void finalizeScore() {
+		System.out.println("Finalizing");
 		pageScore = intermediateScore;
 		intermediateScore = 0;
 	}

@@ -362,6 +362,7 @@ public class Worker extends Node{
 		Peer leader = peerList.findDomainLeader(data.url);
 		
 		if (leader != null) {
+			System.out.println("Sending score : " + data.score);
 			sendObject(leader, data);
 		}
 		

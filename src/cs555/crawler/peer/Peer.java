@@ -61,7 +61,6 @@ public class Peer implements Serializable {
 	}
 
 	public byte[] waitForData() {
-		System.out.println("Waiting for data");
 		return link.waitForData();
 	}
 

@@ -150,6 +150,7 @@ public class Worker extends Node{
 		}
 
 		if (obj instanceof BeginRound) {
+			rankRound++;
 			System.out.println("Begining round: " + rankRound);
 			RankTask ranker = new RankTask(state, this);
 			poolManager.execute(ranker);
@@ -367,7 +368,6 @@ public class Worker extends Node{
 
 		// If we're done, print
 		if (!state.shouldContinue()) {
-			System.out.println("Sending complete message :)");
 			sendCompleteMessage();
 		}	
 

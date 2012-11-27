@@ -113,7 +113,8 @@ public class Worker extends Node{
 			CrawlElection election = (CrawlElection) obj;
 			nodeManager = new Peer(election.managerHost, election.managerPort);
 			nodeManager.setLink(l);
-
+			domain = election.domain;
+			
 			byte[] peerBytes = nodeManager.waitForData();
 			Object peerObj = Tools.bytesToObject(peerBytes);
 			if (peerObj instanceof PeerList) {

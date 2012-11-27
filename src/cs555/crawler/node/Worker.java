@@ -98,7 +98,6 @@ public class Worker extends Node{
 				p.initLink();
 			}
 
-			System.out.println("Received peer list : " + peerList);
 			return;
 		}
 

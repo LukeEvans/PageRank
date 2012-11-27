@@ -12,15 +12,16 @@ import java.util.Vector;
 
 
 import cs555.crawler.communications.Link;
+import cs555.crawler.crawlControl.CrawlComplete;
+import cs555.crawler.crawlControl.CrawlElection;
+import cs555.crawler.crawlControl.CrawlRequest;
+import cs555.crawler.crawlControl.LocalCrawlComplete;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.url.WordList;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
 import cs555.crawler.wireformats.ElectionMessage;
-import cs555.crawler.wireformats.FetchRequest;
-import cs555.crawler.wireformats.HandoffLookup;
-import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.RankData;
@@ -41,9 +42,13 @@ public class Worker extends Node{
 	String domain;
 	CrawlerState state;
 	Vector<RankInfo> incomingRankData;
+	Vector<CrawlRequest> incomingCrawlRequests;
 
 	PeerList peerList;
 
+	Object crawlLock;
+	boolean localCrawlDone;
+	
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -55,7 +60,9 @@ public class Worker extends Node{
 		domain = new String();
 		state = new CrawlerState();
 		incomingRankData = new Vector<RankInfo>();
+		incomingCrawlRequests = new Vector<CrawlRequest>();
 		peerList = null;
+		localCrawlDone = false;
 	}
 
 
@@ -101,6 +108,54 @@ public class Worker extends Node{
 			return;
 		}
 
+		// Crawler messages
+		if (obj instanceof CrawlElection) {
+			CrawlElection election = (CrawlElection) obj;
+			nodeManager = new Peer(election.managerHost, election.managerPort);
+			nodeManager.setLink(l);
+
+			byte[] peerBytes = nodeManager.waitForData();
+			Object peerObj = Tools.bytesToObject(peerBytes);
+			if (peerObj instanceof PeerList) {
+				peerList = (PeerList) peerObj;
+				
+				for (Peer p : peerList.getAllPeers()) {
+					p.setLink(connect(p));
+					p.initLink();
+				}
+			}
+			
+			// Begin Crawling
+			System.out.println("Crawling...\n");
+			CrawlRequest request = new CrawlRequest(election.domain, election.url, 0);
+			publishLink(request);
+
+			return;
+		}
+
+		if (obj instanceof CrawlRequest) {
+			CrawlRequest request = (CrawlRequest) obj;
+			incomingCrawlRequests.add(request);
+
+			return;
+		}
+		
+		if (obj instanceof LocalCrawlComplete) {
+			synchronized (crawlLock) {
+				localCrawlDone = true;
+			}
+			
+			crawlRemoteLinks();
+			
+			return;
+		}
+		
+		if (obj instanceof CrawlComplete) {
+			System.out.println("Crqwl Complete");
+			//crawlComplete();
+		}
+
+		// Page Rank messages
 		if (obj instanceof RankElection) {
 			RankElection election = (RankElection) obj;
 
@@ -154,16 +209,16 @@ public class Worker extends Node{
 			System.out.println(election);
 
 			System.out.println("Crawling...\n");
-			FetchRequest domainReq = new FetchRequest(election.domain, 0, election.url, new ArrayList<String>());
-			publishLink(domainReq);
+			//			FetchRequest domainReq = new FetchRequest(election.domain, 0, election.url, new ArrayList<String>());
+			//			publishLink(domainReq);
 
 			break;
 
 		case Constants.Fetch_Request:
-			FetchRequest request = new FetchRequest();
-			request.unmarshall(bytes);
-
-			publishLink(request);
+			//			FetchRequest request = new FetchRequest();
+			//			request.unmarshall(bytes);
+			//
+			//			publishLink(request);
 
 			break;
 
@@ -227,7 +282,15 @@ public class Worker extends Node{
 	//================================================================================
 	// Add links to crawl
 	//================================================================================
-	public void publishLink(FetchRequest request) {
+	public void crawlRemoteLinks() {
+		synchronized (incomingCrawlRequests) {
+			for (CrawlRequest req : incomingCrawlRequests) {
+				publishLink(req);
+			}
+		}
+	}
+
+	public void publishLink(CrawlRequest request) {
 
 		// If this link doesn't belong to us, return
 		if (!request.url.contains(domain) && !request.url.contains("chm.colostate.edu")) {
@@ -237,13 +300,6 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-
-			synchronized (state) {
-				if (!state.pendingLinksRemaining()) {
-					NodeComplete complete = new NodeComplete(serverPort);
-					sendData(nodeManager, complete.marshall());
-				}
-			}
 			return;
 		}
 
@@ -256,21 +312,18 @@ public class Worker extends Node{
 			}
 
 			// Add incoming link to this page
-			if (request.links != null && request.links.size() > 0) {
-				String incoming = request.links.get(0);
+			if (request.incoming != null) {
 				Page thisPage = state.findPage(page);
 
 				if (thisPage != null) {
-					thisPage.addIncomingLink(incoming);
+					thisPage.addIncomingLink(request.incoming);
 				}
 			}
-
 		}
 	}
 
 
-	public void fetchURL(Page page, FetchRequest request) {
-
+	public void fetchURL(Page page, CrawlRequest request) {
 		//System.out.println("Fetching : " + request.url);
 		FetchTask fetcher = new FetchTask(page, request, this);
 		poolManager.execute(fetcher);
@@ -293,38 +346,34 @@ public class Worker extends Node{
 
 			else {
 				System.out.println("link completed that wasn't pending");
+				return;
 			}
 		}
 
 		for (String s : links) {
 			// If we're tracking this domain handle it
 			if (s.contains("." + domain)) {
-				//System.out.println("Mine " + s);
-				FetchRequest req = new FetchRequest(page.domain, page.depth + 1, s, new ArrayList<String>());
+				// My link
+				CrawlRequest req = new CrawlRequest(page.domain, s, page.depth+1);
 				publishLink(req);
 			}
 
 			// Else, hand it off
 			else {
-				ArrayList<String> handoffSourceURL = new ArrayList<String>();
-				handoffSourceURL.add(page.urlString);
-				HandoffLookup handoff = new HandoffLookup(s, page.depth + 1, s,handoffSourceURL);
-				sendData(nodeManager, handoff.marshall());
+				Peer leader = peerList.findDomainLeader(s);
+
+				if (leader != null) {
+					CrawlRequest req = new CrawlRequest(leader.domain, s, page.depth+1, page.urlString);
+					sendObject(leader, req);
+				}
 			}
 		}
 
 		// If we're done, print
 		if (!state.shouldContinue()) {
 			System.out.println("Sending complete message");
-			NodeComplete complete = new NodeComplete(serverPort);
-			sendData(nodeManager, complete.marshall());
+			sendCompleteMessage();
 		}	
-
-		else {
-			if (state.pendingList.size() <= 100) {
-				System.out.println(state.remaining());
-			}
-		}
 
 	}
 
@@ -336,12 +385,24 @@ public class Worker extends Node{
 
 			// If we're done, print
 			if (!state.shouldContinue()) {
-				NodeComplete complete = new NodeComplete(Constants.Node_Complete);
-				sendData(nodeManager, complete.marshall());
+				sendCompleteMessage();
 			}
 		}
 	}
 
+	public void sendCompleteMessage() {
+		synchronized (crawlLock) {
+			if (localCrawlDone) {
+				CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
+				sendObject(nodeManager, global);
+			}
+			
+			else {
+				LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
+				sendObject(nodeManager, local);
+			}
+		}
+	}
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================
@@ -505,16 +566,16 @@ public class Worker extends Node{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void rankComplete() {
 		// Finalize scores
 		for (Page p : state.getCompletedPages()) {
 			p.rankRoundComplete();
 		}
-		
+
 		// Sort the completed links
 		state.sortCompleted();
-		
+
 		System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 	}
 	//================================================================================

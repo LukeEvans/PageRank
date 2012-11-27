@@ -196,7 +196,6 @@ public class PeerList implements Serializable{
 		for (Peer p : listOfPeers) {
 			if (!p.domain.equalsIgnoreCase("")) {
 				if (d.contains("." + p.domain)) {
-					//System.out.println(d + " " + p.domain);
 					return p;
 				}
 			}

@@ -12,16 +12,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import cs555.crawler.crawlControl.CrawlRequest;
 import cs555.crawler.node.Worker;
 import cs555.crawler.url.Page;
 import cs555.crawler.url.WordList;
 import cs555.crawler.utilities.Constants;
-import cs555.crawler.wireformats.FetchRequest;
 
 public class FetchTask implements Task {
 
 	int runningThread;
-
 
 	// URL
 	String urlString;
@@ -30,7 +29,7 @@ public class FetchTask implements Task {
 	String urlText;
 
 	// Request 
-	FetchRequest request;
+	CrawlRequest request;
 
 	// Node
 	Worker node;
@@ -42,7 +41,7 @@ public class FetchTask implements Task {
 	//================================================================================
 	// Constructor
 	//================================================================================
-	public FetchTask(Page p, FetchRequest urlReq, Worker w){
+	public FetchTask(Page p, CrawlRequest urlReq, Worker w){
 		urlString = urlReq.url;
 		request = urlReq;
 
@@ -85,15 +84,8 @@ public class FetchTask implements Task {
 
 			node.linkComplete(page, freshLinks, getFileMap(urls), words);
 
-			//SaveTask saver = new SaveTask(urlString, text);
-			//saver.save();
-
-
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			//System.out.println("Error : " + e);
 			node.linkErrored(page);
 			return;
 		}

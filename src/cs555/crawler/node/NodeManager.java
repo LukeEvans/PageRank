@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import cs555.crawler.communications.Link;
+import cs555.crawler.crawlControl.CrawlElection;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
 import cs555.crawler.rankControl.BeginRound;
@@ -84,12 +85,13 @@ public class NodeManager extends Node{
 			peer.initLink();
 
 			synchronized (state) {
-				ElectionMessage electionMsg = new ElectionMessage(serverPort, Tools.getLocalHostname(), page.domain, page.urlString);
-				sendData(peer, electionMsg.marshall());
+				CrawlElection election = new CrawlElection(Tools.getLocalHostname(), serverPort, page.domain, page.urlString);
+				sendObject(peer, election);
 			}
-
-
 		}
+		
+		// Send peer list
+		broadcastObject(peerList);
 	}
 
 	public void broadcastCompletion() {

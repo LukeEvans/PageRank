@@ -15,8 +15,8 @@ public class PageMetadata implements java.io.Serializable {
 	public HashMap<String, Integer> fileMap;
 	public Edges edges;
 	public WordList words;
-	public int pageScore;
-	public int intermediateScore;
+	public double pageScore;
+	public double intermediateScore;
 
 	//================================================================================
 	// Constructor
@@ -26,8 +26,8 @@ public class PageMetadata implements java.io.Serializable {
 		fileMap = new HashMap<String, Integer>();
 		edges = new Edges();
 		words = new WordList();
-		pageScore = 100;
-		intermediateScore = 0;
+		pageScore = 100.0;
+		intermediateScore = 0.0;
 	}
 
 	//================================================================================
@@ -81,7 +81,7 @@ public class PageMetadata implements java.io.Serializable {
 		words.addSet(wl);
 	}
 	
-	public void tallyScore(int s) {
+	public void tallyScore(double s) {
 		intermediateScore += s;
 	}
 	

@@ -11,18 +11,18 @@ public class RankInfo implements Serializable{
 	
 	public String domain;
 	public String url;
-	public int score;
+	public double score;
 	
 	//================================================================================
 	// Constructor
 	//================================================================================
-	public RankInfo(String d, String u, int s) {
+	public RankInfo(String d, String u, double s) {
 		domain = d;
 		url = u;
 		score = s;
 	}
 
-	public RankInfo(String u, int s) {
+	public RankInfo(String u, double s) {
 		url = u;
 		score = s;
 	}

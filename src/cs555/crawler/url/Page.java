@@ -61,7 +61,7 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 		metaData.addIncomingLink(in);
 	}
 	
-	public int getOutgoingScore() {
+	public double getOutgoingScore() {
 		synchronized (metaData) {
 			return metaData.pageScore / metaData.edges.outgoing.size();	
 		}

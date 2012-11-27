@@ -142,9 +142,9 @@ public class Worker extends Node{
 		}
 		
 		if (obj instanceof LocalCrawlComplete) {
-			synchronized (crawlLock) {
+			//synchronized (crawlLock) {
 				localCrawlDone = true;
-			}
+			//}
 			
 			System.out.println("Crawling remote links : " + incomingCrawlRequests.size());
 			crawlRemoteLinks();

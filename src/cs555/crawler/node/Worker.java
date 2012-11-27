@@ -43,7 +43,7 @@ public class Worker extends Node{
 	Vector<RankInfo> incomingRankData;
 
 	PeerList peerList;
-	
+
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -71,11 +71,11 @@ public class Worker extends Node{
 		SendTask send = new SendTask(p, bytes);
 		poolManager.execute(send);
 	}
-	
+
 	public void sendObject(Peer p, Object o) {
 		sendData(p, Tools.objectToBytes(o));
 	}
-	
+
 	//================================================================================
 	// Receive
 	//================================================================================
@@ -84,27 +84,27 @@ public class Worker extends Node{
 		int messageType = Tools.getMessageType(bytes);
 
 		Object obj = Tools.bytesToObject(bytes);
-		 
+
 		if (obj == null) {
 			return;
 		}
-		
+
 		if (obj instanceof PeerList) {
 			peerList = (PeerList) obj;
-			
+
 			// Init all links
 			for (Peer p : peerList.getAllPeers()) {
 				p.setLink(connect(p));
 				p.initLink();
 			}
-			
+
 			System.out.println("Received peer list : " + peerList);
 			return;
 		}
-		
+
 		if (obj instanceof RankElection) {
 			RankElection election = (RankElection) obj;
-			
+
 			nodeManager = new Peer(election.managerHost, election.managerPort);
 			nodeManager.setLink(l);
 
@@ -112,38 +112,38 @@ public class Worker extends Node{
 
 			DomainInfo reply = new DomainInfo(Tools.getLocalHostname(), serverPort, domain, state.crawledLinks());
 			sendObject(nodeManager, reply);
-			
+
 			return;
 		}
-		
+
 		if (obj instanceof BeginRound) {
 			System.out.println("Begining round");
 			RankTask ranker = new RankTask(state, this);
 			poolManager.execute(ranker);
-			
+
 			return;
 		}
-		
+
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
-			
+
 			//System.out.println("Got score : " + info.score);
 			incomingRankData.add(info);
-			
+
 			return;
 		}
-		
+
 		if (obj instanceof LocalRankingComplete) {
 			System.out.println("Processing remote scores: " + incomingRankData.size());
 			tallyRemoteRanks();
 			return;
 		}
-		
+
 		if (obj instanceof RoundComplete) {
 			System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 			return;
 		}
-		
+
 		switch (messageType) {
 		case Constants.Election_Message:
 			ElectionMessage election = new ElectionMessage();
@@ -360,12 +360,14 @@ public class Worker extends Node{
 
 	public void forwardRanking(RankInfo data) {
 		Peer leader = peerList.findDomainLeader(data.url);
-		
+
 		if (leader != null) {
-			System.out.println("Sending score : " + data.score);
+			if (data.score > 0) {
+				System.out.println("Sending score : " + data.score);
+			}
 			sendObject(leader, data);
 		}
-		
+
 		else {
 			System.out.println("leader is null");
 		}
@@ -374,7 +376,7 @@ public class Worker extends Node{
 	public void localRankingComplete() {
 		System.out.println("Sending local complete");
 		LocalRankingComplete complete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
-		
+
 		//Tools.sleep(1);
 		sendObject(nodeManager, complete);
 	}

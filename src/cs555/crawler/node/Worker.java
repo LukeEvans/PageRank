@@ -22,7 +22,6 @@ import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
-import cs555.crawler.wireformats.PageRankRoundComplete;
 import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.RankData;
 import cs555.crawler.peer.Peer;
@@ -127,6 +126,8 @@ public class Worker extends Node{
 		
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
+			
+			System.out.println("Got score : " + info.score);
 			incomingRankData.add(info);
 			
 			return;

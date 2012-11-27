@@ -139,7 +139,7 @@ public class Worker extends Node{
 		}
 		
 		if (obj instanceof RoundComplete) {
-			System.out.println("Page Rank completed");
+			System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 			return;
 		}
 		

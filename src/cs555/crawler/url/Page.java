@@ -67,15 +67,21 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 	}
 	
 	public int getOutgoingScore() {
-		return metaData.pageScore / metaData.edges.outgoing.size();
+		synchronized (metaData) {
+			return metaData.pageScore / metaData.edges.outgoing.size();	
+		}
 	}
 	
 	public void tallyRankData(RankInfo data) {
-		metaData.tallyScore(data.score);
+		synchronized (metaData) {
+			metaData.tallyScore(data.score);	
+		}
 	}
 	
 	public void rankRoundComplete() {
-		metaData.finalizeScore();
+		synchronized (metaData) {
+			metaData.finalizeScore();	
+		}
 	}
 	
 	//================================================================================

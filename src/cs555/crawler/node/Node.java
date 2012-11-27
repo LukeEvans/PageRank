@@ -2,13 +2,10 @@ package cs555.crawler.node;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-
 
 import cs555.crawler.communications.*;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.utilities.*;
-import cs555.crawler.wireformats.*;
 
 // Main process in the system
 public class Node {

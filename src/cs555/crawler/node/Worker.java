@@ -20,7 +20,6 @@ import cs555.crawler.utilities.Tools;
 import cs555.crawler.wireformats.ElectionMessage;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.HandoffLookup;
-import cs555.crawler.wireformats.LocalRankComplete;
 import cs555.crawler.wireformats.NodeComplete;
 import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.PageRankRoundComplete;
@@ -34,6 +33,7 @@ import cs555.crawler.rankControl.DomainInfo;
 import cs555.crawler.rankControl.LocalRankingComplete;
 import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
+import cs555.crawler.rankControl.RoundComplete;
 
 public class Worker extends Node{
 
@@ -134,6 +134,12 @@ public class Worker extends Node{
 		
 		if (obj instanceof LocalRankingComplete) {
 			System.out.println("Processing remote scores: " + incomingRankData.size());
+			tallyRemoteRanks();
+			return;
+		}
+		
+		if (obj instanceof RoundComplete) {
+			
 			return;
 		}
 		
@@ -391,8 +397,8 @@ public class Worker extends Node{
 		}
 
 		// Tell the node manager that we're done with this round
-		PageRankRoundComplete complete = new PageRankRoundComplete(serverPort);
-		sendData(nodeManager, complete.marshall());
+		RoundComplete complete = new RoundComplete(Tools.getLocalHostname(), serverPort);
+		sendObject(nodeManager, complete);
 	}
 
 	//================================================================================

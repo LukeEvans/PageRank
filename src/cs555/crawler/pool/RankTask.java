@@ -1,13 +1,9 @@
 package cs555.crawler.pool;
 
-import java.util.ArrayList;
-
 import cs555.crawler.node.Worker;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
-import cs555.crawler.utilities.Constants;
-import cs555.crawler.wireformats.RankData;
 
 public class RankTask implements Task {
 

@@ -11,6 +11,7 @@ import cs555.crawler.rankControl.BeginRound;
 import cs555.crawler.rankControl.DomainInfo;
 import cs555.crawler.rankControl.LocalRankingComplete;
 import cs555.crawler.rankControl.RankElection;
+import cs555.crawler.rankControl.RoundComplete;
 import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.utilities.Constants;
@@ -21,7 +22,6 @@ import cs555.crawler.wireformats.FetchResponse;
 import cs555.crawler.wireformats.HandoffLookup;
 import cs555.crawler.wireformats.LocalRankComplete;
 import cs555.crawler.wireformats.NodeComplete;
-import cs555.crawler.wireformats.PageRankInit;
 import cs555.crawler.wireformats.PageRankRoundComplete;
 import cs555.crawler.wireformats.Payload;
 import cs555.crawler.wireformats.RankData;
@@ -202,6 +202,23 @@ public class NodeManager extends Node{
 				System.out.println("sending continue");
 				LocalRankingComplete localComplete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
 				broadcastObject(localComplete);
+			}
+			
+			return;
+		}
+		
+		if (obj instanceof RoundComplete) {
+			RoundComplete complete = (RoundComplete) obj;
+			System.out.println("Round complete from : " + complete.host);
+			
+			Peer donePeer = peerList.findPeer(complete.host, complete.port);
+			
+			if (donePeer != null) {
+				donePeer.ready = true;
+			}
+			
+			if (peerList.allPeersDone()) {
+				System.out.println("All peers done. Moving to next round");
 			}
 			
 			return;

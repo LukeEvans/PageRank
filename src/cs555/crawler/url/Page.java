@@ -6,7 +6,6 @@ import java.util.HashMap;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.utilities.*;
 import cs555.crawler.wireformats.FetchRequest;
-import cs555.crawler.wireformats.RankData;
 
 public class Page implements Comparable<Page>, java.io.Serializable {
 

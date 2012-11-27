@@ -147,6 +147,7 @@ public class Worker extends Node{
 				localCrawlDone = true;
 			}
 			
+			System.out.println("Crawling remote links : " + incomingCrawlRequests.size());
 			crawlRemoteLinks();
 			
 			return;

@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import cs555.crawler.communications.Link;
 import cs555.crawler.crawlControl.CrawlElection;
+import cs555.crawler.crawlControl.LocalCrawlComplete;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
 import cs555.crawler.rankControl.BeginRound;
@@ -191,6 +192,26 @@ public class NodeManager extends Node{
 			return;
 		}
 		
+		// Crawler Messages
+		if (obj instanceof LocalCrawlComplete) {
+			LocalCrawlComplete complete = (LocalCrawlComplete) obj;
+			System.out.println("local complete from : " + complete.host);
+			Peer donePeer = peerList.findPeer(complete.host, complete.port);
+			
+			if (donePeer != null) {
+				donePeer.ready = true;
+			}
+			
+			if (peerList.allPeersDone()) {
+				System.out.println("Sending continue");
+				LocalCrawlComplete localComplete = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
+				broadcastObject(localComplete);
+			}
+			
+			return;
+		}
+		
+		// Page Rank Messages
 		if (obj instanceof LocalRankingComplete) {
 			LocalRankingComplete complete = (LocalRankingComplete) obj;
 			System.out.println("Local complete from : " + complete.host);

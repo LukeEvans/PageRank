@@ -77,23 +77,32 @@ public class NodeManager extends Node{
 
 		ArrayList<Page> allDomains = new ArrayList<Page>(state.getAllPages());
 
+		// Build Peer List
 		for (Page page : allDomains) {
 			System.out.println("Looking for place for domain : " + page.domain);
 			state.makrUrlPending(page);
 
 			Peer peer = peerList.getReadyPeer();
 			peer.setDomain(page.domain);
+			peer.setSeedUrl(page.urlString);
 			peer.setLink(connect(peer));
 			peer.initLink();
 
-			synchronized (state) {
-				CrawlElection election = new CrawlElection(Tools.getLocalHostname(), serverPort, page.domain, page.urlString);
-				sendObject(peer, election);
-			}
+//			synchronized (state) {
+//				CrawlElection election = new CrawlElection(Tools.getLocalHostname(), serverPort, page.domain, page.urlString);
+//				sendObject(peer, election);
+//			}
 		}
 		
 		// Send peer list
 		broadcastObject(peerList);
+		
+		// Send election messages
+		for (Peer p : peerList.getAllPeers()) {
+			CrawlElection election = new CrawlElection(Tools.getLocalHostname(), serverPort, p.domain, p.seedURL);
+			sendObject(p, election);
+		}
+		
 	}
 
 	public void broadcastCompletion() {

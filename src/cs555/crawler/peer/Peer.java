@@ -15,6 +15,7 @@ public class Peer implements Serializable {
 	public String hostname;
 	public int port;
 	public String domain;
+	public String seedURL;
 	public boolean ready;
 	transient Link link;
 
@@ -25,6 +26,7 @@ public class Peer implements Serializable {
 		hostname = host;
 		port = p;
 		domain = new String();
+		seedURL = new String();
 		ready = true;
 		link = null;
 	}
@@ -76,6 +78,9 @@ public class Peer implements Serializable {
 		domain = new String(d);
 	}
 
+	public void setSeedUrl(String u) {
+		seedURL = new String(u);
+	}
 	//================================================================================
 	// House Keeping
 	//================================================================================

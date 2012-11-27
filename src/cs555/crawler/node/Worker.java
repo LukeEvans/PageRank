@@ -115,16 +115,16 @@ public class Worker extends Node{
 			nodeManager.setLink(l);
 			domain = election.domain;
 			
-			byte[] peerBytes = nodeManager.waitForData();
-			Object peerObj = Tools.bytesToObject(peerBytes);
-			if (peerObj instanceof PeerList) {
-				peerList = (PeerList) peerObj;
-								
-				for (Peer p : peerList.getAllPeers()) {
-					p.setLink(connect(p));
-					p.initLink();
-				}
-			}
+//			byte[] peerBytes = nodeManager.waitForData();
+//			Object peerObj = Tools.bytesToObject(peerBytes);
+//			if (peerObj instanceof PeerList) {
+//				peerList = (PeerList) peerObj;
+//								
+//				for (Peer p : peerList.getAllPeers()) {
+//					p.setLink(connect(p));
+//					p.initLink();
+//				}
+//			}
 			
 			// Begin Crawling
 			System.out.println("Crawling " + domain + "...\n");

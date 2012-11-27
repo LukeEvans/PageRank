@@ -287,7 +287,6 @@ public class Worker extends Node{
 	public void crawlRemoteLinks() {
 		synchronized (incomingCrawlRequests) {
 			for (CrawlRequest req : incomingCrawlRequests) {
-				System.out.println("publishing : " + req.url);
 				publishLink(req);
 			}
 		}
@@ -303,10 +302,11 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-			System.out.println("depth is at max");
 			return;
 		}
 
+		System.out.println("publishing : " + request.url);
+		
 		synchronized (state) {
 			Page page = new Page(request.url, request.depth, request.domain);
 

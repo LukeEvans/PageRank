@@ -518,6 +518,9 @@ public class Worker extends Node{
 			p.rankRoundComplete();
 		}
 		
+		// Sort the completed links
+		state.sortCompleted();
+		
 		System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 	}
 	//================================================================================

@@ -330,6 +330,11 @@ public class Worker extends Node{
 			}
 		}
 
+		boolean cont = state.shouldContinue();
+		int size = incomingCrawlRequests.size();
+		
+		System.out.println("Cont : " + cont + " size: " + size);
+		
 		if (incomingCrawlRequests.size() == 0 && !state.shouldContinue()) {
 			sendCompleteMessage();
 		}

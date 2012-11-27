@@ -126,7 +126,7 @@ public class Worker extends Node{
 			}
 			
 			// Begin Crawling
-			System.out.println("Crawling...\n");
+			System.out.println("Crawling " + domain + "...\n");
 			CrawlRequest request = new CrawlRequest(election.domain, election.url, 0);
 			publishLink(request);
 
@@ -393,7 +393,7 @@ public class Worker extends Node{
 
 	public void sendCompleteMessage() {
 		System.out.println("complete message method");
-		synchronized (crawlLock) {
+		//synchronized (crawlLock) {
 			if (localCrawlDone) {
 				System.out.println("Sending global");
 				CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
@@ -405,7 +405,7 @@ public class Worker extends Node{
 				LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
 				sendObject(nodeManager, local);
 			}
-		}
+		//}
 	}
 	//================================================================================
 	// Page Rank Methods 

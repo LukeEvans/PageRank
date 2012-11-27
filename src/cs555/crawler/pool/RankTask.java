@@ -19,7 +19,6 @@ public class RankTask implements Task {
 	}
 
 	public void run() {
-		System.out.println("Ranking");
 		
 		for (Page p : state.getCompletedPages()) {
 			for (String url : p.getOutgoingLinks()) {

@@ -213,7 +213,6 @@ public class NodeManager extends Node{
 			}
 			
 			if (peerList.allPeersDone()) {
-				System.out.println("Sending continue");
 				CrawlComplete crawlComplete = new CrawlComplete(Tools.getLocalHostname(), serverPort);
 				broadcastObject(crawlComplete);
 			}
@@ -231,15 +230,9 @@ public class NodeManager extends Node{
 			return;
 		}
 		
-		if (obj instanceof CrawlComplete) {
-			System.out.println("Got crawl complete");
-			return;
-		}
-		
 		// Page Rank Messages
 		if (obj instanceof LocalRankingComplete) {
 			LocalRankingComplete complete = (LocalRankingComplete) obj;
-			System.out.println("Local complete from : " + complete.host);
 			Peer donePeer = peerList.findPeer(complete.host, complete.port);
 			
 			if (donePeer != null) {
@@ -247,7 +240,6 @@ public class NodeManager extends Node{
 			}
 			
 			if (peerList.allPeersDone()) {
-				System.out.println("sending continue");
 				LocalRankingComplete localComplete = new LocalRankingComplete(Tools.getLocalHostname(), serverPort);
 				broadcastObject(localComplete);
 			}
@@ -257,7 +249,6 @@ public class NodeManager extends Node{
 		
 		if (obj instanceof RoundComplete) {
 			RoundComplete complete = (RoundComplete) obj;
-			System.out.println("Round complete from : " + complete.host);
 			
 			Peer donePeer = peerList.findPeer(complete.host, complete.port);
 			
@@ -266,7 +257,6 @@ public class NodeManager extends Node{
 			}
 			
 			if (peerList.allPeersDone()) {
-				System.out.println("All peers done. Moving to next round");
 				
 				if (RankRound < Constants.Page_Rank_Rounds) {
 					beginRound();

@@ -46,8 +46,7 @@ public class Worker extends Node{
 
 	PeerList peerList;
 
-	Object crawlLock;
-	boolean localCrawlDone;
+	int rankRound;
 
 	//================================================================================
 	// Constructor
@@ -62,7 +61,7 @@ public class Worker extends Node{
 		incomingRankData = new Vector<RankInfo>();
 		incomingCrawlRequests = new Vector<CrawlRequest>();
 		peerList = null;
-		localCrawlDone = false;
+		rankRound = 0;
 	}
 
 
@@ -126,18 +125,6 @@ public class Worker extends Node{
 		if (obj instanceof CrawlRequest) {
 			CrawlRequest request = (CrawlRequest) obj;
 			publishLink(request);
-			//incomingCrawlRequests.add(request);
-
-			return;
-		}
-
-		if (obj instanceof LocalCrawlComplete) {
-			//synchronized (crawlLock) {
-			localCrawlDone = true;
-			//}
-
-			System.out.println("Crawling remote links : " + incomingCrawlRequests.size());
-			crawlRemoteLinks();
 
 			return;
 		}
@@ -163,7 +150,7 @@ public class Worker extends Node{
 		}
 
 		if (obj instanceof BeginRound) {
-			System.out.println("Begining round");
+			System.out.println("Begining round: " + rankRound);
 			RankTask ranker = new RankTask(state, this);
 			poolManager.execute(ranker);
 

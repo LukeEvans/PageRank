@@ -298,6 +298,10 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
+			if (!state.shouldContinue()) {
+				System.out.println("No really, I'm done");
+				sendCompleteMessage();
+			}
 			return;
 		}
 
@@ -321,6 +325,10 @@ public class Worker extends Node{
 			}
 		}
 
+		if (!state.shouldContinue()) {
+			System.out.println("No really, I'm done");
+			sendCompleteMessage();
+		}
 	}
 
 

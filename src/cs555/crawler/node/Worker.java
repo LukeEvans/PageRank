@@ -127,7 +127,7 @@ public class Worker extends Node{
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
 			
-			System.out.println("Got score : " + info.score);
+			//System.out.println("Got score : " + info.score);
 			incomingRankData.add(info);
 			
 			return;

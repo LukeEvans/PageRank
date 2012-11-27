@@ -7,6 +7,7 @@ import java.util.Vector;
 import cs555.crawler.communications.Link;
 import cs555.crawler.crawlControl.CrawlComplete;
 import cs555.crawler.crawlControl.CrawlElection;
+import cs555.crawler.crawlControl.CrawlRequest;
 import cs555.crawler.crawlControl.LocalCrawlComplete;
 import cs555.crawler.peer.Peer;
 import cs555.crawler.peer.PeerList;
@@ -19,7 +20,6 @@ import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
-import cs555.crawler.wireformats.ElectionMessage;
 import cs555.crawler.wireformats.FetchRequest;
 import cs555.crawler.wireformats.FetchResponse;
 import cs555.crawler.wireformats.HandoffLookup;
@@ -214,8 +214,18 @@ public class NodeManager extends Node{
 			
 			if (peerList.allPeersDone()) {
 				System.out.println("Sending continue");
-				LocalCrawlComplete localComplete = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
-				broadcastObject(localComplete);
+				CrawlComplete crawlComplete = new CrawlComplete(Tools.getLocalHostname(), serverPort);
+				broadcastObject(crawlComplete);
+			}
+			
+			return;
+		}
+		
+		if (obj instanceof CrawlRequest) {
+			CrawlRequest handoff = (CrawlRequest) obj;
+			Peer peer = peerList.findDomainLeader(handoff.url);
+			if (peer != null) {
+				peer.ready = false;
 			}
 			
 			return;

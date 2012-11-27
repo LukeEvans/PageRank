@@ -115,17 +115,6 @@ public class Worker extends Node{
 			nodeManager.setLink(l);
 			domain = election.domain;
 
-			//			byte[] peerBytes = nodeManager.waitForData();
-			//			Object peerObj = Tools.bytesToObject(peerBytes);
-			//			if (peerObj instanceof PeerList) {
-			//				peerList = (PeerList) peerObj;
-			//								
-			//				for (Peer p : peerList.getAllPeers()) {
-			//					p.setLink(connect(p));
-			//					p.initLink();
-			//				}
-			//			}
-
 			// Begin Crawling
 			System.out.println("Crawling " + domain + "...\n");
 			CrawlRequest request = new CrawlRequest(election.domain, election.url, 0);
@@ -136,7 +125,8 @@ public class Worker extends Node{
 
 		if (obj instanceof CrawlRequest) {
 			CrawlRequest request = (CrawlRequest) obj;
-			incomingCrawlRequests.add(request);
+			publishLink(request);
+			//incomingCrawlRequests.add(request);
 
 			return;
 		}
@@ -153,7 +143,7 @@ public class Worker extends Node{
 		}
 
 		if (obj instanceof CrawlComplete) {
-			System.out.println("Crqwl Complete");
+			System.out.println("Crawl Complete");
 			//crawlComplete();
 		}
 
@@ -308,11 +298,6 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-
-			if (incomingCrawlRequests.size() == 0 && !state.shouldContinue()) {
-				sendCompleteMessage();
-			}
-
 			return;
 		}
 
@@ -336,14 +321,6 @@ public class Worker extends Node{
 			}
 		}
 
-		boolean cont = state.shouldContinue();
-		int size = incomingCrawlRequests.size();
-		
-		System.out.println("Cont : " + cont + " size: " + size);
-		
-		if (incomingCrawlRequests.size() == 0 && !state.shouldContinue()) {
-			sendCompleteMessage();
-		}
 	}
 
 
@@ -388,6 +365,7 @@ public class Worker extends Node{
 
 				if (leader != null) {
 					CrawlRequest req = new CrawlRequest(leader.domain, s, page.depth+1, page.urlString);
+					sendObject(nodeManager, req);
 					sendObject(leader, req);
 				}
 			}
@@ -415,20 +393,22 @@ public class Worker extends Node{
 	}
 
 	public void sendCompleteMessage() {
-		System.out.println("complete message method");
-		//synchronized (crawlLock) {
-		if (localCrawlDone) {
-			System.out.println("Sending global");
-			CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
-			sendObject(nodeManager, global);
-		}
-
-		else {
-			System.out.println("Sending local");
-			LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
-			sendObject(nodeManager, local);
-		}
-		//}
+//		System.out.println("complete message method");
+//		//synchronized (crawlLock) {
+//		if (localCrawlDone) {
+//			System.out.println("Sending global");
+//			CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
+//			sendObject(nodeManager, global);
+//		}
+//
+//		else {
+//			System.out.println("Sending local");
+//			LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
+//			sendObject(nodeManager, local);
+//		}
+//		//}
+		LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
+		sendObject(nodeManager, local);
 	}
 	//================================================================================
 	// Page Rank Methods 

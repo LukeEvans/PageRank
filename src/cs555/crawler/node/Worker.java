@@ -389,6 +389,7 @@ public class Worker extends Node{
 
 			}
 
+			incomingRankData.clear();
 		}
 
 		// Finalize scores

@@ -372,7 +372,7 @@ public class Worker extends Node{
 
 		// If we're done, print
 		if (!state.shouldContinue()) {
-			System.out.println("Sending complete message");
+			System.out.println("Sending complete message :)");
 			sendCompleteMessage();
 		}	
 
@@ -392,6 +392,7 @@ public class Worker extends Node{
 	}
 
 	public void sendCompleteMessage() {
+		System.out.println("complete message method");
 		synchronized (crawlLock) {
 			if (localCrawlDone) {
 				System.out.println("Sending global");

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cs555.crawler.utilities.*;
+import cs555.search.common.WordSet;
 
 public class CrawlerState implements java.io.Serializable {
 
@@ -264,6 +265,15 @@ public class CrawlerState implements java.io.Serializable {
 		}
 	}
 	
+	public WordSet getWordSet() {
+		WordSet words = new WordSet();
+		
+		for (Page p : getCompletedPages()) {
+			words.addWordSet(p.getWordSet());
+		}
+		
+		return words;
+	}
 	//================================================================================
 	// House Keeping
 	//================================================================================

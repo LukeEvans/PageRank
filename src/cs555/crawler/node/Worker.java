@@ -30,6 +30,8 @@ import cs555.crawler.rankControl.LocalRankingComplete;
 import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
+import cs555.search.common.AccessPoint;
+import cs555.search.common.WordSet;
 
 public class Worker extends Node{
 
@@ -170,6 +172,17 @@ public class Worker extends Node{
 			return;
 		}
 
+		
+		// DHT Seeding Messages
+		if (obj instanceof AccessPoint) {
+			AccessPoint accessPoint = (AccessPoint) obj;
+			Peer peer = new Peer(accessPoint.host, accessPoint.port);
+			peer.setLink(connect(peer));
+			
+			WordSet words = state.getWordSet();
+			
+			sendObject(peer, words);
+		}
 	}
 
 	//================================================================================

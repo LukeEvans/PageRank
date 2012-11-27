@@ -17,9 +17,9 @@ import java.nio.ByteBuffer;
 // Functions used all over the program. Handy location
 public class Tools {
 
-	// ================================================================================
-	// Message functions
-	// ================================================================================
+	//================================================================================
+	// Serialize Functions
+	//================================================================================
 	public static byte[] objectToBytes(Object o) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
@@ -58,6 +58,9 @@ public class Tools {
 		}
 	}
 	
+	// ================================================================================
+	// Message functions
+	// ================================================================================
 	// Get Message type
 	public static int getMessageType(byte[] bytes) {
 		byte[] copy = bytes.clone();

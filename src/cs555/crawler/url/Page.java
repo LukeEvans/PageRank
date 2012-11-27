@@ -5,6 +5,9 @@ import java.util.HashMap;
 
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.utilities.*;
+import cs555.search.common.Search;
+import cs555.search.common.Word;
+import cs555.search.common.WordSet;
 
 public class Page implements Comparable<Page>, java.io.Serializable {
 
@@ -77,6 +80,19 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 		synchronized (metaData) {
 			metaData.finalizeScore();	
 		}
+	}
+	
+	public WordSet getWordSet() {
+		WordSet words = new WordSet();
+		
+		for (String w : metaData.words.words) {
+			Word word = new Word(w);
+			Search search = new Search(urlString, metaData.pageScore);
+			word.addSearch(search);
+			words.addWord(word);
+		}
+		
+		return words;
 	}
 	
 	//================================================================================

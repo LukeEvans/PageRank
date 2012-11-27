@@ -1,5 +1,6 @@
 package cs555.crawler.url;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,8 +87,9 @@ public class PageMetadata implements java.io.Serializable {
 	}
 	
 	public void finalizeScore() {
-		pageScore = intermediateScore;
-		intermediateScore = 0;
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		pageScore = Double.valueOf(twoDForm.format(intermediateScore));
+		intermediateScore = 0.0;
 	}
 	
 	//================================================================================

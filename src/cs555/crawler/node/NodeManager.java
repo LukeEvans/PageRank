@@ -219,6 +219,15 @@ public class NodeManager extends Node{
 			
 			if (peerList.allPeersDone()) {
 				System.out.println("All peers done. Moving to next round");
+				
+				if (RankRound < Constants.Page_Rank_Rounds) {
+					beginRound();
+				}
+				
+				else {
+					RoundComplete pageRankComplete = new RoundComplete(Tools.getLocalHostname(), serverPort);
+					broadcastObject(pageRankComplete);
+				}
 			}
 			
 			return;

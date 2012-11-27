@@ -48,7 +48,7 @@ public class Worker extends Node{
 
 	Object crawlLock;
 	boolean localCrawlDone;
-	
+
 	//================================================================================
 	// Constructor
 	//================================================================================
@@ -114,18 +114,18 @@ public class Worker extends Node{
 			nodeManager = new Peer(election.managerHost, election.managerPort);
 			nodeManager.setLink(l);
 			domain = election.domain;
-			
-//			byte[] peerBytes = nodeManager.waitForData();
-//			Object peerObj = Tools.bytesToObject(peerBytes);
-//			if (peerObj instanceof PeerList) {
-//				peerList = (PeerList) peerObj;
-//								
-//				for (Peer p : peerList.getAllPeers()) {
-//					p.setLink(connect(p));
-//					p.initLink();
-//				}
-//			}
-			
+
+			//			byte[] peerBytes = nodeManager.waitForData();
+			//			Object peerObj = Tools.bytesToObject(peerBytes);
+			//			if (peerObj instanceof PeerList) {
+			//				peerList = (PeerList) peerObj;
+			//								
+			//				for (Peer p : peerList.getAllPeers()) {
+			//					p.setLink(connect(p));
+			//					p.initLink();
+			//				}
+			//			}
+
 			// Begin Crawling
 			System.out.println("Crawling " + domain + "...\n");
 			CrawlRequest request = new CrawlRequest(election.domain, election.url, 0);
@@ -140,18 +140,18 @@ public class Worker extends Node{
 
 			return;
 		}
-		
+
 		if (obj instanceof LocalCrawlComplete) {
 			//synchronized (crawlLock) {
-				localCrawlDone = true;
+			localCrawlDone = true;
 			//}
-			
+
 			System.out.println("Crawling remote links : " + incomingCrawlRequests.size());
 			crawlRemoteLinks();
-			
+
 			return;
 		}
-		
+
 		if (obj instanceof CrawlComplete) {
 			System.out.println("Crqwl Complete");
 			//crawlComplete();
@@ -302,16 +302,16 @@ public class Worker extends Node{
 
 		// Return if we're already at our max depth
 		if (request.depth == Constants.depth) {
-			
+
 			if (incomingCrawlRequests.size() == 0 && !state.shouldContinue()) {
 				sendCompleteMessage();
 			}
-			
+
 			return;
 		}
 
 		System.out.println("publishing : " + request.url);
-		
+
 		synchronized (state) {
 			Page page = new Page(request.url, request.depth, request.domain);
 
@@ -328,6 +328,10 @@ public class Worker extends Node{
 					thisPage.addIncomingLink(request.incoming);
 				}
 			}
+		}
+
+		if (incomingCrawlRequests.size() == 0 && !state.shouldContinue()) {
+			sendCompleteMessage();
 		}
 	}
 
@@ -402,17 +406,17 @@ public class Worker extends Node{
 	public void sendCompleteMessage() {
 		System.out.println("complete message method");
 		//synchronized (crawlLock) {
-			if (localCrawlDone) {
-				System.out.println("Sending global");
-				CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
-				sendObject(nodeManager, global);
-			}
-			
-			else {
-				System.out.println("Sending local");
-				LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
-				sendObject(nodeManager, local);
-			}
+		if (localCrawlDone) {
+			System.out.println("Sending global");
+			CrawlComplete global = new CrawlComplete(Tools.getLocalHostname(), serverPort);
+			sendObject(nodeManager, global);
+		}
+
+		else {
+			System.out.println("Sending local");
+			LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
+			sendObject(nodeManager, local);
+		}
 		//}
 	}
 	//================================================================================

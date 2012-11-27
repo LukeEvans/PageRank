@@ -368,6 +368,7 @@ public class Worker extends Node{
 
 		// If we're done, print
 		if (!state.shouldContinue()) {
+			System.out.println("Sending complete message :)");
 			sendCompleteMessage();
 		}	
 

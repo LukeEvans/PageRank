@@ -143,8 +143,8 @@ public class Worker extends Node{
 		}
 
 		if (obj instanceof CrawlComplete) {
-			System.out.println("Crawl Complete");
-			//crawlComplete();
+			crawlComplete();
+			return;
 		}
 
 		// Page Rank messages

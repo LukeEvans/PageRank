@@ -140,7 +140,7 @@ public class Worker extends Node{
 		}
 
 		if (obj instanceof RoundComplete) {
-			System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
+			rankComplete();
 			return;
 		}
 
@@ -396,11 +396,6 @@ public class Worker extends Node{
 			incomingRankData.clear();
 		}
 
-		// Finalize scores
-		for (Page p : state.getCompletedPages()) {
-			p.rankRoundComplete();
-		}
-
 		// Tell the node manager that we're done with this round
 		RoundComplete complete = new RoundComplete(Tools.getLocalHostname(), serverPort);
 		sendObject(nodeManager, complete);
@@ -515,6 +510,15 @@ public class Worker extends Node{
 			System.out.println("Could not save crawl state to disk");
 			e.printStackTrace();
 		}
+	}
+	
+	public void rankComplete() {
+		// Finalize scores
+		for (Page p : state.getCompletedPages()) {
+			p.rankRoundComplete();
+		}
+		
+		System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 	}
 	//================================================================================
 	//================================================================================

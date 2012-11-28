@@ -62,7 +62,7 @@ public class WordSet implements Serializable {
 		String s = "";
 		
 		for (int i=0; i<5; i++) {
-			s += words.get(i) + "\n";
+			s += "\n" + words.get(i);
 		}
 		
 		return s;

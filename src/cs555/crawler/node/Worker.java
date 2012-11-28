@@ -2,6 +2,7 @@ package cs555.crawler.node;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -192,14 +193,15 @@ public class Worker extends Node{
 			
 
 			WordSet words = state.getWordSet();
+			saveWords(words);
 			
-			int i = 0;
-			for (Word w : words.words) {
-				i++;
-				sendObject(nodeManager, w);
-			}
-			
-			System.out.println("Sent : " + i);
+//			int i = 0;
+//			for (Word w : words.words) {
+//				i++;
+//				sendObject(nodeManager, w);
+//			}
+//			
+//			System.out.println("Sent : " + i);
 			
 //			
 //			System.out.println("Sending : " + words);
@@ -494,6 +496,26 @@ public class Worker extends Node{
 		}
 	}
 
+	public void saveWords(WordSet set) {
+		String flatDomain = Tools.flattenURL(domain);
+		
+		// Write to disk with FileOutputStream
+		FileOutputStream f_out;
+		try {
+			f_out = new FileOutputStream(Constants.base_path + flatDomain + ".words");
+			// Write object with ObjectOutputStream
+			ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
+
+			// Write object out to disk
+			obj_out.writeObject (state);
+
+			obj_out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void crawlComplete() {
 
 		nodeManager.closeLink();

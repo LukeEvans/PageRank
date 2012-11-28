@@ -43,15 +43,6 @@ public class Peer implements Serializable {
 
 	public void sendData(byte[] bytes) throws IOException {
 		if (link != null) { 
-//			try {
-//				//System.out.println("Sending to port   : " + link.socket.getPort());
-//				//System.out.println("Sending from port : " + link.socket.getLocalPort());
-//				link.sendData(bytes);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				return;
-//			}
 			link.sendData(bytes);
 		}
 		

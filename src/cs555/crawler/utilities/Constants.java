@@ -42,7 +42,7 @@ public class Constants {
 	public static final int Default_Thread_Count = 5;
 	
 	// Message sizes
-	public static final int LEN_BYTES = 3072;
+	public static final int LEN_BYTES = 10240;
 	
 	// Domains
 	public static final List<String> domains = Arrays.asList("bmb.colostate.edu", "biology.colostate.edu", "chem.colostate.edu", "cs.colostate.edu", "math.colostate.edu", "physics.colostate.edu", "colostate.edu/Depts/Psychology", "stat.colostate.edu");

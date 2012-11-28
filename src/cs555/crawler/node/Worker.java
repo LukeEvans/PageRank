@@ -185,7 +185,10 @@ public class Worker extends Node{
 			System.out.println("Got access point : " + peer.hostname);
 			System.out.println("Read state" + state.graphDiagnostics());
 			
+
 			WordSet words = state.getWordSet();
+			
+			System.out.println("Sending : " + words);
 			
 			sendObject(peer, words);
 		}

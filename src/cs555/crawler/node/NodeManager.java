@@ -282,6 +282,10 @@ public class NodeManager extends Node{
 			return;
 		}
 		
+		if (obj instanceof AccessPoint) {
+			System.out.println("Holy mother fucking shit");
+		}
+		
 		System.out.println("unrecognized");
 	}
 

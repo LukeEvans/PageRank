@@ -198,6 +198,7 @@ public class Worker extends Node{
 			System.out.println("Sent sanity " + words);
 			
 			sendObject(peer, accessPoint);
+			sendObject(s, accessPoint);
 		}
 	}
 

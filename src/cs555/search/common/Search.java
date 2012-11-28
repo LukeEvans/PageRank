@@ -31,6 +31,14 @@ public class Search implements Comparable<Search>, Serializable{
 		return false;
 	}
 
+	public String toString() {
+		String s = "";
+		
+		s += pageUrl + " : " + pageScore;
+		
+		return s;
+	}
+	
 	@Override
 	public int compareTo(Search o) {
 		if (pageScore == o.pageScore) return 0;

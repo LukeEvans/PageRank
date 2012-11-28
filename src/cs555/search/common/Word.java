@@ -12,6 +12,7 @@ public class Word implements Serializable {
 
 	public String word;
 	public ArrayList<Search> searchSet;
+	public int hash;
 	
 	//================================================================================
 	// Constructors
@@ -19,6 +20,7 @@ public class Word implements Serializable {
 	public Word(String w) {
 		word = w;
 		searchSet = new ArrayList<Search>();
+		hash = -1;
 	}
 	
 	//================================================================================
@@ -98,7 +100,13 @@ public class Word implements Serializable {
 	public String toString() {
 		String s = "";
 		
-		s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
+		if (searchSet.size() > 0) {
+			s += "Word: " + word + " : " + searchSet.get(0);
+		}
+		
+		else {
+			s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
+		}
 		
 		return s;
 	}

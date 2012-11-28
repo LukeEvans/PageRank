@@ -14,10 +14,16 @@ public class AccessPointList implements Serializable {
 	public ArrayList<AccessPoint> accessPeers;
 	
 	//================================================================================
-	// Constructor
+	// Constructors
 	//================================================================================
 	public AccessPointList(int s, ArrayList<AccessPoint> ap) {
-		size = 0;
+		size = s;
 		accessPeers = ap;
 	}
+	
+	public AccessPointList(int s) {
+		size = s;
+		accessPeers = new ArrayList<AccessPoint>();
+	}
 }
+

@@ -20,6 +20,8 @@ import cs555.crawler.url.CrawlerState;
 import cs555.crawler.url.Page;
 import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
+import cs555.search.common.AccessPoint;
+import cs555.search.common.AccessPointList;
 
 public class NodeManager extends Node{
 
@@ -65,6 +67,18 @@ public class NodeManager extends Node{
 		sendData(p, Tools.objectToBytes(o));
 	}
 	
+	public void broadcastObject(Object o) {
+		byte[] data = Tools.objectToBytes(o);
+		
+		for (Peer p : peerList.getAllPeers()) {
+			p.ready = false;
+			sendData(p, data);
+		}
+	}
+	
+	//================================================================================
+	// Begin Crawling
+	//================================================================================
 	public void broadcastElection(){
 
 		ArrayList<Page> allDomains = new ArrayList<Page>(state.getAllPages());
@@ -80,10 +94,6 @@ public class NodeManager extends Node{
 			peer.setLink(connect(peer));
 			peer.initLink();
 
-//			synchronized (state) {
-//				CrawlElection election = new CrawlElection(Tools.getLocalHostname(), serverPort, page.domain, page.urlString);
-//				sendObject(peer, election);
-//			}
 		}
 		
 		// Send peer list
@@ -96,16 +106,10 @@ public class NodeManager extends Node{
 		}
 		
 	}
-
-	public void broadcastObject(Object o) {
-		byte[] data = Tools.objectToBytes(o);
-		
-		for (Peer p : peerList.getAllPeers()) {
-			p.ready = false;
-			sendData(p, data);
-		}
-	}
 	
+	//================================================================================
+	// Begin Page Rank
+	//================================================================================
 	public void beginPageRank() {
 		RankElection election = new RankElection(Tools.getLocalHostname(), serverPort);
 		int totalCrawled = 0;
@@ -160,6 +164,30 @@ public class NodeManager extends Node{
 		RankRound++;
 		BeginRound begin = new BeginRound(RankRound);
 		broadcastObject(begin);		
+	}
+	
+	
+	//================================================================================
+	// Begin DHT Seeding
+	//================================================================================
+	public void beginSeedingDHT(String host, int port) {
+		Peer dhtManager = new Peer(host, port);
+		dhtManager.setLink(connect(dhtManager));
+		
+		AccessPointList dhtNodes = new AccessPointList(peerList.size());
+		sendObject(dhtManager, dhtNodes);
+		
+		byte[] bytes = dhtManager.waitForData();
+		Object obj = Tools.bytesToObject(bytes);
+		
+		if (obj instanceof AccessPointList) {
+			AccessPointList accesPoints = (AccessPointList) obj;
+			
+			for (AccessPoint point : accesPoints.accessPeers) {
+				Peer worker = peerList.getReadyPeer();
+				sendObject(worker, point);
+			}
+		}
 	}
 	
 	//================================================================================

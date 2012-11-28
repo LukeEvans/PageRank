@@ -31,6 +31,7 @@ import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
 import cs555.search.common.AccessPoint;
+import cs555.search.common.Word;
 import cs555.search.common.WordSet;
 
 public class Worker extends Node{
@@ -191,8 +192,10 @@ public class Worker extends Node{
 			
 
 			WordSet words = state.getWordSet();
-			sendObject(nodeManager, words);
-			
+
+			for (Word w : words.words) {
+				sendObject(nodeManager, w);
+			}
 //			
 //			System.out.println("Sending : " + words);
 //			

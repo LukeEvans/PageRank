@@ -185,6 +185,7 @@ public class NodeManager extends Node{
 			
 			for (AccessPoint point : accesPoints.accessPeers) {
 				Peer worker = peerList.getReadyPeer();
+				worker.setLink(connect(worker));
 				
 				System.out.println("Sendig access point to peer: " + worker.hostname);
 				sendObject(worker, point);

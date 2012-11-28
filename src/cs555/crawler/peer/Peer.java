@@ -47,7 +47,7 @@ public class Peer implements Serializable {
 		}
 		
 		else {
-			System.out.println("Fucking link is null");
+			System.out.println(hostname + " link is null");
 		}
 	}
 

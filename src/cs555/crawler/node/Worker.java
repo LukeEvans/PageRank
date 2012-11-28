@@ -185,12 +185,6 @@ public class Worker extends Node{
 
 			System.out.println("Got access point : " + peer.hostname);
 
-			// Testing
-			nodeManager = new Peer(accessPoint.host, accessPoint.port);
-			nodeManager.setLink(l);
-
-
-
 			WordSet words = state.getWordSet();
 
 			int i=0;
@@ -199,10 +193,8 @@ public class Worker extends Node{
 					break;
 				}
 
-				Word w = words.words.get(0);
-				sendObject(nodeManager, chunk);
+				sendObject(peer, chunk);
 				System.out.println("Sent 1 chunk: " + chunk);
-
 
 				i++;
 
@@ -211,26 +203,6 @@ public class Worker extends Node{
 			//saveWords(words);
 			//System.out.println("Words saved");
 
-			//			int i = 0;
-			//			for (Word w : words.words) {
-			//				i++;
-			//				sendObject(nodeManager, w);
-			//			}
-			//			
-			//			System.out.println("Sent : " + i);
-
-			//			
-			//			System.out.println("Sending : " + words);
-			//			
-			//			sendObject(peer, words);
-			//			
-			//			Peer s = new Peer("bean", 5678);
-			//			s.setLink(l);
-			//			sendObject(s, words);
-			//			System.out.println("Sent sanity " + words);
-			//			
-			//			sendObject(peer, accessPoint);
-			//			sendObject(s, accessPoint);
 		}
 	}
 

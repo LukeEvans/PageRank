@@ -18,6 +18,7 @@ public class Word implements Serializable {
 	//================================================================================
 	public Word(String w) {
 		word = w;
+		searchSet = new ArrayList<Search>();
 	}
 	
 	//================================================================================

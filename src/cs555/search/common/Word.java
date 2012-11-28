@@ -12,7 +12,7 @@ public class Word implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public String word;
-	public ArrayList<Search> searchSet;
+	transient public ArrayList<Search> searchSet;
 	
 	//================================================================================
 	// Constructors

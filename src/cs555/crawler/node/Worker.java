@@ -2,7 +2,6 @@ package cs555.crawler.node;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -32,7 +31,7 @@ import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
 import cs555.search.common.AccessPoint;
-import cs555.search.common.Word;
+import cs555.search.common.Continue;
 import cs555.search.common.WordSet;
 
 public class Worker extends Node{
@@ -190,16 +189,24 @@ public class Worker extends Node{
 			int i=0;
 			for (WordSet chunk : words.getChunks()) {
 				if (i==1) {
-					break;
+					//break;
 				}
 
 				sendObject(peer, chunk);
-				System.out.println("Sent 1 chunk: " + chunk);
+				//System.out.println("Sent 1 chunk: " + chunk);
 
+				Object reply = Tools.bytesToObject(peer.waitForData());
+				
+				if (!(reply instanceof Continue)) {
+					System.out.println("Got a reply that was not a continue");
+					break;
+				}
 				i++;
 
 			}
 
+			System.exit(0);
+			
 			//saveWords(words);
 			//System.out.println("Words saved");
 

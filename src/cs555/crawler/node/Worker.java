@@ -184,7 +184,6 @@ public class Worker extends Node{
 			peer.setLink(connect(peer));
 			
 			System.out.println("Got access point : " + peer.hostname);
-			System.out.println("Read state" + state.graphDiagnostics());
 			
 			// Testing
 			nodeManager = new Peer(accessPoint.host, accessPoint.port);
@@ -194,6 +193,7 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 			saveWords(words);
+			System.out.println("Words saved");
 			
 //			int i = 0;
 //			for (Word w : words.words) {

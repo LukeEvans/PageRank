@@ -47,7 +47,7 @@ public class WordSet implements Serializable {
 	public ArrayList<WordSet> getChunks() {
 		ArrayList<WordSet> chunks = new ArrayList<WordSet>();
 		
-		int chunkSize = 5;
+		int chunkSize = 1;
 		int wordSize = words.size();
 		int numberOfChunks = wordSize / chunkSize;
 		

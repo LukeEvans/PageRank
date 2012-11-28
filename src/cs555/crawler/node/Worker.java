@@ -173,62 +173,63 @@ public class Worker extends Node{
 			return;
 		}
 
-		
+
 		// DHT Seeding Messages
 		if (obj instanceof AccessPoint) {
-			
+
 			readFromDisk();
-			
+
 			AccessPoint accessPoint = (AccessPoint) obj;
 			Peer peer = new Peer(accessPoint.host, accessPoint.port);
 			peer.setLink(connect(peer));
-			
+
 			System.out.println("Got access point : " + peer.hostname);
-			
+
 			// Testing
 			nodeManager = new Peer(accessPoint.host, accessPoint.port);
 			nodeManager.setLink(l);
-			
-			
+
+
 
 			WordSet words = state.getWordSet();
-			
+
 			int i=0;
 			for (WordSet chunk : words.getChunks()) {
 				if (i==1) {
 					break;
 				}
-				
-				Word w = words.words.get(0);
-				sendObject(nodeManager, w);
-				System.out.println("Sent one word with search size " + w.searchSet.size());
-				
-				i++;
+
+				if (Tools.getLocalHostname().contains("chard")) {
+					Word w = words.words.get(0);
+					sendObject(nodeManager, w);
+					System.out.println("Sent one word with search size " + w.searchSet.size());
+				}
+
 			}
-			
+
 			//saveWords(words);
 			//System.out.println("Words saved");
-			
-//			int i = 0;
-//			for (Word w : words.words) {
-//				i++;
-//				sendObject(nodeManager, w);
-//			}
-//			
-//			System.out.println("Sent : " + i);
-			
-//			
-//			System.out.println("Sending : " + words);
-//			
-//			sendObject(peer, words);
-//			
-//			Peer s = new Peer("bean", 5678);
-//			s.setLink(l);
-//			sendObject(s, words);
-//			System.out.println("Sent sanity " + words);
-//			
-//			sendObject(peer, accessPoint);
-//			sendObject(s, accessPoint);
+
+			//			int i = 0;
+			//			for (Word w : words.words) {
+			//				i++;
+			//				sendObject(nodeManager, w);
+			//			}
+			//			
+			//			System.out.println("Sent : " + i);
+
+			//			
+			//			System.out.println("Sending : " + words);
+			//			
+			//			sendObject(peer, words);
+			//			
+			//			Peer s = new Peer("bean", 5678);
+			//			s.setLink(l);
+			//			sendObject(s, words);
+			//			System.out.println("Sent sanity " + words);
+			//			
+			//			sendObject(peer, accessPoint);
+			//			sendObject(s, accessPoint);
 		}
 	}
 
@@ -238,10 +239,10 @@ public class Worker extends Node{
 	public void crawlRemoteLinks() {
 		synchronized (incomingCrawlRequests) {
 			Vector<CrawlRequest> temp = new Vector<CrawlRequest>(incomingCrawlRequests);
-			
+
 			for (CrawlRequest req : temp) {
 				publishLink(req);
-				
+
 				if (incomingCrawlRequests.size() > 0) {
 					incomingCrawlRequests.remove(0);
 				}
@@ -364,7 +365,7 @@ public class Worker extends Node{
 		LocalCrawlComplete local = new LocalCrawlComplete(Tools.getLocalHostname(), serverPort);
 		sendObject(nodeManager, local);
 	}
-	
+
 	//================================================================================
 	// Page Rank Methods 
 	//================================================================================
@@ -512,7 +513,7 @@ public class Worker extends Node{
 
 	public void saveWords(WordSet set) {
 		String flatDomain = Tools.flattenURL(domain);
-		
+
 		// Write to disk with FileOutputStream
 		FileOutputStream f_out;
 		try {
@@ -529,7 +530,7 @@ public class Worker extends Node{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void crawlComplete() {
 
 		nodeManager.closeLink();
@@ -565,7 +566,7 @@ public class Worker extends Node{
 			System.out.println("Could not save state to Disk");
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 	}
 	//================================================================================

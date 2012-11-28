@@ -185,6 +185,8 @@ public class NodeManager extends Node{
 			
 			for (AccessPoint point : accesPoints.accessPeers) {
 				Peer worker = peerList.getReadyPeer();
+				
+				System.out.println("Sendig access point to peer: " + worker.hostname);
 				sendObject(worker, point);
 			}
 		}
@@ -284,7 +286,9 @@ public class NodeManager extends Node{
 		String linkFile = "";
 		String slaveFile = "";
 		String workType = "";
-
+		String dhtManagerHost = "";
+		int dhtManagerPort = 0;
+		
 		if (args.length == 4) {
 			port = Integer.parseInt(args[0]);
 			linkFile = args[1];
@@ -292,9 +296,17 @@ public class NodeManager extends Node{
 			workType = args[3];
 		}
 
+		else if (args.length == 6) {
+			port = Integer.parseInt(args[0]);
+			linkFile = args[1];
+			slaveFile = args[2];
+			workType = args[3];
+			dhtManagerHost = args[4];
+			dhtManagerPort = Integer.parseInt(args[5]);
+		}
 
 		else {
-			System.out.println("Usage: java node.NodeManager PORT LINK-FILE SLAVE-FILE TYPE");
+			System.out.println("Usage: java node.NodeManager PORT LINK-FILE SLAVE-FILE TYPE <dht manager host> <dht manager port>");
 			System.exit(1);
 		}
 
@@ -316,6 +328,11 @@ public class NodeManager extends Node{
 		else if (workType.equalsIgnoreCase("rank")) {
 			// Begin page rank
 			manager.beginPageRank();
+		}
+		
+		else if (workType.equalsIgnoreCase("seed")) {
+			// Begin seeding dht
+			manager.beginSeedingDHT(dhtManagerHost, dhtManagerPort);
 		}
 
 		else {

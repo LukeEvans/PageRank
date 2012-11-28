@@ -175,9 +175,15 @@ public class Worker extends Node{
 		
 		// DHT Seeding Messages
 		if (obj instanceof AccessPoint) {
+			
+			readFromDisk();
+			
 			AccessPoint accessPoint = (AccessPoint) obj;
 			Peer peer = new Peer(accessPoint.host, accessPoint.port);
 			peer.setLink(connect(peer));
+			
+			System.out.println("Got access point : " + peer.hostname);
+			System.out.println("Read state" + state);
 			
 			WordSet words = state.getWordSet();
 			
@@ -491,6 +497,14 @@ public class Worker extends Node{
 		// Sort the completed links
 		state.sortCompleted();
 
+		try {
+			saveToDisk();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Could not save state to Disk");
+			e.printStackTrace();
+		}
+		
 		System.out.println("Page Rank Complete: \n" + state.graphDiagnostics());
 	}
 	//================================================================================

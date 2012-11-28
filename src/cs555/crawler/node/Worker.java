@@ -192,13 +192,10 @@ public class Worker extends Node{
 			
 			sendObject(peer, words);
 			
-			try {
-				l.sendData(Tools.objectToBytes(words));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("Sending sanity");
+			Peer s = new Peer("bean", 5678);
+			s.setLink(connect(s));
+			sendObject(s, words);
+			System.out.println("Sent sanity");
 		}
 	}
 

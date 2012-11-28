@@ -10,5 +10,3 @@ ssh kelp $cmd &
 ssh leek $cmd &   
 ssh okra $cmd & 
 ssh onion $cmd & 
-
-`$cmd`

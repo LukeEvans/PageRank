@@ -201,6 +201,8 @@ public class Worker extends Node{
 				
 				sendObject(nodeManager, chunk);
 				System.out.println("Sent chunk of size : " + chunk.words.size());
+				
+				i++;
 			}
 			
 			//saveWords(words);

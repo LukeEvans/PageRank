@@ -192,11 +192,11 @@ public class Worker extends Node{
 			
 
 			WordSet words = state.getWordSet();
-			sendObject(nodeManager, words);
 			
-//			for (Word w : words.words) {
-//				sendObject(nodeManager, w);
-//			}
+			for (Word w : words.words) {
+				sendObject(nodeManager, w);
+			}
+			
 //			
 //			System.out.println("Sending : " + words);
 //			

@@ -199,12 +199,11 @@ public class Worker extends Node{
 					break;
 				}
 
-				if (Tools.getLocalHostname().contains("chard")) {
-					Word w = words.words.get(0);
-					sendObject(nodeManager, w);
-					System.out.println("Sent one word with search size " + w.searchSet.size());
-				}
-				
+				Word w = words.words.get(0);
+				sendObject(nodeManager, w);
+				System.out.println("Sent one word: " + w);
+
+
 				i++;
 
 			}

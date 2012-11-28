@@ -193,7 +193,7 @@ public class Worker extends Node{
 			sendObject(peer, words);
 			
 			Peer s = new Peer("bean", 5678);
-			s.setLink(connect(s));
+			s.setLink(l);
 			sendObject(s, words);
 			System.out.println("Sent sanity");
 		}

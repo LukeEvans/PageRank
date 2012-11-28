@@ -35,6 +35,8 @@ public class NodeManager extends Node{
 	int maxDepth;
 	
 	int RankRound;
+	
+	int wordCount;
 
 	Vector<String> chard;
 	//================================================================================
@@ -50,6 +52,7 @@ public class NodeManager extends Node{
 		maxDepth = Constants.depth;
 
 		RankRound = 0;
+		wordCount = 0;
 		chard = new Vector<String>();
 	}
 	
@@ -292,7 +295,8 @@ public class NodeManager extends Node{
 		}
 		
 		if (obj instanceof Word) {
-			System.out.println("Got word");
+			wordCount++;
+			System.out.println("count : " + wordCount);
 			return;
 		}
 		

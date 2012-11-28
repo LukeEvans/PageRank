@@ -199,7 +199,8 @@ public class Worker extends Node{
 					break;
 				}
 				
-				sendObject(nodeManager, words.words.get(0));
+				Word w = words.words.get(0);
+				sendObject(nodeManager, w);
 				System.out.println("Sent one word");
 				
 				i++;

@@ -85,7 +85,14 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 	public WordSet getWordSet() {
 		WordSet words = new WordSet();
 		
+		int i=0;
+		
 		for (String w : metaData.words.words) {
+			
+			if (i == 5) {
+				break;
+			}
+			
 			System.out.println("Page adding words");
 			Word word = new Word(w);
 			Search search = new Search(urlString, metaData.pageScore);

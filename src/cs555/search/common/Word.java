@@ -27,6 +27,10 @@ public class Word implements Serializable {
 	public void addSearch(Search search) {
 		int searchIndex = indexOf(search);
 		
+		if (searchSet.size() > 5) {
+			return;
+		}
+		
 		// If we already have this url, keep the maximum of the two
 		if (searchIndex > -1) {
 			if (search.pageScore > searchSet.get(searchIndex).pageScore) {
@@ -92,12 +96,12 @@ public class Word implements Serializable {
 		return false;
 	}
 	
-//	public String toString() {
-//		String s = "";
-//		
-//		s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
-//		
-//		return s;
-//	}
+	public String toString() {
+		String s = "";
+		
+		s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
+		
+		return s;
+	}
 }
 

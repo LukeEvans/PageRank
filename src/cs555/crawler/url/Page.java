@@ -90,7 +90,7 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 		for (String w : metaData.words.words) {
 			
 			if (i == 5) {
-				break;
+				//break;
 			}
 			
 			Word word = new Word(w);

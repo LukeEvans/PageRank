@@ -193,7 +193,7 @@ public class Worker extends Node{
 				}
 
 				sendObject(peer, chunk);
-				//System.out.println("Sent 1 chunk: " + chunk);
+				System.out.println("Sent 1 chunk: " + chunk);
 
 				Object reply = Tools.bytesToObject(peer.waitForData());
 				

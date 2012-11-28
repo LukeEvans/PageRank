@@ -201,7 +201,7 @@ public class Worker extends Node{
 				
 				Word w = words.words.get(0);
 				sendObject(nodeManager, w);
-				System.out.println("Sent one word");
+				System.out.println("Sent one word with search size " + w.searchSet.size());
 				
 				i++;
 			}

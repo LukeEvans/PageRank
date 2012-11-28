@@ -200,8 +200,8 @@ public class Worker extends Node{
 				}
 
 				Word w = words.words.get(0);
-				sendObject(nodeManager, w);
-				System.out.println("Sent one word: " + w);
+				sendObject(nodeManager, chunk);
+				System.out.println("Sent 1 chunk: " + chunk);
 
 
 				i++;

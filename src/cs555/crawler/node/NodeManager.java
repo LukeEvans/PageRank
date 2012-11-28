@@ -290,9 +290,9 @@ public class NodeManager extends Node{
 		}
 		
 		if (obj instanceof WordSet) {
-			System.out.println("Sanity motha fucka");
 			WordSet set = (WordSet) obj;
-			System.out.println("Got set of size : " + set.words.size() + " from " + l.remoteHost);
+			System.out.println("Got set: " + set + " from " + l.remoteHost);
+			
 			return;
 		}
 		

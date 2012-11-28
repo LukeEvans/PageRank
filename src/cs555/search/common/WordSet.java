@@ -49,7 +49,7 @@ public class WordSet implements Serializable {
 	public ArrayList<WordSet> getChunks() {
 		ArrayList<WordSet> chunks = new ArrayList<WordSet>();
 		
-		int chunkSize = 1;
+		int chunkSize = 100;
 		int wordSize = words.size();
 		int numberOfChunks = wordSize / chunkSize;
 		
@@ -95,5 +95,13 @@ public class WordSet implements Serializable {
 		}
 		
 		return -1;
+	}
+	
+	public String toString() {
+		String s = "";
+		
+		s += "Word Count: " + words.size();
+		
+		return s;
 	}
 }

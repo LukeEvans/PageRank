@@ -199,8 +199,8 @@ public class Worker extends Node{
 					break;
 				}
 				
-				sendObject(nodeManager, chunk);
-				System.out.println("Sent chunk of size : " + chunk.words.size());
+				sendObject(nodeManager, words.words.get(0));
+				System.out.println("Sent one word");
 				
 				i++;
 			}

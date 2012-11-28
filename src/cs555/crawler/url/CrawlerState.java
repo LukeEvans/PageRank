@@ -268,8 +268,16 @@ public class CrawlerState implements java.io.Serializable {
 	public WordSet getWordSet() {
 		WordSet words = new WordSet();
 		
+		int i = 0;
 		for (Page p : getCompletedPages()) {
+			
+			if (i>= 5) {
+				break;
+			}
+			
 			words.addWordSet(p.getWordSet());
+			
+			i++;
 		}
 		
 		return words;

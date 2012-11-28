@@ -156,7 +156,6 @@ public class Worker extends Node{
 
 		if (obj instanceof RankInfo) {
 			RankInfo info = (RankInfo) obj;
-
 			incomingRankData.add(info);
 
 			return;
@@ -185,20 +184,25 @@ public class Worker extends Node{
 			System.out.println("Got access point : " + peer.hostname);
 			System.out.println("Read state" + state.graphDiagnostics());
 			
+			// Testing
+			nodeManager = new Peer(accessPoint.host, accessPoint.port);
+			nodeManager.setLink(l);
+			
+			sendObject(nodeManager, accessPoint);
 
-			WordSet words = state.getWordSet();
-			
-			System.out.println("Sending : " + words);
-			
-			sendObject(peer, words);
-			
-			Peer s = new Peer("bean", 5678);
-			s.setLink(l);
-			sendObject(s, words);
-			System.out.println("Sent sanity " + words);
-			
-			sendObject(peer, accessPoint);
-			sendObject(s, accessPoint);
+//			WordSet words = state.getWordSet();
+//			
+//			System.out.println("Sending : " + words);
+//			
+//			sendObject(peer, words);
+//			
+//			Peer s = new Peer("bean", 5678);
+//			s.setLink(l);
+//			sendObject(s, words);
+//			System.out.println("Sent sanity " + words);
+//			
+//			sendObject(peer, accessPoint);
+//			sendObject(s, accessPoint);
 		}
 	}
 

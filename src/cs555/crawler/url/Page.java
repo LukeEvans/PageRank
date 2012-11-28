@@ -93,7 +93,6 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 				//break;
 			}
 			
-			System.out.println("Page adding words");
 			Word word = new Word(w);
 			Search search = new Search(urlString, metaData.pageScore);
 			word.addSearch(search);

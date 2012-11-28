@@ -98,6 +98,8 @@ public class Page implements Comparable<Page>, java.io.Serializable {
 			Search search = new Search(urlString, metaData.pageScore);
 			word.addSearch(search);
 			words.addWord(word);
+			
+			i++;
 		}
 		
 		return words;

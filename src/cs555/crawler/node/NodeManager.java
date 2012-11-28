@@ -282,6 +282,7 @@ public class NodeManager extends Node{
 			return;
 		}
 		
+		System.out.println("unrecognized");
 	}
 
 

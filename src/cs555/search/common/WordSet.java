@@ -42,6 +42,43 @@ public class WordSet implements Serializable {
 	}
 	
 	//================================================================================
+	// Accessors
+	//================================================================================
+	public ArrayList<WordSet> getChunks() {
+		ArrayList<WordSet> chunks = new ArrayList<WordSet>();
+		
+		int chunkSize = 100;
+		int wordSize = words.size();
+		int numberOfChunks = wordSize / chunkSize;
+		
+		int wordIndex = 0;
+		
+		for (int i=0; i<numberOfChunks; i++) {
+			WordSet set = new WordSet();
+			
+			for (int j=0; j<chunkSize; j++) {
+				set.addWord(words.get(wordIndex));
+				wordIndex++;
+			}
+			
+			chunks.add(set);
+		}
+		
+		int remaining = wordSize - wordIndex;
+		WordSet leftover = new WordSet();
+		for (int i=wordIndex; i<wordSize; i++) {
+			leftover.addWord(words.get(i));
+		}
+		
+		System.out.println("Remaining : " + remaining);
+		
+		if (remaining > 0) {
+			chunks.add(leftover);
+		}
+		
+		return chunks;
+	}
+	//================================================================================
 	// House Keeping
 	//================================================================================
 //	public boolean contains(Word other) {

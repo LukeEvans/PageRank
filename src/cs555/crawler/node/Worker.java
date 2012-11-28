@@ -192,8 +192,19 @@ public class Worker extends Node{
 			
 
 			WordSet words = state.getWordSet();
-			saveWords(words);
-			System.out.println("Words saved");
+			
+			int i=0;
+			for (WordSet chunk : words.getChunks()) {
+				if (i==1) {
+					break;
+				}
+				
+				sendObject(nodeManager, chunk);
+				System.out.println("Sent chunk of size : " + chunk.words.size());
+			}
+			
+			//saveWords(words);
+			//System.out.println("Words saved");
 			
 //			int i = 0;
 //			for (Word w : words.words) {

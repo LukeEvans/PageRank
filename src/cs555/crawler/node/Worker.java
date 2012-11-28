@@ -188,9 +188,11 @@ public class Worker extends Node{
 			nodeManager = new Peer(accessPoint.host, accessPoint.port);
 			nodeManager.setLink(l);
 			
-			sendObject(nodeManager, accessPoint);
+			
 
-//			WordSet words = state.getWordSet();
+			WordSet words = state.getWordSet();
+			sendObject(nodeManager, words);
+			
 //			
 //			System.out.println("Sending : " + words);
 //			

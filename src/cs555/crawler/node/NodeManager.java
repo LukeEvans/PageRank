@@ -286,8 +286,7 @@ public class NodeManager extends Node{
 		}
 		
 		if (obj instanceof WordSet) {
-			WordSet sanity = (WordSet) obj;
-			System.out.println("Sanity : " + sanity);
+			System.out.println("Sanity motha fucka");
 			return;
 		}
 		

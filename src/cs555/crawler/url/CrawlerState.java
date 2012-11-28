@@ -275,6 +275,7 @@ public class CrawlerState implements java.io.Serializable {
 				break;
 			}
 			
+			System.out.println("State. Adding word");
 			words.addWordSet(p.getWordSet());
 			
 			i++;

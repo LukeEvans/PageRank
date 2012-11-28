@@ -20,6 +20,7 @@ public class SendTask implements Task {
 	public void run() {		
 		try {
 			peer.sendData(dataToSend);
+			System.out.println("Data sent");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

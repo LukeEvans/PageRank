@@ -272,7 +272,7 @@ public class CrawlerState implements java.io.Serializable {
 		for (Page p : getCompletedPages()) {
 			
 			if (i>= 5) {
-				break;
+				//break;
 			}
 			
 			System.out.println("State. Adding word");

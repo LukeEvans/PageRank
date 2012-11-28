@@ -2,7 +2,7 @@ package cs555.search.common;
 
 import java.io.Serializable;
 
-public class Search implements Comparable<Search>, Serializable{
+public class Search implements Serializable{
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class Search implements Comparable<Search>, Serializable{
 	//================================================================================
 	// House Keeping
 	//================================================================================
-	public boolean equals(Search s) {
+	public boolean isTheSame(Search s) {
 		if (this.pageUrl.equalsIgnoreCase(s.pageUrl)) {
 			return true;
 		}
@@ -31,10 +31,10 @@ public class Search implements Comparable<Search>, Serializable{
 		return false;
 	}
 
-	@Override
-	public int compareTo(Search o) {
-		if (pageScore == o.pageScore) return 0;
-		if (pageScore > o.pageScore) return -1;
-		else return 1;		
-	}
+//	@Override
+//	public int compareTo(Search o) {
+//		if (pageScore == o.pageScore) return 0;
+//		if (pageScore > o.pageScore) return -1;
+//		else return 1;		
+//	}
 }

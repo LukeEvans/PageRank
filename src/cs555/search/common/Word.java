@@ -2,7 +2,6 @@ package cs555.search.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Word implements Serializable {
 
@@ -11,15 +10,14 @@ public class Word implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	transient public String word;
-	transient public ArrayList<Search> searchSet;
+	public String word;
+	public ArrayList<Search> searchSet;
 	
 	//================================================================================
 	// Constructors
 	//================================================================================
 	public Word(String w) {
 		word = w;
-		searchSet = new ArrayList<Search>();
 	}
 	
 	//================================================================================
@@ -48,15 +46,15 @@ public class Word implements Serializable {
 		}
 	}
 	
-	public void sort() {
-		Collections.sort(searchSet);
-	}
+//	public void sort() {
+//		Collections.sort(searchSet);
+//	}
 	
 	public ArrayList<Search> getIntersection(Word other) {
 		ArrayList<Search> intersection = new ArrayList<Search>();
 		
 		for (Search s : other.searchSet) {
-			if (contains(s)) 
+			if (hasWord(s)) 
 				intersection.add(s);
 		}
 		
@@ -67,7 +65,7 @@ public class Word implements Serializable {
 	//================================================================================
 	public int indexOf(Search other) {
 		for (int i=0; i<searchSet.size(); i++) {
-			if (searchSet.get(i).equals(other)) {
+			if (searchSet.get(i).isTheSame(other)) {
 				return i;
 			}
 		}
@@ -75,9 +73,9 @@ public class Word implements Serializable {
 		return -1;
 	}
 	
-	public boolean contains(Search other) {
+	public boolean hasWord(Search other) {
 		for (Search s : searchSet) {
-			if (s.equals(other)) {
+			if (s.isTheSame(other)) {
 				return true;
 			}
 		}
@@ -85,7 +83,7 @@ public class Word implements Serializable {
 		return false;
 	}
 	
-	public boolean equals(Word other) {
+	public boolean isSameAs(Word other) {
 		if (word.equalsIgnoreCase(other.word)) {
 			return true;
 		}
@@ -93,12 +91,12 @@ public class Word implements Serializable {
 		return false;
 	}
 	
-	public String toString() {
-		String s = "";
-		
-		s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
-		
-		return s;
-	}
+//	public String toString() {
+//		String s = "";
+//		
+//		s += "Word: " + word + " link set size: " + searchSet.size() + "\n";
+//		
+//		return s;
+//	}
 }
 

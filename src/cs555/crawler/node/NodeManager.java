@@ -200,7 +200,7 @@ public class NodeManager extends Node{
 		
 		for (Peer p : peerList.getAllPeers()) {
 			p.setLink(connect(p));
-			p.initLink();
+			//p.initLink();
 		}
 		
 		//testing

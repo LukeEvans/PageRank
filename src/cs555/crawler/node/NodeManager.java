@@ -22,6 +22,7 @@ import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
 import cs555.search.common.AccessPoint;
 import cs555.search.common.AccessPointList;
+import cs555.search.common.WordSet;
 
 public class NodeManager extends Node{
 
@@ -273,6 +274,13 @@ public class NodeManager extends Node{
 			
 			return;
 		}
+		
+		if (obj instanceof WordSet) {
+			WordSet sanity = (WordSet) obj;
+			System.out.println("Sanity : " + sanity);
+			return;
+		}
+		
 	}
 
 

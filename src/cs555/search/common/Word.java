@@ -34,8 +34,7 @@ public class Word implements Serializable {
 		// If we already have this url, keep the maximum of the two
 		if (searchIndex > -1) {
 			if (search.pageScore > searchSet.get(searchIndex).pageScore) {
-				searchSet.remove(searchIndex);
-				searchSet.add(search);
+				searchSet.get(searchIndex).pageScore = search.pageScore;
 			}
 		}
 		

@@ -57,4 +57,14 @@ public class WordSet implements Serializable {
 		
 		return -1;
 	}
+	
+	public String toString() {
+		String s = "";
+		
+		for (int i=0; i<5; i++) {
+			s += words.get(i) + "\n";
+		}
+		
+		return s;
+	}
 }

@@ -24,40 +24,41 @@ public class Tools {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
 		try {
-		  out = new ObjectOutputStream(bos);   
-		  out.writeObject(o);
-		  byte[] bytes = bos.toByteArray();
-		  
-		  out.close();
-		  bos.close();
-		  
-		  return bytes;
-		  
+			out = new ObjectOutputStream(bos);   
+			out.writeObject(o);
+			byte[] bytes = bos.toByteArray();
+
+			out.close();
+			bos.close();
+
+			return bytes;
+
 		} catch(IOException e) {
 			System.out.println("Could not create bytes from object");
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
-	public static Object bytesToObject(byte[] bytes) {
-		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-		ObjectInput in = null;
+
+	public static Object bytesToObject(byte[] bytes) {		
+
 		try {
-		  in = new ObjectInputStream(bis);
-		  Object o = in.readObject(); 
-		  
-		  bis.close();
-		  in.close();
-		  
-		  return o;
-		  
+			ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+			ObjectInput in = null;
+			in = new ObjectInputStream(bis);
+			Object o = in.readObject(); 
+
+			bis.close();
+			in.close();
+
+			return o;
+
 		} catch(Exception e) {
 			//System.out.println("Could not creat object from bytes");
 			return null;
 		}
 	}
-	
+
 	// ================================================================================
 	// Message functions
 	// ================================================================================
@@ -112,7 +113,7 @@ public class Tools {
 				sout = s.getOutputStream();
 				return sout;
 			}
-			
+
 			return null;
 		} catch (IOException e){
 			printStackTrace(e);
@@ -163,7 +164,7 @@ public class Tools {
 			printStackTrace(e);
 		}
 	}
-	
+
 	public static void sleep(int time, int fraction) {
 		System.out.println("sleeping for : " + (time * (1000/fraction)));
 		try {

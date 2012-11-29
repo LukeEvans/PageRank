@@ -199,6 +199,8 @@ public class Worker extends Node{
 			Tools.sleep(1);
 
 			System.out.println("Sending words: " + words);
+			System.out.println("Test Word : " + words.words.get(199));
+			
 			Word w = words.words.get(0);
 			Tools.writeObject(man.link, words);
 			System.out.println("Sent words");

@@ -313,6 +313,7 @@ public class NodeManager extends Node{
 			if (o != null && o instanceof WordSet) {
 				WordSet set = (WordSet) o;
 				System.out.println("Got a wordie birdi set: " + set);
+				System.out.println("Test Word : " + set.words.get(199));
 				
 			}
 			

@@ -8,5 +8,5 @@ ssh garlic $cmd &
 ssh kale $cmd &
 ssh kelp $cmd &
 ssh leek $cmd &   
-ssh okra $cmd & 
+ssh turnip $cmd & 
 ssh onion $cmd & 

@@ -186,16 +186,21 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
-			System.out.println("Sending : " + words);
-			if (Tools.getLocalHostname().contains("garlic")) {
-				try {
-					l.sendData(Tools.objectToBytes(words));
-					System.out.println("Sent");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			Continue cont = new Continue("cont");
+			
+			try {
+				l.sendData(Tools.objectToBytes(cont));
+				Tools.sleep(1);
+				
+				Tools.writeObject(l, words);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			System.out.println("Sending : " + words);
+
 			
 //			int i=0;
 //			for (WordSet chunk : words.getChunks()) {

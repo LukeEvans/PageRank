@@ -22,6 +22,7 @@ import cs555.crawler.utilities.Constants;
 import cs555.crawler.utilities.Tools;
 import cs555.search.common.AccessPoint;
 import cs555.search.common.AccessPointList;
+import cs555.search.common.Continue;
 import cs555.search.common.Word;
 import cs555.search.common.WordSet;
 
@@ -203,11 +204,6 @@ public class NodeManager extends Node{
 		garlic.setLink(connect(garlic));
 		sendObject(garlic, me);
 		
-		Object obj = Tools.bytesToObject(garlic.waitForData());
-		
-		if (obj != null && obj instanceof WordSet) {
-			System.out.println("Got word set");
-		}
 	}
 	
 	//================================================================================
@@ -306,6 +302,19 @@ public class NodeManager extends Node{
 		
 		if (obj instanceof AccessPoint) {
 			System.out.println("Holy mother fucking shit");
+			
+			return;
+		}
+		
+		if (obj instanceof Continue) {
+			
+			Object o = Tools.readObject(l);
+			
+			if (o != null && o instanceof WordSet) {
+				System.out.println("Got a wordie birdi set");
+			}
+			
+			return;
 		}
 		
 		System.out.println("unrecognized");

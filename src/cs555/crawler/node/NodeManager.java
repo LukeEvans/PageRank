@@ -310,8 +310,8 @@ public class NodeManager extends Node{
 			System.out.println("Reading object");
 			Object o = Tools.readObject(l);
 			
-			if (o != null && o instanceof WordSet) {
-				System.out.println("Got a wordie birdi set");
+			if (o != null && o instanceof Word) {
+				System.out.println("Got a wordie birdi");
 			}
 			
 			else {

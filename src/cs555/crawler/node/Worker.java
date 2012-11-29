@@ -32,6 +32,7 @@ import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
 import cs555.search.common.AccessPoint;
 import cs555.search.common.Continue;
+import cs555.search.common.Word;
 import cs555.search.common.WordSet;
 
 public class Worker extends Node{
@@ -198,7 +199,8 @@ public class Worker extends Node{
 			Tools.sleep(1);
 
 			System.out.println("Sending words");
-			Tools.writeObject(l, words);
+			Word w = words.words.get(0);
+			Tools.writeObject(l, w);
 			System.out.println("Sent words");
 
 

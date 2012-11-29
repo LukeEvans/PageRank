@@ -189,18 +189,20 @@ public class Worker extends Node{
 			Continue cont = new Continue("cont");
 			
 			try {
+				System.out.println("Sent continue");
 				l.sendData(Tools.objectToBytes(cont));
+				System.out.println("Sent continue");
 				Tools.sleep(1);
 				
+				System.out.println("Sending words");
 				Tools.writeObject(l, words);
+				System.out.println("Sent words");
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			System.out.println("Sending : " + words);
-
 			
 //			int i=0;
 //			for (WordSet chunk : words.getChunks()) {

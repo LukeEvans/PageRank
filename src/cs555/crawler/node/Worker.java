@@ -200,7 +200,7 @@ public class Worker extends Node{
 
 			System.out.println("Sending words");
 			Word w = words.words.get(0);
-			Tools.writeObject(l, w);
+			Tools.writeObject(man.link, w);
 			System.out.println("Sent words");
 
 

@@ -17,7 +17,7 @@ public class Peer implements Serializable {
 	public String domain;
 	public String seedURL;
 	public boolean ready;
-	transient Link link;
+	public transient Link link;
 
 	//================================================================================
 	// Constructor

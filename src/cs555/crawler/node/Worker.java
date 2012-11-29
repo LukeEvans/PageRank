@@ -190,6 +190,7 @@ public class Worker extends Node{
 
 			WaitForObject wait = new WaitForObject();
 			sendObject(peer, wait);
+			Tools.sleep(2);
 			Tools.writeObject(peer.link, words);
 			System.out.println("Sending words: " + words);
 			System.out.println("Test Word : " + words.words.get(199));

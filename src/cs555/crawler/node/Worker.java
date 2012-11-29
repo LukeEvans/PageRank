@@ -196,7 +196,7 @@ public class Worker extends Node{
 			sendObject(man, cont);
 			System.out.println("Sent continue");
 			
-			Tools.sleep(1);
+			//Tools.sleep(1);
 
 			System.out.println("Sending words: " + words);
 			System.out.println("Test Word : " + words.words.get(199));

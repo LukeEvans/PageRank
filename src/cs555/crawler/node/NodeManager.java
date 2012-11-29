@@ -177,32 +177,27 @@ public class NodeManager extends Node{
 	// Begin DHT Seeding
 	//================================================================================
 	public void beginSeedingDHT(String host, int port) {
-//		Peer dhtManager = new Peer(host, port);
-//		dhtManager.setLink(connect(dhtManager));
-//		
-//		AccessPointList dhtNodes = new AccessPointList(peerList.size());
-//		sendObject(dhtManager, dhtNodes);
-//		
-//		byte[] bytes = dhtManager.waitForData();
-//		Object obj = Tools.bytesToObject(bytes);
-//		
-//		if (obj instanceof AccessPointList) {
-//			AccessPointList accesPoints = (AccessPointList) obj;
-//			
-//			for (AccessPoint point : accesPoints.accessPeers) {
-//				Peer worker = peerList.getReadyPeer();
-//				worker.setLink(connect(worker));
-//				worker.initLink();
-//				
-//				System.out.println("Sendig access point to peer: " + worker.hostname);
-//				sendObject(worker, point);
-//			}
-//		}
-
-		AccessPoint me = new AccessPoint(Tools.getLocalHostname(), serverPort);
-		Peer garlic = new Peer("garlic", 5555);
-		garlic.setLink(connect(garlic));
-		sendObject(garlic, me);
+		Peer dhtManager = new Peer(host, port);
+		dhtManager.setLink(connect(dhtManager));
+		
+		AccessPointList dhtNodes = new AccessPointList(peerList.size());
+		sendObject(dhtManager, dhtNodes);
+		
+		byte[] bytes = dhtManager.waitForData();
+		Object obj = Tools.bytesToObject(bytes);
+		
+		if (obj instanceof AccessPointList) {
+			AccessPointList accesPoints = (AccessPointList) obj;
+			
+			for (AccessPoint point : accesPoints.accessPeers) {
+				Peer worker = peerList.getReadyPeer();
+				worker.setLink(connect(worker));
+				worker.initLink();
+				
+				System.out.println("Sendig access point to peer: " + worker.hostname);
+				sendObject(worker, point);
+			}
+		}
 		
 	}
 	

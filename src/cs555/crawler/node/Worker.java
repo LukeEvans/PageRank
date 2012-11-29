@@ -32,6 +32,7 @@ import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
 import cs555.search.common.AccessPoint;
 import cs555.search.common.Continue;
+import cs555.search.common.WaitForObject;
 import cs555.search.common.Word;
 import cs555.search.common.WordSet;
 
@@ -187,23 +188,29 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
-			Continue cont = new Continue("cont");
-
-
-			System.out.println("Sending continue");
-			Peer man = new Peer("bean", 5678);
-			man.setLink(connect(man));
-			sendObject(man, cont);
-			System.out.println("Sent continue");
-			
-			//Tools.sleep(1);
-
+			WaitForObject wait = new WaitForObject();
+			sendObject(peer, wait);
+			Tools.writeObject(peer.link, words);
 			System.out.println("Sending words: " + words);
 			System.out.println("Test Word : " + words.words.get(199));
 			
-			Word w = words.words.get(0);
-			Tools.writeObject(man.link, words);
-			System.out.println("Sent words");
+//			Continue cont = new Continue("cont");
+
+
+//			System.out.println("Sending continue");
+//			Peer man = new Peer("bean", 5678);
+//			man.setLink(connect(man));
+//			sendObject(man, cont);
+//			System.out.println("Sent continue");
+//			
+//			//Tools.sleep(1);
+//
+//			System.out.println("Sending words: " + words);
+//			System.out.println("Test Word : " + words.words.get(199));
+//			
+//			Word w = words.words.get(0);
+//			Tools.writeObject(man.link, words);
+//			System.out.println("Sent words");
 
 
 

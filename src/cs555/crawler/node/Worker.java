@@ -186,24 +186,33 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
-			int i=0;
-			for (WordSet chunk : words.getChunks()) {
-				if (i==1) {
-					//break;
+			if (Tools.getLocalHostname().contains("chard")) {
+				try {
+					l.sendData(Tools.objectToBytes(words));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-
-				sendObject(peer, chunk);
-				System.out.println("Sent 1 chunk: " + chunk);
-
-				Object reply = Tools.bytesToObject(peer.waitForData());
-				
-				if (!(reply instanceof Continue)) {
-					System.out.println("Got a reply that was not a continue");
-					break;
-				}
-				i++;
-
 			}
+			
+//			int i=0;
+//			for (WordSet chunk : words.getChunks()) {
+//				if (i==1) {
+//					//break;
+//				}
+//
+//				sendObject(peer, chunk);
+//				System.out.println("Sent 1 chunk: " + chunk);
+//
+//				Object reply = Tools.bytesToObject(peer.waitForData());
+//				
+//				if (!(reply instanceof Continue)) {
+//					System.out.println("Got a reply that was not a continue");
+//					break;
+//				}
+//				i++;
+//
+//			}
 
 			System.exit(0);
 			

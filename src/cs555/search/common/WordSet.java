@@ -23,18 +23,17 @@ public class WordSet implements Serializable {
 	// Modifiers
 	//================================================================================
 	public void addWord(Word w) {
-//		int wordIndex = indexOfWord(w);
-//		
-//		if (wordIndex > -1) {
-//			words.get(wordIndex).addSearchSet(w.searchSet);
-//			
-//		}
-//		
-//		else {
-//			words.add(w);
-//		}
+		int wordIndex = indexOfWord(w);
 		
-		words.add(w);
+		if (wordIndex > -1) {
+			words.get(wordIndex).addSearchSet(w.searchSet);
+			
+		}
+		
+		else {
+			words.add(w);
+		}
+		
 	}
 	
 	public void addWordSet(WordSet wordSet) {

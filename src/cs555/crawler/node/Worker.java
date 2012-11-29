@@ -187,44 +187,43 @@ public class Worker extends Node{
 			WordSet words = state.getWordSet();
 
 			Continue cont = new Continue("cont");
+
+
+			System.out.println("Sending continue");
+			Peer man = new Peer("bean", 5678);
+			sendObject(man, cont);
+			System.out.println("Sent continue");
 			
-			try {
-				System.out.println("Sent continue");
-				l.sendData(Tools.objectToBytes(cont));
-				System.out.println("Sent continue");
-				Tools.sleep(1);
-				
-				System.out.println("Sending words");
-				Tools.writeObject(l, words);
-				System.out.println("Sent words");
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-//			int i=0;
-//			for (WordSet chunk : words.getChunks()) {
-//				if (i==1) {
-//					//break;
-//				}
-//
-//				sendObject(peer, chunk);
-//				System.out.println("Sent 1 chunk: " + chunk);
-//
-//				Object reply = Tools.bytesToObject(peer.waitForData());
-//				
-//				if (!(reply instanceof Continue)) {
-//					System.out.println("Got a reply that was not a continue");
-//					break;
-//				}
-//				i++;
-//
-//			}
+			Tools.sleep(1);
+
+			System.out.println("Sending words");
+			Tools.writeObject(l, words);
+			System.out.println("Sent words");
+
+
+
+
+			//			int i=0;
+			//			for (WordSet chunk : words.getChunks()) {
+			//				if (i==1) {
+			//					//break;
+			//				}
+			//
+			//				sendObject(peer, chunk);
+			//				System.out.println("Sent 1 chunk: " + chunk);
+			//
+			//				Object reply = Tools.bytesToObject(peer.waitForData());
+			//				
+			//				if (!(reply instanceof Continue)) {
+			//					System.out.println("Got a reply that was not a continue");
+			//					break;
+			//				}
+			//				i++;
+			//
+			//			}
 
 			System.exit(0);
-			
+
 			//saveWords(words);
 			//System.out.println("Words saved");
 

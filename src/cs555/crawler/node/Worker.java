@@ -191,6 +191,7 @@ public class Worker extends Node{
 
 			System.out.println("Sending continue");
 			Peer man = new Peer("bean", 5678);
+			man.setLink(connect(man));
 			sendObject(man, cont);
 			System.out.println("Sent continue");
 			

@@ -40,7 +40,7 @@ public class Node {
 			link = new Link(sock, this);
 		} catch (IOException e){
 			System.out.println("Could not connect to: " + p.hostname + ", " + p.port);
-			Tools.printStackTrace(e);
+			//Tools.printStackTrace(e);
 		}
 
 		return link;

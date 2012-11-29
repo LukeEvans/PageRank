@@ -307,11 +307,15 @@ public class NodeManager extends Node{
 		}
 		
 		if (obj instanceof Continue) {
-			
+			System.out.println("Reading object");
 			Object o = Tools.readObject(l);
 			
 			if (o != null && o instanceof WordSet) {
 				System.out.println("Got a wordie birdi set");
+			}
+			
+			else {
+				System.out.println("null");
 			}
 			
 			return;

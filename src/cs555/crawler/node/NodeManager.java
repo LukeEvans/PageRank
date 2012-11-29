@@ -311,7 +311,9 @@ public class NodeManager extends Node{
 			Object o = Tools.readObject(l);
 			
 			if (o != null && o instanceof WordSet) {
-				System.out.println("Got a wordie birdi set");
+				WordSet set = (WordSet) o;
+				System.out.println("Got a wordie birdi set: " + set);
+				
 			}
 			
 			else {

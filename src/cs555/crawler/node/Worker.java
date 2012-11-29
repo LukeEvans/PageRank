@@ -186,7 +186,7 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
-			if (Tools.getLocalHostname().contains("chard")) {
+			if (Tools.getLocalHostname().contains("garlic")) {
 				try {
 					l.sendData(Tools.objectToBytes(words));
 				} catch (IOException e) {

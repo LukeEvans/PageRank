@@ -194,12 +194,12 @@ public class Worker extends Node{
 			Tools.writeObject(peer.link, words);
 			System.out.println("Sending words: " + words);
 
-			for (Word w : words.words) {
-				if (w.searchSet.size() > 10) {
-					System.out.println("Outgoing : " + w.searchSet.size());
-					System.out.println("Word : " + w.word);
-				}
-			}
+//			for (Word w : words.words) {
+//				if (w.searchSet.size() > 10) {
+//					System.out.println("Outgoing : " + w.searchSet.size());
+//					System.out.println("Word : " + w.word);
+//				}
+//			}
 
 			System.out.println("Test Word : " + words.words.get(199));
 

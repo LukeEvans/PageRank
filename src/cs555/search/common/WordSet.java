@@ -10,6 +10,9 @@ public class WordSet implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public String domain;
+	public int domainLinks;
+	
 	public ArrayList<Word> words;
 	
 	//================================================================================

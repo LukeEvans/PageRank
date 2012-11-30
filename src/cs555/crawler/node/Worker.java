@@ -188,65 +188,16 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
+			// Add our domain name and stuff
+			words.domain = domain;
+			words.domainLinks = state.getCompletedPages().size();
+			
 			WaitForObject wait = new WaitForObject();
 			sendObject(peer, wait);
 			Tools.sleep(2);
 			Tools.writeObject(peer.link, words);
-			System.out.println("Sending words: " + words);
-
-//			for (Word w : words.words) {
-//				if (w.searchSet.size() > 10) {
-//					System.out.println("Outgoing : " + w.searchSet.size());
-//					System.out.println("Word : " + w.word);
-//				}
-//			}
-
-			System.out.println("Test Word : " + words.words.get(199));
-
-			//			Continue cont = new Continue("cont");
-
-
-			//			System.out.println("Sending continue");
-			//			Peer man = new Peer("bean", 5678);
-			//			man.setLink(connect(man));
-			//			sendObject(man, cont);
-			//			System.out.println("Sent continue");
-			//			
-			//			//Tools.sleep(1);
-			//
-			//			System.out.println("Sending words: " + words);
-			//			System.out.println("Test Word : " + words.words.get(199));
-			//			
-			//			Word w = words.words.get(0);
-			//			Tools.writeObject(man.link, words);
-			//			System.out.println("Sent words");
-
-
-
-
-			//			int i=0;
-			//			for (WordSet chunk : words.getChunks()) {
-			//				if (i==1) {
-			//					//break;
-			//				}
-			//
-			//				sendObject(peer, chunk);
-			//				System.out.println("Sent 1 chunk: " + chunk);
-			//
-			//				Object reply = Tools.bytesToObject(peer.waitForData());
-			//				
-			//				if (!(reply instanceof Continue)) {
-			//					System.out.println("Got a reply that was not a continue");
-			//					break;
-			//				}
-			//				i++;
-			//
-			//			}
 
 			System.exit(0);
-
-			//saveWords(words);
-			//System.out.println("Words saved");
 
 		}
 	}

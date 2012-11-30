@@ -30,7 +30,7 @@ public class Word implements Serializable {
 		int searchIndex = indexOf(search);
 		
 		if (searchSet.size() > 5) {
-			return;
+			//return;
 		}
 		
 		// If we already have this url, keep the maximum of the two

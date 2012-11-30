@@ -193,30 +193,33 @@ public class Worker extends Node{
 			Tools.sleep(2);
 			Tools.writeObject(peer.link, words);
 			System.out.println("Sending words: " + words);
-			
+
 			for (Word w : words.words) {
-				System.out.println("Outgoing : " + w.searchSet.size());
+				if (w.searchSet.size() == 2) {
+					System.out.println("Outgoing : " + w.searchSet.size());
+					System.out.println("Word : " + w.word);
+				}
 			}
-			
+
 			System.out.println("Test Word : " + words.words.get(199));
-			
-//			Continue cont = new Continue("cont");
+
+			//			Continue cont = new Continue("cont");
 
 
-//			System.out.println("Sending continue");
-//			Peer man = new Peer("bean", 5678);
-//			man.setLink(connect(man));
-//			sendObject(man, cont);
-//			System.out.println("Sent continue");
-//			
-//			//Tools.sleep(1);
-//
-//			System.out.println("Sending words: " + words);
-//			System.out.println("Test Word : " + words.words.get(199));
-//			
-//			Word w = words.words.get(0);
-//			Tools.writeObject(man.link, words);
-//			System.out.println("Sent words");
+			//			System.out.println("Sending continue");
+			//			Peer man = new Peer("bean", 5678);
+			//			man.setLink(connect(man));
+			//			sendObject(man, cont);
+			//			System.out.println("Sent continue");
+			//			
+			//			//Tools.sleep(1);
+			//
+			//			System.out.println("Sending words: " + words);
+			//			System.out.println("Test Word : " + words.words.get(199));
+			//			
+			//			Word w = words.words.get(0);
+			//			Tools.writeObject(man.link, words);
+			//			System.out.println("Sent words");
 
 
 

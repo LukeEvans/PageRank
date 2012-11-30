@@ -195,7 +195,7 @@ public class Worker extends Node{
 			System.out.println("Sending words: " + words);
 
 			for (Word w : words.words) {
-				if (w.searchSet.size() == 2) {
+				if (w.searchSet.size() > 10) {
 					System.out.println("Outgoing : " + w.searchSet.size());
 					System.out.println("Word : " + w.word);
 				}

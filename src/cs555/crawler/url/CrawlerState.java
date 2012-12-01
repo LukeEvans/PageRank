@@ -270,7 +270,7 @@ public class CrawlerState implements java.io.Serializable {
 		
 		for (Page p : getCompletedPages()) {
 			
-			if (words.words.size() >= 100000) {
+			if (words.words.size() >= 60000) {
 				//break;
 			}
 			

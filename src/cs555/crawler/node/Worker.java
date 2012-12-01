@@ -188,6 +188,8 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
+			System.out.println("Sending word set of size : " + words.words.size());
+			
 			// Add our domain name and stuff
 			words.domain = domain;
 			words.domainLinks = state.getCompletedPages().size();

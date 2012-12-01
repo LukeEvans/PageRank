@@ -31,9 +31,7 @@ import cs555.crawler.rankControl.RankElection;
 import cs555.crawler.rankControl.RankInfo;
 import cs555.crawler.rankControl.RoundComplete;
 import cs555.search.common.AccessPoint;
-import cs555.search.common.Continue;
 import cs555.search.common.WaitForObject;
-import cs555.search.common.Word;
 import cs555.search.common.WordSet;
 
 public class Worker extends Node{
@@ -188,6 +186,8 @@ public class Worker extends Node{
 
 			WordSet words = state.getWordSet();
 
+			saveIntermediaryToDisk(accessPoint.host, words);
+			
 			System.out.println("Sending word set of size : " + words.words.size());
 			
 			// Add our domain name and stuff
@@ -204,6 +204,28 @@ public class Worker extends Node{
 		}
 	}
 
+	//================================================================================
+	// Save to disk
+	//================================================================================
+	public void saveIntermediaryToDisk(String remoteHost, WordSet set)  {
+
+		// Write to disk with FileOutputStream
+		FileOutputStream f_out;
+		try {
+			f_out = new FileOutputStream(Constants.base_path + remoteHost + ".intermediary");
+			// Write object with ObjectOutputStream
+			ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
+
+			// Write object out to disk
+			obj_out.writeObject (set);
+
+			obj_out.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	//================================================================================
 	// Add links to crawl
 	//================================================================================
